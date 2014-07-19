@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fff" >
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="450px"
+        android:layout_height="150px"
+        android:layout_centerHorizontal="true"
+        android:maxLength="150"
+        android:padding="20px"
+        android:text="@string/text"
+        android:textColor="#000" />
+
+    <Button
+        android:id="@+id/btn_showMore"
+        android:layout_width="109px"
+        android:layout_height="31px"
+        android:layout_marginLeft="20px"
+        android:layout_above="@+id/bottom_menu"
+        android:layout_marginBottom="15px"
+        android:background="@drawable/more" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_menu"
+        android:layout_width="480px"
+        android:layout_height="43px"
+        android:layout_below="@+id/text"
+        android:layout_centerHorizontal="true" >
+
+        <Button
+            android:id="@+id/btn_comment"
+            android:layout_width="101px"
+            android:layout_height="43px"
+            android:background="@drawable/comment_hadith" />
+
+        <Button
+            android:id="@+id/btn_favorite"
+            android:layout_width="126px"
+            android:layout_height="43px"
+            android:layout_toRightOf="@+id/btn_comment"
+            android:background="@drawable/favourite_hadith" />
+
+        <Button
+            android:id="@+id/btn_download"
+            android:layout_width="116px"
+            android:layout_height="43px"
+            android:layout_toRightOf="@+id/btn_favorite"
+            android:background="@drawable/download_hadith" />
+
+        <Button
+            android:id="@+id/btn_listen"
+            android:layout_width="126px"
+            android:layout_height="43px"
+            android:layout_toRightOf="@+id/btn_download"
+            android:background="@drawable/listen_hadith" />
+    </RelativeLayout>
+
+</RelativeLayout>

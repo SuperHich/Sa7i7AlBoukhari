@@ -1,5 +1,7 @@
 package com.sa7i7alboukhari.utils;
 
+import com.sa7i7alboukhari.externals.SABDataBase;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -42,6 +44,7 @@ public class MySuperScaler extends FragmentActivity {
 	protected boolean isFirstStart = true;
 	
 	public static boolean isTablet ;
+	public SABDataBase sabDB;
 	
 	
 	@Override
@@ -210,6 +213,8 @@ public class MySuperScaler extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		thisAct = this;
+		
+		sabDB = new SABDataBase(this);
 	}
 	
 	@Override
@@ -222,6 +227,7 @@ public class MySuperScaler extends FragmentActivity {
 	protected void onStop() {
 		super.onStop();
 		
+		sabDB.close();
 	}
 	
     protected double tabletInchSize(){

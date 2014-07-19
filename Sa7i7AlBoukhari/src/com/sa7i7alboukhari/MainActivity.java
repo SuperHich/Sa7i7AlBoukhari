@@ -2,11 +2,11 @@ package com.sa7i7alboukhari;
 
 import java.util.Locale;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -33,8 +33,6 @@ public class MainActivity extends MySuperScaler {
 
 	private String[] mPlanetTitles;
 
-	private Drawable d1, d2 , d3 , d4 , d5, d6;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,17 +44,7 @@ public class MainActivity extends MySuperScaler {
 
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-		d1 = getResources().getDrawable(R.drawable.favourites_list);
-		d2 = getResources().getDrawable(R.drawable.show_ahadith);
-		d3 = getResources().getDrawable(R.drawable.show_abweb);
-		d4 = getResources().getDrawable(R.drawable.show_fahras);
-		d5 = getResources().getDrawable(R.drawable.about_chabaka);
-		d6 = getResources().getDrawable(R.drawable.about);
-
-
-		Drawable[] lListIcone={d1 , d2 ,d3 ,d4, d5, d6};
-
-		CustomAdapter adapter = new CustomAdapter(lListIcone);
+		CustomAdapter adapter = new CustomAdapter(getResources().obtainTypedArray(R.array.menu_drawables));
 
 
 		mDrawerList.setAdapter(adapter);
@@ -65,9 +53,9 @@ public class MainActivity extends MySuperScaler {
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 
-		if (savedInstanceState == null) {
-			selectItem(0);
-		}
+//		if (savedInstanceState == null) {
+//			selectItem(0);
+//		}
 
 		Button btn = (Button) findViewById(R.id.menu);
 
@@ -97,18 +85,40 @@ public class MainActivity extends MySuperScaler {
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
-		Fragment fragment = new PlanetFragment();
-		Bundle args = new Bundle();
-		args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-		fragment.setArguments(args);
+//		Fragment fragment = new PlanetFragment();
+//		Bundle args = new Bundle();
+//		args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+//		fragment.setArguments(args);
+//
+//		FragmentManager fragmentManager = getFragmentManager();
+//		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//
+//		// update selected item and title, then close the drawer
+//		mDrawerList.setItemChecked(position, true);
+//		setTitle(mPlanetTitles[position]);
+//		mDrawerLayout.closeDrawer(mDrawerList);
+		
+		 Fragment fragment = new AhadithFragment();
+         Bundle args = new Bundle();
+         args.putInt(AhadithFragment.ARG_AHADITH, position);
+         fragment.setArguments(args);
 
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+         FragmentManager fragmentManager = getSupportFragmentManager();
+         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-		// update selected item and title, then close the drawer
-		mDrawerList.setItemChecked(position, true);
-		setTitle(mPlanetTitles[position]);
-		mDrawerLayout.closeDrawer(mDrawerList);
+         // update selected item and title, then close the drawer
+         mDrawerList.setItemChecked(position, true);
+//         setTitle(mPlanetTitles[position]);
+         mDrawerLayout.closeDrawer(mDrawerList);
+        
+//        sabDB.setFavoriteHadith(4, true);
+//        sabDB.getAllBabs();
+//        sabDB.getAllHadithsWithPage(0);
+//        sabDB.getAllHadithsWithBabId(6);
+//        sabDB.getFavoriteHadiths();
+//        sabDB.searchHadithWithText("عَنْ عِكْرِمَةَ بْنِ خَالِدٍ");
+//        boolean isFav = sabDB.isHadithFavorite(4);
+//        Log.i("", "isFav " + isFav);
 	}
 
 
@@ -136,9 +146,10 @@ public class MainActivity extends MySuperScaler {
 
 	class CustomAdapter extends BaseAdapter implements OnTouchListener
 	{
-		Drawable images[]; 
+//		int images[]; 
+		TypedArray images;
 		LayoutInflater inflater;
-		public CustomAdapter(Drawable[] lListIcone)
+		public CustomAdapter(TypedArray lListIcone)
 		{
 			images=lListIcone;
 			inflater= LayoutInflater.from(MainActivity.this);
@@ -146,7 +157,7 @@ public class MainActivity extends MySuperScaler {
 		}
 		@Override
 		public int getCount() {
-			return images.length;
+			return images.length();
 		}
 		@Override
 		public Object getItem(int arg0) {
@@ -170,7 +181,7 @@ public class MainActivity extends MySuperScaler {
 			else {
 				holder = (ViewHolder)convertView.getTag();
 			}
-			holder.iv.setBackgroundDrawable(images[position]);
+			holder.iv.setBackgroundDrawable(images.getDrawable(position));
 			return convertView;
 		}
 

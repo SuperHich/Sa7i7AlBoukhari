@@ -31,7 +31,7 @@ public class SplashHome extends MySuperScaler {
 	
 	private static final String TAG = "SplashHome";
 	private static final int STOPSPLASH = 0;
-	private static final long SPLASHTIME = 1500;
+	private static final long SPLASHTIME = 2500;
 	
 	public static final int MESSAGE_START = 1;
 	public static final int MESSAGE_FINISH = 2;
@@ -128,7 +128,7 @@ public class SplashHome extends MySuperScaler {
 		principal_layout = (RelativeLayout) findViewById(R.id.principal_layout);
 		
 		Message msg = Message.obtain();
-		msg.what = MESSAGE_START;
+		msg.what = MESSAGE_FINISH;
 	    splashHandler.sendMessageDelayed(msg, 500);
 		
 		

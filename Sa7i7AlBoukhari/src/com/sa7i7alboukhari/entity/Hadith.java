@@ -6,6 +6,10 @@ public class Hadith extends SABEntity {
 	private String text;
 	private String file;
 	private int bookId;
+	private String link;
+	private int pageId;
+	private boolean isDownload = false;
+	private boolean isFavorite = false;
 	
 	public int getTitleId() {
 		return titleId;
@@ -31,6 +35,30 @@ public class Hadith extends SABEntity {
 	public void setBookId(int bookId) {
 		this.bookId = bookId;
 	}
+	public String getLink() {
+		return link;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
+	public int getPageId() {
+		return pageId;
+	}
+	public void setPageId(int pageId) {
+		this.pageId = pageId;
+	}
+	public boolean isDownload() {
+		return isDownload;
+	}
+	public void setDownload(boolean isDownload) {
+		this.isDownload = isDownload;
+	}
+	public boolean isFavorite() {
+		return isFavorite;
+	}
+	public void setFavorite(boolean isFavorite) {
+		this.isFavorite = isFavorite;
+	}
 	
 	@Override
 	public String toString() {
@@ -39,7 +67,11 @@ public class Hadith extends SABEntity {
 		sb.append("BookID " + getBookId() + "\n");
 		sb.append("TitleID " + getTitleId() + "\n");
 		sb.append("Text " + getText() + "\n");
-		sb.append("file " + getFile());
+		sb.append("file " + getFile() + "\n");
+		sb.append("Link " + getLink() + "\n");
+		sb.append("Page " + getPageId() + "\n");
+		sb.append("isDownload " + isDownload() + "\n");
+		sb.append("isFavorite " + isFavorite());
 		return sb.toString();
 	}
 	

@@ -30,4 +30,9 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    
+    <string name="text">قَالَ حَدَّثَنَا أَبِي قَالَ حَدَّثَنَا أَبُو بُرْدَةَ
+بْنُ عَبْدِ اللَّهِ بْنِ أَبِي بُرْدَةَ عَنْ أَبِي بُرْدَةَ عَنْ أَبِي مُوسَى
+رَضِيَ اللَّهُ عَنْهُ قَالَ قَالُوا يَا رَسُولَ اللَّهِ أَيُّ الْإِسْلَامِ
+أَفْضَلُ قَالَ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ</string>
 </resources>
