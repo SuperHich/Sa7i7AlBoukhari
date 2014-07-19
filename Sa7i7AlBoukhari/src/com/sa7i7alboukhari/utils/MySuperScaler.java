@@ -137,12 +137,15 @@ public class MySuperScaler extends FragmentActivity {
 				(int) (root.getPaddingRight() * scale),
 				(int) (root.getPaddingBottom() * scale));
 
-		if (root instanceof TextView) {
-			TextView textView = (TextView) root;
-			textView.setTextSize(textView.getTextSize() * scale);
-		}
-		
-
+//		if (root instanceof TextView) {
+//			TextView textView = (TextView) root;
+//			textView.setTextSize(textView.getTextSize() * scale);
+//		}
+//		if (root instanceof EditText) {
+//			EditText textView = (EditText) root;
+//			textView.setTextSize(textView.getTextSize() * scale);
+//		}
+//
 		if (root instanceof ViewGroup) {
 			ViewGroup groupView = (ViewGroup) root;
 			for (int cnt = 0; cnt < groupView.getChildCount(); ++cnt)

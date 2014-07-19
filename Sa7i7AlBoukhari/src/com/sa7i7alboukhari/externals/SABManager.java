@@ -59,7 +59,7 @@ public class SABManager {
 	public ArrayList<Book> getBooksByPage(int pageNb) {
 		ArrayList<Book> books = new ArrayList<Book>();
 		JSONArray array = jsonParser.getJSONFromUrl(URL_BOOK.concat(String.valueOf(pageNb)));
-		
+		if (array != null) 
 		for (int i = 0; i < array.length(); i++) {
 			try {
 				JSONObject bObj = array.getJSONObject(i);
@@ -89,7 +89,7 @@ public class SABManager {
 		
 		ArrayList<Chapter> chapters = new ArrayList<Chapter>();
 		JSONArray array = jsonParser.getJSONFromUrl(URL_BOOK_ENT.concat(String.valueOf(pageNb)));
-		
+		if (array != null) 
 		for (int i = 0; i < array.length(); i++) {
 			try {
 				JSONObject cObj = array.getJSONObject(i);
@@ -130,6 +130,7 @@ public class SABManager {
 		ArrayList<Hadith> ahadith = new ArrayList<Hadith>();
 		JSONArray array = jsonParser.getJSONFromUrl(URL_AHADITH.concat(String.valueOf(pageNb)));
 		
+		if (array != null) 
 		for (int i = 0; i < array.length(); i++) {
 			try {
 				JSONObject cObj = array.getJSONObject(i);
