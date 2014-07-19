@@ -10,6 +10,7 @@ public class Hadith extends SABEntity {
 	private int pageId;
 	private boolean isDownload = false;
 	private boolean isFavorite = false;
+	private boolean isShown = false;
 	
 	public int getTitleId() {
 		return titleId;
@@ -73,6 +74,12 @@ public class Hadith extends SABEntity {
 		sb.append("isDownload " + isDownload() + "\n");
 		sb.append("isFavorite " + isFavorite());
 		return sb.toString();
+	}
+	public boolean isShown() {
+		return isShown;
+	}
+	public void setShown(boolean isShown) {
+		this.isShown = isShown;
 	}
 	
 }

@@ -53,6 +53,8 @@ public class MySuperScaler extends FragmentActivity {
 		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
+		sabDB = new SABDataBase(this);
+		
 		memoryAnalyser();
 		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -214,7 +216,8 @@ public class MySuperScaler extends FragmentActivity {
 		super.onResume();
 		thisAct = this;
 		
-		sabDB = new SABDataBase(this);
+		if(sabDB == null)
+			sabDB = new SABDataBase(this);
 	}
 	
 	@Override
@@ -227,7 +230,10 @@ public class MySuperScaler extends FragmentActivity {
 	protected void onStop() {
 		super.onStop();
 		
-		sabDB.close();
+		if(sabDB != null){
+			sabDB.close();
+			sabDB = null;
+		}
 	}
 	
     protected double tabletInchSize(){

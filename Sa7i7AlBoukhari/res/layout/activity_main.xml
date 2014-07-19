@@ -1,33 +1,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/principal_layout"
-    android:layout_width="640px"
-    android:layout_height="1136px"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="#39acdd" >
 
     <RelativeLayout
         android:id="@+id/top"
-        android:layout_width="640px"
-        android:layout_height="95px" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
         android:background="#1a435d">
 
         <Button
             android:id="@+id/search"
-            android:layout_width="98px"
-            android:layout_height="95px" 
+            android:layout_width="50dp"
+            android:layout_height="45dp" 
             android:layout_alignParentLeft="true"
             android:background="@drawable/search"/>
         
           <ImageView
-            android:layout_width="444px"
-            android:layout_height="95px" 
+            android:layout_width="wrap_content"
+            android:layout_height="45dp" 
             android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/search"
+            android:layout_toLeftOf="@+id/menu"
             android:background="@drawable/sahih_boukhari"/>
         
         <Button
             android:id="@+id/menu"
-            android:layout_width="98px"
-            android:layout_height="95px" 
+            android:layout_width="50dp"
+            android:layout_height="45dp" 
             android:layout_alignParentRight="true"
             android:background="@drawable/menu"/>
     </RelativeLayout>
@@ -46,7 +48,7 @@
 
         <ListView
             android:id="@+id/right_drawer"
-            android:layout_width="350px"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:background="#2f3d4c"

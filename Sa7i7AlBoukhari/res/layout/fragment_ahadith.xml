@@ -3,7 +3,8 @@
     android:id="@+id/listView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="#39acdd"
     android:gravity="center"
-    android:padding="10px" 
-    android:dividerHeight="10px"/>
+    android:scrollingCache="false"
+    android:padding="10dp" 
+    android:dividerHeight="10dp"/>

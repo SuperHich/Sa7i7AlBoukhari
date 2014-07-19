@@ -84,7 +84,7 @@ public class SABDataBase extends SQLiteAssetHelper {
 				Hadith hadith = new Hadith();
 				hadith.setId(c.getInt(0));
 				hadith.setTitleId(c.getInt(1));
-				hadith.setText(c.getString(2));
+				hadith.setText(formatHadith(c.getString(2)));
 				hadith.setLink(c.getString(3));
 				hadith.setFile(c.getString(4));
 				hadith.setFavorite(c.getInt(5) == 1 ? true:false);
@@ -120,7 +120,7 @@ public class SABDataBase extends SQLiteAssetHelper {
 				Hadith hadith = new Hadith();
 				hadith.setId(c.getInt(0));
 				hadith.setTitleId(c.getInt(1));
-				hadith.setText(c.getString(2));
+				hadith.setText(formatHadith(c.getString(2)));
 				hadith.setLink(c.getString(3));
 				hadith.setFile(c.getString(4));
 				hadith.setFavorite(c.getInt(5) == 1 ? true:false);
@@ -156,7 +156,7 @@ public class SABDataBase extends SQLiteAssetHelper {
 				Hadith hadith = new Hadith();
 				hadith.setId(c.getInt(0));
 				hadith.setTitleId(c.getInt(1));
-				hadith.setText(c.getString(2));
+				hadith.setText(formatHadith(c.getString(2)));
 				hadith.setLink(c.getString(3));
 				hadith.setFile(c.getString(4));
 				hadith.setFavorite(c.getInt(5) == 1 ? true:false);
@@ -192,7 +192,7 @@ public class SABDataBase extends SQLiteAssetHelper {
 				Hadith hadith = new Hadith();
 				hadith.setId(c.getInt(0));
 				hadith.setTitleId(c.getInt(1));
-				hadith.setText(c.getString(2));
+				hadith.setText(formatHadith(c.getString(2)));
 				hadith.setLink(c.getString(3));
 				hadith.setFile(c.getString(4));
 				hadith.setFavorite(c.getInt(5) == 1 ? true:false);
@@ -264,5 +264,12 @@ public class SABDataBase extends SQLiteAssetHelper {
 		long updatedRow = db.update(sqlTable, values, whereClause, whereArgs);
 		
 		return updatedRow > 0;
+    }
+    
+    private String formatHadith(String text){
+    	String header = "<span lang=\"AR\" dir=\"RTL\" style=\"font-size:13.5pt; font-family:\"Simplified Arabic\";mso-ascii-font-family:\"Times New Roman\"; mso-fareast-font-family:\"Times New Roman\";mso-hansi-font-family:\"Times New Roman\"; mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR\">";
+    	String tail = "</span>";
+    	
+    	return header + text + tail;
     }
 }
