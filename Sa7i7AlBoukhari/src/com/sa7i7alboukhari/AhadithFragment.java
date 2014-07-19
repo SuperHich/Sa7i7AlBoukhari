@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sa7i7alboukhari.adapters.AhadithAdapter;
@@ -23,6 +24,8 @@ public class AhadithFragment extends Fragment implements IHadtihListener{
         private AhadithAdapter adapter;
         private ArrayList<Hadith> ahadith = new ArrayList<Hadith>();
         private int ahadith_typeId = 0;
+        
+        private TextView hadith ;
 
         public AhadithFragment() {
             // Empty constructor required for fragment subclasses
@@ -35,6 +38,9 @@ public class AhadithFragment extends Fragment implements IHadtihListener{
             ahadith_typeId = getArguments().getInt(ARG_AHADITH);
 
             initAhadith();
+            
+          hadith = (TextView) rootView.findViewById(R.id.text);
+            
             
             adapter = new AhadithAdapter(getActivity(), R.layout.hadith_list_item, ahadith, this);
             
