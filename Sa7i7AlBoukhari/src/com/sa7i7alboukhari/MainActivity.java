@@ -1,8 +1,9 @@
 package com.sa7i7alboukhari;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,19 +13,25 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.sa7i7alboukhari.adapters.IMenuListener;
 import com.sa7i7alboukhari.adapters.MenuCustomAdapter;
 import com.sa7i7alboukhari.externals.SABDataBase;
+import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
-public class MainActivity extends FragmentActivity implements IMenuListener{
+@SuppressLint("Recycle")
+public class MainActivity extends MySuperScaler implements IMenuListener{
 
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 
 	public SABDataBase sabDB;
+	
+	private ActionBarDrawerToggle mDrawerToggle;
+	RelativeLayout mainView ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,28 @@ public class MainActivity extends FragmentActivity implements IMenuListener{
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
+		mainView = (RelativeLayout) findViewById(R.id.content_frame);
+		
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
+            public void onDrawerClosed(View view) {
+                supportInvalidateOptionsMenu();
+            }
 
+            public void onDrawerOpened(View drawerView) {
+                supportInvalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                mainView.setTranslationX(- slideOffset * drawerView.getWidth());
+                mDrawerLayout.bringChildToFront(drawerView);
+                mDrawerLayout.requestLayout();
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+		
+		
 		if (savedInstanceState == null) {
 			selectItem(1);
 		}
@@ -95,6 +123,8 @@ public class MainActivity extends FragmentActivity implements IMenuListener{
 
 		}
 	}
+	
+	
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
@@ -116,7 +146,7 @@ public class MainActivity extends FragmentActivity implements IMenuListener{
 //        sabDB.getAllHadithsWithPage(0);
 //        sabDB.getAllHadithsWithBabId(6);
 //        sabDB.getFavoriteHadiths();
-//        sabDB.searchHadithWithText("عَنْ عِكْرِمَةَ بْنِ خَالِدٍ");
+//        sabDB.searchHadithWithText("Ø¹ÙŽÙ†Ù’ Ø¹Ù�ÙƒÙ’Ø±Ù�Ù…ÙŽØ©ÙŽ Ø¨Ù’Ù†Ù� Ø®ÙŽØ§Ù„Ù�Ø¯Ù�");
 //        boolean isFav = sabDB.isHadithFavorite(4);
 //        Log.i("", "isFav " + isFav);
 	}
