@@ -39,6 +39,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener{
 	
 	public static final int MESSAGE_START = 1;
 	
+	boolean test ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
