@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.sa7i7alboukhari.adapters.AhadithAdapter;
 import com.sa7i7alboukhari.adapters.IHadtihListener;
 import com.sa7i7alboukhari.entity.Hadith;
+import com.sa7i7alboukhari.utils.MySuperScaler;
+
 
 public class AhadithFragment extends Fragment implements IHadtihListener{
 	
@@ -38,6 +40,9 @@ public class AhadithFragment extends Fragment implements IHadtihListener{
             ahadith_typeId = getArguments().getInt(ARG_AHADITH);
 
             initAhadith();
+            
+    		if(!(MySuperScaler.scaled))
+    			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);
             
           hadith = (TextView) rootView.findViewById(R.id.text);
             
