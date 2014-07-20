@@ -2,6 +2,8 @@ package com.sa7i7alboukhari;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +24,7 @@ import com.sa7i7alboukhari.externals.SABDataBase;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
-@SuppressLint("Recycle")
+@SuppressLint({ "Recycle", "HandlerLeak" })
 public class MainActivity extends MySuperScaler implements IMenuListener{
 
 
@@ -30,15 +32,17 @@ public class MainActivity extends MySuperScaler implements IMenuListener{
 	private ListView mDrawerList;
 
 	public SABDataBase sabDB;
-	
+
 	private ActionBarDrawerToggle mDrawerToggle;
 	RelativeLayout mainView ;
+	
+	public static final int MESSAGE_START = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		sabDB = new SABDataBase(this);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -55,30 +59,29 @@ public class MainActivity extends MySuperScaler implements IMenuListener{
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		mainView = (RelativeLayout) findViewById(R.id.content_frame);
-		
+
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
-            public void onDrawerClosed(View view) {
-                supportInvalidateOptionsMenu();
-            }
+			public void onDrawerClosed(View view) {
+				supportInvalidateOptionsMenu();
+			}
 
-            public void onDrawerOpened(View drawerView) {
-                supportInvalidateOptionsMenu();
-            }
+			public void onDrawerOpened(View drawerView) {
+				supportInvalidateOptionsMenu();
+			}
 
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
-                mainView.setTranslationX(- slideOffset * drawerView.getWidth());
-                mDrawerLayout.bringChildToFront(drawerView);
-                mDrawerLayout.requestLayout();
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
-		
-		if (savedInstanceState == null) {
-			selectItem(1);
-		}
+			@Override
+			public void onDrawerSlide(View drawerView, float slideOffset) {
+				super.onDrawerSlide(drawerView, slideOffset);
+				mainView.setTranslationX(- slideOffset * drawerView.getWidth());
+				mDrawerLayout.bringChildToFront(drawerView);
+				mDrawerLayout.requestLayout();
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+//		if (savedInstanceState == null) {
+//			selectItem(1);
+//		}
 
 		Button btn = (Button) findViewById(R.id.menu);
 
@@ -94,20 +97,32 @@ public class MainActivity extends MySuperScaler implements IMenuListener{
 		});
 
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		if(sabDB == null){
 			sabDB = new SABDataBase(this);
 		}
+		
 	}
+	
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		Message msg = Message.obtain();
+		msg.what = MESSAGE_START;
+	    mHandler.sendMessageDelayed(msg, 10);
+	}
+	
 	
 	@Override
 	protected void onStop() {
 		super.onStop();
-		
+
 		if(sabDB != null){
 			sabDB.close();
 			sabDB = null;
@@ -118,47 +133,85 @@ public class MainActivity extends MySuperScaler implements IMenuListener{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
 			selectItem(position);
-
 
 		}
 	}
-	
-	
+
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
-		 Fragment fragment = new AhadithFragment();
-         Bundle args = new Bundle();
-         args.putInt(AhadithFragment.ARG_AHADITH, position);
-         fragment.setArguments(args);
+		Fragment fragment = new AhadithFragment();
+		Bundle args = new Bundle();
+		args.putInt(AhadithFragment.ARG_AHADITH, position);
+		fragment.setArguments(args);
 
-         FragmentManager fragmentManager = getSupportFragmentManager();
-         FragmentTransaction ft = fragmentManager.beginTransaction();
-         
-         ft.replace(R.id.content_frame, fragment);
-         scaled = false ;
-         ft.commit();
+		switchTab(fragment);
 
-         // update selected item and title, then close the drawer
-         mDrawerList.setItemChecked(position, true);
-//         setTitle(mPlanetTitles[position]);
-         mDrawerLayout.closeDrawer(mDrawerList);
-        
-//        sabDB.setFavoriteHadith(4, true);
-//        sabDB.getAllBabs();
-//        sabDB.getAllHadithsWithPage(0);
-//        sabDB.getAllHadithsWithBabId(6);
-//        sabDB.getFavoriteHadiths();
-//        sabDB.searchHadithWithText("Ø¹ÙŽÙ†Ù’ Ø¹Ù�ÙƒÙ’Ø±Ù�Ù…ÙŽØ©ÙŽ Ø¨Ù’Ù†Ù� Ø®ÙŽØ§Ù„Ù�Ø¯Ù�");
-//        boolean isFav = sabDB.isHadithFavorite(4);
-//        Log.i("", "isFav " + isFav);
+		//		FragmentManager fragmentManager = getSupportFragmentManager();
+		//		FragmentTransaction ft = fragmentManager.beginTransaction();
+		//
+		//		FragmentManager fm = getSupportFragmentManager();
+		//		Fragment frag = fm.findFragmentById(R.id.content_frame);
+		//
+		//		if (frag == null) {
+		//			ft.add(R.id.content_frame, fragment);
+		//			scaled = false ;
+		//		} else {
+		//
+		//			ft.replace(R.id.content_frame, fragment);
+		//			scaled = false ;
+		//
+		//		}
+		//		ft.commit();
+
+		// update selected item and title, then close the drawer
+		mDrawerList.setItemChecked(position, true);
+		//         setTitle(mPlanetTitles[position]);
+		mDrawerLayout.closeDrawer(mDrawerList);
+
+		//        sabDB.setFavoriteHadith(4, true);
+		//        sabDB.getAllBabs();
+		//        sabDB.getAllHadithsWithPage(0);
+		//        sabDB.getAllHadithsWithBabId(6);
+		//        sabDB.getFavoriteHadiths();
+		//        sabDB.searchHadithWithText("Ø¹ÙŽÙ†Ù’ Ø¹Ù�ÙƒÙ’Ø±Ù�Ù…ÙŽØ©ÙŽ Ø¨Ù’Ù†Ù� Ø®ÙŽØ§Ù„Ù�Ø¯Ù�");
+		//        boolean isFav = sabDB.isHadithFavorite(4);
+		//        Log.i("", "isFav " + isFav);
+	}
+
+
+	private void switchTab(Fragment tab) {
+		FragmentManager fm = getSupportFragmentManager();
+		Fragment fragment = fm.findFragmentById(R.id.content_frame);
+
+		final FragmentTransaction ft = fm.beginTransaction();
+		if (fragment == null) {
+			ft.add(R.id.content_frame, tab);
+
+		} else {
+			ft.replace(R.id.content_frame, tab);
+			scaled = false ;
+		}
+
+		ft.commit();
 	}
 
 	@Override
 	public void onMenuItemClicked(int position) {
 		selectItem(position);
 	}
+	
+	private Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
 
+			switch (msg.what) {
+			case MESSAGE_START :
+				selectItem(1);
+				break;
+			
+			}
+			super.handleMessage(msg);
+		
+	}};
 }
