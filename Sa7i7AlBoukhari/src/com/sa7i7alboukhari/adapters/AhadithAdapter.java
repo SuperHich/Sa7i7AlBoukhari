@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.sa7i7alboukhari.R;
 import com.sa7i7alboukhari.entity.Hadith;
+import com.sa7i7alboukhari.externals.SABDataBase;
 
 public class AhadithAdapter extends ArrayAdapter<Hadith> {
 
@@ -127,12 +128,12 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 
 		if(hadith.isShown()){
 			holder.textview.setMaxLines(Integer.MAX_VALUE);
-			holder.textview.setText(Html.fromHtml(hadith.getText().concat(".")));
+			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(".")));
 			holder.btn_showMore.setBackgroundResource(R.drawable.pointstop_selector);
 		}
 		else{
 			holder.textview.setMaxLines(2);
-			holder.textview.setText(Html.fromHtml(hadith.getText().concat(" ... ")));
+			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(" ... ")));
 			holder.btn_showMore.setBackgroundResource(R.drawable.more_selector);
 		}
 

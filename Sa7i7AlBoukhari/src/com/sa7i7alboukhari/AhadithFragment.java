@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,8 +54,6 @@ public class AhadithFragment extends Fragment implements IHadtihListener, IMedia
 		ahadith_typeId = getArguments().getInt(ARG_AHADITH);
 		ahadith_keyword = getArguments().getString(ARG_AHADITH_KEYWORD_TEXT);
 
-		initAhadith();
-
 		if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);
 
@@ -69,21 +68,38 @@ public class AhadithFragment extends Fragment implements IHadtihListener, IMedia
 	}
 
 	private void initAhadith(){
-		ahadith.clear();
 
-		switch (ahadith_typeId) {
-		case 0:
-			ahadith.addAll(((MainActivity)getActivity()).sabDB.getFavoriteHadiths());				
-			break;
-		case 1:
-			ahadith.addAll(((MainActivity)getActivity()).sabDB.getAllHadithsWithPage(0));				
-			break;
-		case ARG_AHADITH_KEYWORD_ID:
-			ahadith.addAll(((MainActivity)getActivity()).sabDB.searchHadithWithText(ahadith_keyword));				
-			break;
-		default:
-			break;
+		try {
+			ahadith.clear();
+			
+			switch (ahadith_typeId) {
+			case 0:
+				ahadith.addAll(((MainActivity)getActivity()).sabDB.getFavoriteHadiths());				
+				break;
+			case 1:
+				ahadith.addAll(((MainActivity)getActivity()).sabDB.getAllHadithsWithPage(0));				
+				break;
+			case ARG_AHADITH_KEYWORD_ID:
+				ahadith.addAll(((MainActivity)getActivity()).sabDB.searchHadithWithText(ahadith_keyword));				
+				break;
+			default:
+				break;
+			}
+
+			adapter.notifyDataSetChanged();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
 		}
+	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		
+		initAhadith();
 	}
 
 	@Override
@@ -154,21 +170,16 @@ public class AhadithFragment extends Fragment implements IHadtihListener, IMedia
 
 	private void shareHadith(String text){
 
-		int sdk = android.os.Build.VERSION.SDK_INT;
-		if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-			clipboard.setText(text);
-		} else {
-			android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE); 
-			android.content.ClipData clip = android.content.ClipData.newPlainText("text label", text);
-			clipboard.setPrimaryClip(clip);
-		}
 
+		Log.e("TEXT", text);
+		
+		text = text.replace(System.getProperty("line.separator"), " ");
+		
 		String shareBody = text;
 		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 		sharingIntent.setType("text/plain");
 		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(shareBody));
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 		startActivity(Intent.createChooser(sharingIntent, getString(R.string.share)));
 
 	}
