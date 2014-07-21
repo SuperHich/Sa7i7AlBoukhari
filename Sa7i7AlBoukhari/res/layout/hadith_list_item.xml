@@ -21,7 +21,7 @@
         android:layout_marginLeft="20dp"
         android:layout_below="@+id/text"
         android:layout_marginTop="5dp"
-        android:background="@drawable/more" />
+        android:background="@drawable/more_selector" />
 
     <LinearLayout
         android:id="@+id/bottom_menu"
@@ -38,35 +38,35 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_weight="0.95"
-            android:background="@drawable/share_hadith"/>
+            android:background="@drawable/share_hadith_selector"/>
         
         <Button
             android:id="@+id/btn_comment"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_weight="1.05"
-            android:background="@drawable/comment_hadith" />
+            android:background="@drawable/comment_hadith_selector" />
 
         <Button
             android:id="@+id/btn_favorite"
            	android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_weight="1"
-            android:background="@drawable/favourite_hadith"/>
+            android:background="@drawable/favourite_hadith_selector"/>
 
         <Button
             android:id="@+id/btn_download"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_weight="1"
-            android:background="@drawable/download_hadith" />
+            android:background="@drawable/download_hadith_selector" />
 
         <Button
             android:id="@+id/btn_listen"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:layout_weight="1"
-            android:background="@drawable/listen_hadith" />
+            android:background="@drawable/listen_hadith_selector" />
     </LinearLayout>
 
 </RelativeLayout>
