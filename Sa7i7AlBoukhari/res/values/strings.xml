@@ -24,4 +24,5 @@
     <string name="added_to_fav">تمت إضافة الحديث إلى المفضلة</string>
     <string name="removed_from_fav">تم حذف الحديث من المفضلة</string>
     <string name="to_search">ابحث على</string>
+    <string name="share">شارك</string>
 </resources>
