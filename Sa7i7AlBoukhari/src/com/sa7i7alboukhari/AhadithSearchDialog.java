@@ -19,9 +19,14 @@ public class AhadithSearchDialog extends DialogFragment implements OnEditorActio
     }
 
     private EditText mEditText;
+    private String lastText = "";
 
     public AhadithSearchDialog() {
         // Empty constructor required for DialogFragment
+    }
+    
+    public AhadithSearchDialog(String lastText) {
+    	this.lastText = lastText;
     }
 
     @Override
@@ -31,6 +36,7 @@ public class AhadithSearchDialog extends DialogFragment implements OnEditorActio
         mEditText = (EditText) view.findViewById(R.id.edt_keyword);
         getDialog().setTitle(R.string.app_name);
 
+        mEditText.setText(lastText);
         // Show soft keyboard automatically
         mEditText.requestFocus();
         getDialog().getWindow().setSoftInputMode(
@@ -45,8 +51,6 @@ public class AhadithSearchDialog extends DialogFragment implements OnEditorActio
         if (EditorInfo.IME_ACTION_DONE == actionId) {
             // Return input text to activity
             EditNameDialogListener activity = (EditNameDialogListener) getActivity();
-//            String text = "\u062d\u064e\u062f\u0651\u064e";
-//            activity.onFinishEditDialog(text);
             activity.onFinishEditDialog(mEditText.getText().toString());
             this.dismiss();
             return true;

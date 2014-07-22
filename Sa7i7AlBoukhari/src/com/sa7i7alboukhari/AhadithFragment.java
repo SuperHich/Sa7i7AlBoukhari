@@ -2,19 +2,19 @@ package com.sa7i7alboukhari;
 
 import java.util.ArrayList;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.text.Html;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import com.costum.android.widget.LoadMoreListView;
+import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.sa7i7alboukhari.adapters.AhadithAdapter;
 import com.sa7i7alboukhari.adapters.IHadtihListener;
 import com.sa7i7alboukhari.entity.Hadith;
@@ -23,18 +23,18 @@ import com.sa7i7alboukhari.mediaplayer.SABMediaPlayer;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
-public class AhadithFragment extends Fragment implements IHadtihListener, IMediaPlayerNotifier{
+public class AhadithFragment extends ListFragment implements IHadtihListener, IMediaPlayerNotifier{
 
 	public static final String ARG_AHADITH = "ahadith_type";
 	public static final String ARG_AHADITH_KEYWORD_TEXT = "ahadith_keyword";
 	public static final int ARG_AHADITH_KEYWORD_ID = 10;
 
-	private ListView listView;
 	private AhadithAdapter adapter;
 	private ArrayList<Hadith> ahadith = new ArrayList<Hadith>();
 	private int ahadith_typeId = 0;
 	private String ahadith_keyword;
 	private SABMediaPlayer sabPlayer;
+	private int pageId = 0;
 
 	public AhadithFragment() {
 		// Empty constructor required for fragment subclasses
@@ -60,13 +60,45 @@ public class AhadithFragment extends Fragment implements IHadtihListener, IMedia
 
 		adapter = new AhadithAdapter(getActivity(), R.layout.hadith_list_item, ahadith, this);
 
-		listView = (ListView) rootView.findViewById(R.id.listView);
-		listView.setAdapter(adapter);
-		listView.setCacheColorHint(Color.TRANSPARENT);
-		//            getActivity().setTitle(planet);
+		Log.i("AhadithFragment", " onCreateView ");
+		
 		return rootView;
 	}
 
+	private class LoadDataTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			if (isCancelled()) {
+				return null;
+			}
+			
+			pageId += 1;
+			ahadith.addAll(((MainActivity)getActivity()).sabDB.getAllHadithsWithPage(pageId));
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+
+			// We need notify the adapter that the data have been changed
+			adapter.notifyDataSetChanged();
+
+			// Call onLoadMoreComplete when the LoadMore task, has finished
+			((LoadMoreListView) getListView()).onLoadMoreComplete();
+
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected void onCancelled() {
+			// Notify the loading more operation has finished
+			((LoadMoreListView) getListView()).onLoadMoreComplete();
+		}
+	}
+	
 	private void initAhadith(){
 
 		try {
@@ -77,7 +109,7 @@ public class AhadithFragment extends Fragment implements IHadtihListener, IMedia
 				ahadith.addAll(((MainActivity)getActivity()).sabDB.getFavoriteHadiths());				
 				break;
 			case 1:
-				ahadith.addAll(((MainActivity)getActivity()).sabDB.getAllHadithsWithPage(0));				
+				ahadith.addAll(((MainActivity)getActivity()).sabDB.getAllHadithsWithPage(pageId));				
 				break;
 			case ARG_AHADITH_KEYWORD_ID:
 				ahadith.addAll(((MainActivity)getActivity()).sabDB.searchHadithWithText(ahadith_keyword));				
@@ -87,6 +119,8 @@ public class AhadithFragment extends Fragment implements IHadtihListener, IMedia
 			}
 
 			adapter.notifyDataSetChanged();
+			
+			Log.i("AhadithFragment", " initAhadith ");
 
 		} catch (Exception e) {
 
@@ -99,7 +133,24 @@ public class AhadithFragment extends Fragment implements IHadtihListener, IMedia
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
+		getListView().setAdapter(adapter);
+		getListView().setCacheColorHint(Color.TRANSPARENT);
+		//            getActivity().setTitle(planet);
+		
+		((LoadMoreListView) getListView()).setFooterDividersEnabled(false);
+		
+		if(ahadith_typeId == 1)
+			((LoadMoreListView) getListView()).setOnLoadMoreListener(new OnLoadMoreListener() {
+				public void onLoadMore() {
+					// Do the work to load more items at the end of list
+					// here
+					new LoadDataTask().execute();
+				}
+			});
+		
 		initAhadith();
+		
+		Log.i("AhadithFragment", " onViewCreated ");
 	}
 
 	@Override

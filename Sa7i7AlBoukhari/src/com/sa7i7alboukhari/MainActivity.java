@@ -30,11 +30,7 @@ import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
 @SuppressLint({ "Recycle", "HandlerLeak" })
-public class MainActivity extends MySuperScaler implements IMenuListener, OnTouchListener, 
-
-EditNameDialogListener{
-
-
+public class MainActivity extends MySuperScaler implements IMenuListener, OnTouchListener, EditNameDialogListener{
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -46,6 +42,9 @@ EditNameDialogListener{
 	RelativeLayout mainView ;
 
 	public static final int MESSAGE_START = 1;
+	private int lastPosition = 1;
+	private String lastText = "";
+	private boolean isFirstStart = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +128,13 @@ EditNameDialogListener{
 	protected void onStart() {
 		super.onStart();
 
-		Message msg = Message.obtain();
-		msg.what = MESSAGE_START;
-		mHandler.sendMessageDelayed(msg, 10);
+		if(isFirstStart){
+			Message msg = Message.obtain();
+			msg.what = MESSAGE_START;
+			mHandler.sendMessageDelayed(msg, 10);
+			
+			isFirstStart = false;
+		}
 	}
 
 
@@ -158,6 +161,9 @@ EditNameDialogListener{
 
 
 	private void selectItem(int position) {
+
+		lastPosition = position;
+
 		// update the main content by replacing fragments
 		Fragment fragment = new AhadithFragment();
 		Bundle args = new Bundle();
@@ -227,7 +233,7 @@ EditNameDialogListener{
 
 			switch (msg.what) {
 			case MESSAGE_START :
-				selectItem(1);
+				selectItem(lastPosition);
 				break;
 
 			}
@@ -277,16 +283,16 @@ EditNameDialogListener{
 
 		private void showSearchDialog() {
 			FragmentManager fm = getSupportFragmentManager();
-			AhadithSearchDialog searchDialog = new AhadithSearchDialog();
+			AhadithSearchDialog searchDialog = new AhadithSearchDialog(lastText);
 			searchDialog.show(fm, "fragment_search_keyword");
 		}
 
 		@Override
 		public void onFinishEditDialog(String inputText) {
 
-			Toast.makeText(this, getString(R.string.to_search) + " " + inputText, 
+			Toast.makeText(this, getString(R.string.to_search) + " " + inputText, Toast.LENGTH_SHORT).show();
 
-					Toast.LENGTH_SHORT).show();
+			lastText = inputText;
 
 			// update the main content by replacing fragments
 			Fragment fragment = new AhadithFragment();
