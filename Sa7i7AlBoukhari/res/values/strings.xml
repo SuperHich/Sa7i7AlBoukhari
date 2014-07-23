@@ -25,4 +25,10 @@
     <string name="removed_from_fav">تم حذف الحديث من المفضلة</string>
     <string name="to_search">ابحث على</string>
     <string name="share">شارك</string>
+    <string name="cancel">إلغاء</string>
+    <string name="already_exist">ملف الصوت موجود</string>
+    <string name="download_success">تم تحميل الحديث بنجاح</string>
+    <string name="download_error">خطا في تحميل الحديث، حاول لاحقاً</string>
+    <string name="download_running">جاري تحميل الحديث</string>
+    <string name="preparing_audio">جاري تحضير الحديث</string>
 </resources>

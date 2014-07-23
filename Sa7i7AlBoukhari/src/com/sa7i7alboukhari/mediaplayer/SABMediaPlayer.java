@@ -2,6 +2,7 @@ package com.sa7i7alboukhari.mediaplayer;
 
 import java.io.IOException;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
@@ -10,6 +11,10 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.net.Uri;
+import android.os.AsyncTask;
+
+import com.sa7i7alboukhari.R;
 
 /**
  * AlMoufasserAlSaghir
@@ -141,18 +146,82 @@ public class SABMediaPlayer {
 		}
 	}
 	
+	AsyncTask<String, Void, Boolean> playerAsync;
+	ProgressDialog pd;
+	
 	public void playFromUrlWithCompletion(String streamAudio){
+		
+		playerAsync = new AsyncTask<String, Void, Boolean>() {
+
+			protected void onPreExecute() {
+
+				stop();
+				
+				pd = new ProgressDialog(context);
+				pd.setCancelable(false);
+				pd.setMessage(context.getString(R.string.preparing_audio));
+				pd.show();
+
+			};
+
+			@Override
+			protected Boolean doInBackground(String... params) {
+
+				String stream = params[0];
+				/**
+				 * If there is more than 1 link to stream, we should initialize the MediaPlayer
+				 */
+				if(stream != null)
+				{
+					if(stream.length() != 0){
+						return initMediaPlayer(stream);
+					}
+				}
+				
+				return false;
+
+			}
+
+			@Override
+			protected void onPostExecute(Boolean result) {
+				pd.dismiss();
+				
+				if(result){
+					/**
+					 * Starting MediaPlayer...
+					 */
+					player.start();
+					
+				}
+				else{
+					/**
+					 * Killing MediaPlayer...
+					 */
+					if(!isCancelled())
+					{
+						stop();		
+					}
+
+				}
+
+				cancel(true);
+			}
+
+		}.execute(streamAudio);
+	}
+	
+	private boolean initMediaPlayer(String streamAudio){
 		try{
 			stop();
 
-			player = new MediaPlayer();
-			player.setDataSource(streamAudio);
+			player = MediaPlayer.create(context, Uri.parse(streamAudio));
 
 			player.setOnCompletionListener(new OnCompletionListener() {
 				@Override
 				public void onCompletion(MediaPlayer mp) {
 
 					notifier.onCompletion();
+					stop();
 
 				}
 			});
@@ -161,7 +230,6 @@ public class SABMediaPlayer {
 				@Override
 				public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
 					// TODO Auto-generated method stub
-					
 				}
 			});
 			player.setOnInfoListener(new OnInfoListener() {
@@ -189,14 +257,11 @@ public class SABMediaPlayer {
 				}
 			});
 
-			player.prepareAsync();
-			player.start();
-
-		}catch(IOException ex) {
+		} catch(IllegalStateException ex) {
 			ex.printStackTrace();
+			return false;
 		}
-		catch(IllegalStateException ex) {
-			ex.printStackTrace();
-		}
+		
+		return true;
 	}
 }

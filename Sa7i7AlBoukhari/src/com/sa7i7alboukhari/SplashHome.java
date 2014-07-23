@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.widget.RelativeLayout;
 
+import com.sa7i7alboukhari.utils.MySuperScaler;
 import com.sa7i7alboukhari.utils.Utils;
 
 
@@ -19,7 +20,7 @@ import com.sa7i7alboukhari.utils.Utils;
  */
 
 @SuppressLint("HandlerLeak")
-public class SplashHome extends FragmentActivity {
+public class SplashHome extends MySuperScaler {
 	
 	private static final String TAG = "SplashHome";
 	private static final int STOPSPLASH = 0;

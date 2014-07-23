@@ -26,6 +26,9 @@ public class SABManager {
 	private static final String URL_BOOK_ENT 	= URL_BASE + "book_ent/?page=";
 	private static final String URL_AHADITH 	= URL_BASE + "ahadith/?page=";
 
+	public static String SoundPath;
+	private IDownloadComplete fragmentNotifier;
+	
 	private static SABManager mInstance = null;
 	private static SharedPreferences settings;
 	private SharedPreferences.Editor editor;
@@ -195,5 +198,13 @@ public class SABManager {
 
 	public void setAhadith(ArrayList<Hadith> ahadith) {
 		this.ahadith = ahadith;
+	}
+
+	public IDownloadComplete getFragmentNotifier() {
+		return fragmentNotifier;
+	}
+
+	public void setFragmentNotifier(IDownloadComplete fragmentNotifier) {
+		this.fragmentNotifier = fragmentNotifier;
 	}
 }

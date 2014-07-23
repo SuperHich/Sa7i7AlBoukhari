@@ -2,10 +2,12 @@ package com.sa7i7alboukhari;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,12 +20,14 @@ import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.sa7i7alboukhari.adapters.AhadithAdapter;
 import com.sa7i7alboukhari.adapters.IHadtihListener;
 import com.sa7i7alboukhari.entity.Hadith;
+import com.sa7i7alboukhari.externals.IDownloadComplete;
+import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.mediaplayer.IMediaPlayerNotifier;
 import com.sa7i7alboukhari.mediaplayer.SABMediaPlayer;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
-public class AhadithFragment extends ListFragment implements IHadtihListener, IMediaPlayerNotifier{
+public class AhadithFragment extends ListFragment implements IHadtihListener, IMediaPlayerNotifier, IDownloadComplete{
 
 	public static final String ARG_AHADITH = "ahadith_type";
 	public static final String ARG_AHADITH_KEYWORD_TEXT = "ahadith_keyword";
@@ -35,9 +39,25 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	private String ahadith_keyword;
 	private SABMediaPlayer sabPlayer;
 	private int pageId = 0;
+	
+	private int positionToUpdate;
 
 	public AhadithFragment() {
 		// Empty constructor required for fragment subclasses
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		
+		SABManager.getInstance(activity).setFragmentNotifier(this);
+	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+
+		SABManager.getInstance(getActivity()).setFragmentNotifier(null);
 	}
 
 	@Override
@@ -73,6 +93,10 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			if (isCancelled()) {
 				return null;
 			}
+			
+			try{
+				Thread.sleep(1000);
+			}catch(Exception e){}
 			
 			pageId += 1;
 			ahadith.addAll(((MainActivity)getActivity()).sabDB.getAllHadithsWithPage(pageId));
@@ -169,15 +193,25 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			sabPlayer.playFromSdcardWithCompletion(hadith.getFile());
 		}else
 		{
-			sabPlayer.playFromUrlWithCompletion(hadith.getLink());
+			String mp3 = "http://tondeapel.net/wp-content/uploads/2012/09/Iphone_Ringtone.mp3";
+//			String mp3 = hadith.getLink();
+			sabPlayer.playFromUrlWithCompletion(mp3);
 		}
 		
 	}
 
 	@Override
 	public void onHadithDownload(int position) {
-		// TODO Auto-generated method stub
-
+		
+		positionToUpdate = position;
+		
+		Hadith hadith = ahadith.get(position);
+		
+		if(!hadith.isDownload())
+			showDownloadDialog(hadith);
+		else
+			//Hadith sound already downloaded
+			Toast.makeText(getActivity(), R.string.already_exist, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -239,6 +273,23 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	public void onCompletion() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	private void showDownloadDialog(Hadith hadith) {
+		FragmentManager fm = getFragmentManager();
+		HadithDownloadDialog downloadDialog = new HadithDownloadDialog(hadith);
+		downloadDialog.show(fm, "fragment_download");
+	}
+
+	@Override
+	public void onDownloadComplete(String path) {
+		
+		if (((MainActivity)getActivity()).sabDB.setPathDownloadHadith(ahadith.get(positionToUpdate).getId(), path))
+		{
+			ahadith.get(positionToUpdate).setDownload(true);
+			ahadith.get(positionToUpdate).setFile(path);
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 }

@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:scrollingCache="false"
-    android:padding="10dp" 
+    android:layout_margin="15px" 
     android:divider="@color/blue_turquoise"
-    android:dividerHeight="10dp"/>
+    android:dividerHeight="20px"/>
