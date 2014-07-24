@@ -31,4 +31,5 @@
     <string name="download_error">خطا في تحميل الحديث، حاول لاحقاً</string>
     <string name="download_running">جاري تحميل الحديث</string>
     <string name="preparing_audio">جاري تحضير الحديث</string>
+    <string name="error_internet_connexion">تأكد من الاتصال بالانترنت</string>
 </resources>
