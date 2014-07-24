@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.sa7i7alboukhari.AhadithSearchDialog.EditNameDialogListener;
 import com.sa7i7alboukhari.adapters.IMenuListener;
 import com.sa7i7alboukhari.adapters.MenuCustomAdapter;
+import com.sa7i7alboukhari.entity.Chapter;
 import com.sa7i7alboukhari.externals.SABDataBase;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
@@ -163,46 +164,30 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	private void selectItem(int position) {
 
 		lastPosition = position;
-
+		
 		// update the main content by replacing fragments
-		Fragment fragment = new AhadithFragment();
-		Bundle args = new Bundle();
-		args.putInt(AhadithFragment.ARG_AHADITH, position);
-		fragment.setArguments(args);
+		Fragment fragment;
+		
+		switch (position) {
+		case 2:
+			fragment = new AbwabFragment();
+			break;
+
+		default:
+			fragment = new AhadithFragment();
+			Bundle args = new Bundle();
+			args.putInt(AhadithFragment.ARG_AHADITH, position);
+			fragment.setArguments(args);
+			break;
+		}
 
 		switchTab(fragment);
-
-		//		FragmentManager fragmentManager = getSupportFragmentManager();
-		//		FragmentTransaction ft = fragmentManager.beginTransaction();
-		//
-		//		FragmentManager fm = getSupportFragmentManager();
-		//		Fragment frag = fm.findFragmentById(R.id.content_frame);
-		//
-		//		if (frag == null) {
-		//			ft.add(R.id.content_frame, fragment);
-		//			scaled = false ;
-		//		} else {
-		//
-		//			ft.replace(R.id.content_frame, fragment);
-		//			scaled = false ;
-		//
-		//		}
-		//		ft.commit();
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
 		//         setTitle(mPlanetTitles[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 
-		//        sabDB.setFavoriteHadith(4, true);
-		//        sabDB.getAllBabs();
-		//        sabDB.getAllHadithsWithPage(0);
-		//        sabDB.getAllHadithsWithBabId(6);
-		//        sabDB.getFavoriteHadiths();
-		//        sabDB.searchHadithWithText("Ø¹ÙŽÙ†Ù’ Ø¹Ù�ÙƒÙ’Ø±Ù�Ù…ÙŽØ©ÙŽ Ø¨Ù’Ù†Ù� 
-
-		//        boolean isFav = sabDB.isHadithFavorite(4);
-		//        Log.i("", "isFav " + isFav);
 	}
 
 
@@ -290,14 +275,15 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		@Override
 		public void onFinishEditDialog(String inputText) {
 
-			Toast.makeText(this, getString(R.string.to_search) + " " + inputText, Toast.LENGTH_SHORT).show();
+//			Toast.makeText(this, getString(R.string.to_search) + " " + inputText, Toast.LENGTH_SHORT).show();
 
 			lastText = inputText;
 
 			// update the main content by replacing fragments
 			Fragment fragment = new AhadithFragment();
 			Bundle args = new Bundle();
-			args.putInt(AhadithFragment.ARG_AHADITH, AhadithFragment.ARG_AHADITH_KEYWORD_ID);
+			args.putInt(AhadithFragment.ARG_AHADITH, AhadithFragment.TYPE_AHADITH_KEYWORD_ID);
+			args.putInt(AhadithFragment.ARG_AHADITH_SEARCH, lastPosition);
 			args.putString(AhadithFragment.ARG_AHADITH_KEYWORD_TEXT, inputText);
 			fragment.setArguments(args);
 
@@ -309,6 +295,21 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			ft.commit();
 
 		}
+		
+		public void onBabItemClicked(Chapter chapter){
+			// update the main content by replacing fragments
+			Fragment fragment = new AhadithFragment();
+			Bundle args = new Bundle();
+			args.putInt(AhadithFragment.ARG_AHADITH, AhadithFragment.TYPE_AHADITH_BY_BAB);
+			args.putInt(AhadithFragment.ARG_BAB_ID, chapter.getBabId());
+			fragment.setArguments(args);
 
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction ft = fragmentManager.beginTransaction();
+
+			ft.replace(R.id.content_frame, fragment);
+			scaled = false ;
+			ft.commit();
+		}
 
 }

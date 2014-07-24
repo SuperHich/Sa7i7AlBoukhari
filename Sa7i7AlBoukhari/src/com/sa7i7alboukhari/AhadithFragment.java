@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +31,16 @@ import com.sa7i7alboukhari.utils.Utils;
 public class AhadithFragment extends ListFragment implements IHadtihListener, IMediaPlayerNotifier, IDownloadComplete{
 
 	public static final String ARG_AHADITH = "ahadith_type";
+	public static final String ARG_AHADITH_SEARCH = "ahadith_search_type";
 	public static final String ARG_AHADITH_KEYWORD_TEXT = "ahadith_keyword";
-	public static final int ARG_AHADITH_KEYWORD_ID = 10;
-
+	public static final String ARG_BAB_ID = "bab_id";
+	
+	public static final int TYPE_AHADITH_KEYWORD_ID = 10;
+	public static final int TYPE_AHADITH_BY_BAB = 20;
+	
 	private AhadithAdapter adapter;
 	private ArrayList<Hadith> ahadith = new ArrayList<Hadith>();
-	private int ahadith_typeId = 0;
+	private int ahadith_typeId = 0, ahadith_search_typeId = 1, bab_id = 1;
 	private String ahadith_keyword;
 	private SABMediaPlayer sabPlayer;
 	private int pageId = 0;
@@ -77,16 +80,16 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_ahadith, container, false);
 		ahadith_typeId = getArguments().getInt(ARG_AHADITH);
+		ahadith_search_typeId = getArguments().getInt(ARG_AHADITH_SEARCH);
 		ahadith_keyword = getArguments().getString(ARG_AHADITH_KEYWORD_TEXT);
-
+		bab_id = getArguments().getInt(ARG_BAB_ID);
+		
 		if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);
 
 
 		adapter = new AhadithAdapter(getActivity(), R.layout.hadith_list_item, ahadith, this);
 
-		Log.i("AhadithFragment", " onCreateView ");
-		
 		return rootView;
 	}
 
@@ -140,8 +143,26 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			case 1:
 				ahadith.addAll(sabDB.getAllHadithsWithPage(pageId));				
 				break;
-			case ARG_AHADITH_KEYWORD_ID:
-				ahadith.addAll(sabDB.searchHadithWithText(ahadith_keyword));				
+			case TYPE_AHADITH_KEYWORD_ID:
+				switch (ahadith_search_typeId) {
+				case 0:
+					ahadith.addAll(sabDB.searchHadithFromFavoriteWithText(ahadith_keyword));
+					break;
+				case 1:
+					ahadith.addAll(sabDB.searchHadithWithText(ahadith_keyword));	
+					break;
+				default:
+					break;
+				}
+				
+				if(ahadith.size() > 0)
+					Toast.makeText(getActivity(), getString(R.string.we_found) + " " + ahadith.size() + " " + getString(R.string.hadith), Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(getActivity(), getString(R.string.no_hadith_found) + " \"" + ahadith_keyword  + "\"" , Toast.LENGTH_SHORT).show();
+					
+				break;
+			case TYPE_AHADITH_BY_BAB:
+				ahadith.addAll(sabDB.getAllHadithsWithBabId(bab_id));
 				break;
 			default:
 				break;
@@ -149,8 +170,6 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 
 			adapter.notifyDataSetChanged();
 			
-			Log.i("AhadithFragment", " initAhadith ");
-
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -179,7 +198,6 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		
 		initAhadith();
 		
-		Log.i("AhadithFragment", " onViewCreated ");
 	}
 
 	@Override
@@ -270,9 +288,6 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 
 	private void shareHadith(String text){
 
-
-		Log.e("TEXT", text);
-		
 		text = text.replace(System.getProperty("line.separator"), " ");
 		
 		String shareBody = text;

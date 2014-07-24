@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Chapter extends SABEntity{
 	
 	private String name;
+	private int babId;
 	private int bookId;
 	private ArrayList<Hadith> ahadith = new ArrayList<Hadith>();
 	
@@ -13,6 +14,12 @@ public class Chapter extends SABEntity{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getBabId() {
+		return babId;
+	}
+	public void setBabId(int babId) {
+		this.babId = babId;
 	}
 	public int getBookId() {
 		return bookId;
@@ -31,6 +38,7 @@ public class Chapter extends SABEntity{
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("ID " + getId() + "\n");
+		sb.append("BabID " + getBabId() + "\n");
 		sb.append("BookID " + getBookId() + "\n");
 		sb.append("Name " + getName() + "\n");
 		sb.append("Ahadith size " + (ahadith != null ? ahadith.size() : "0"));

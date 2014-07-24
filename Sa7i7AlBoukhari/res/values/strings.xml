@@ -24,6 +24,9 @@
     <string name="added_to_fav">تمت إضافة الحديث إلى المفضلة</string>
     <string name="removed_from_fav">تم حذف الحديث من المفضلة</string>
     <string name="to_search">ابحث على</string>
+    <string name="we_found">تم العثور على</string>
+    <string name="no_hadith_found">لم يتم العثور على أي حديث يحتوي على</string>
+    <string name="hadith">حديث</string>
     <string name="share">شارك</string>
     <string name="cancel">إلغاء</string>
     <string name="already_exist">ملف الصوت موجود</string>
