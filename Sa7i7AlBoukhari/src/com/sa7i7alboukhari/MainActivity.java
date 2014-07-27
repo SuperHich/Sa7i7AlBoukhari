@@ -19,12 +19,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.sa7i7alboukhari.AhadithSearchDialog.EditNameDialogListener;
 import com.sa7i7alboukhari.adapters.IMenuListener;
 import com.sa7i7alboukhari.adapters.MenuCustomAdapter;
 import com.sa7i7alboukhari.entity.Chapter;
+import com.sa7i7alboukhari.entity.Comment;
+import com.sa7i7alboukhari.entity.Hadith;
 import com.sa7i7alboukhari.externals.SABDataBase;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
@@ -33,6 +34,10 @@ import com.sa7i7alboukhari.utils.MySuperScaler;
 @SuppressLint({ "Recycle", "HandlerLeak" })
 public class MainActivity extends MySuperScaler implements IMenuListener, OnTouchListener, EditNameDialogListener{
 
+	public static final String COMMENTS_FRAGMENT = "comments_fragment";
+	public static final String ADD_COMMENT_FRAGMENT = "add_comment_fragment";
+	public static final String EDIT_COMMENT_FRAGMENT = "edit_comment_fragment";
+	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private Button btn_menu, btn_search;
@@ -46,6 +51,8 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	private int lastPosition = 1;
 	private String lastText = "";
 	private boolean isFirstStart = true;
+	
+	private Fragment fragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -312,4 +319,51 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			ft.commit();
 		}
 
+		public void gotoCommentsFragment(Hadith hadith){
+
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			transaction.setCustomAnimations(R.anim.left_in, R.anim.left_out, R.anim.right_in, R.anim.right_out);
+
+			fragment = getSupportFragmentManager().findFragmentByTag(COMMENTS_FRAGMENT);
+
+			if(fragment == null){
+					fragment = new CommentsFragment(hadith);
+
+				transaction.replace(R.id.fragment_view, fragment, COMMENTS_FRAGMENT);
+				transaction.addToBackStack(COMMENTS_FRAGMENT);
+			}else{
+				transaction.attach(fragment);
+			}
+
+			scaled = false;
+			transaction.commit();
+
+		}
+		
+		public void gotoAddEditCommentFragment(String fragmentTAG, Comment comment, int hadithId){
+
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			transaction.setCustomAnimations(R.anim.left_in, R.anim.left_out, R.anim.right_in, R.anim.right_out);
+
+			fragment = getSupportFragmentManager().findFragmentByTag(fragmentTAG);
+
+			if(fragment == null){
+				if(fragmentTAG.equals(ADD_COMMENT_FRAGMENT))
+					fragment = new AddCommentFragment(hadithId);
+				else 
+					fragment = new AddCommentFragment(comment);
+				
+				transaction.replace(R.id.new_fragment_view, fragment, fragmentTAG);
+				transaction.addToBackStack(fragmentTAG);
+			}else{
+				transaction.attach(fragment);
+			}
+
+			scaled = false;
+			transaction.commit();
+
+		}
+		
 }

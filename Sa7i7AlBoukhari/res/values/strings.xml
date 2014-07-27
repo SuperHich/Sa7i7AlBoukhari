@@ -35,4 +35,8 @@
     <string name="download_running">جاري تحميل الحديث</string>
     <string name="preparing_audio">جاري تحضير الحديث</string>
     <string name="error_internet_connexion">تأكد من الاتصال بالانترنت</string>
+    <string name="comment_name">الإسم :</string>
+    <string name="comment_email">الإيميل :</string>
+    <string name="comment_text">التعليق :</string>
+    <string name="please_fill">الرجاء ملء كل الفراغات</string>
 </resources>

@@ -72,7 +72,7 @@ public class HadithDownloadDialog extends DialogFragment implements IDownloadNot
     public void onAttach(Activity activity) {
     	super.onAttach(activity);
     	
-    	notifier = SABManager.getInstance(activity).getFragmentNotifier();
+    	notifier = SABManager.getInstance(activity).getDownloadNotifier();
     	
     	sabDownloadManager = new SABDownloadManager(activity, this);
     }

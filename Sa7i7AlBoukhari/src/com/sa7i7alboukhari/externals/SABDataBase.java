@@ -391,7 +391,7 @@ public class SABDataBase extends SQLiteAssetHelper {
 		ContentValues values = new ContentValues();
 		values.put("hadithId", hadithId);
 		values.put("CommentTitle", comment.getTitle());
-		values.put("CommentText", comment.getTitle());
+		values.put("CommentText", comment.getText());
 		
 		long insertedId = db.insertWithOnConflict(sqlTable, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		

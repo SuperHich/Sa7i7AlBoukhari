@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="640px"
+    android:layout_height="1136px"
+    android:background="@color/shadow_transparent" >
+
+    <RelativeLayout
+        android:layout_width="640px"
+    	android:layout_height="1136px"
+        android:layout_marginLeft="80px"
+        android:layout_marginTop="100px"
+        android:background="@android:color/white" >
+
+        <TextView
+            android:id="@+id/txv_text"
+            android:layout_width="560px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20px"
+            android:layout_marginTop="15px"
+            android:maxLines="2"
+            android:textColor="#000" />
+
+        <Button
+            android:id="@+id/btn_showMore"
+            android:layout_width="90px"
+            android:layout_height="30px"
+            android:layout_below="@+id/txv_text"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="10px"
+            android:background="@drawable/more_selector" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="560px"
+            android:layout_height="4px"
+            android:layout_below="@+id/btn_showMore"
+            android:layout_marginTop="15px"
+            android:background="@color/blue_turquoise" />
+
+        <ListView
+            android:id="@+id/android:list"
+            android:layout_width="560px"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_add_comment"
+            android:layout_below="@+id/divider"
+            android:layout_margin="10px"
+            android:divider="@color/blue_turquoise"
+            android:dividerHeight="2px"
+            android:gravity="center"
+            android:scrollingCache="false" />
+
+        <Button
+            android:id="@+id/btn_add_comment"
+            android:layout_width="560px"
+            android:layout_height="70px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/blue_turquoise" />
+    </RelativeLayout>
+
+</RelativeLayout>

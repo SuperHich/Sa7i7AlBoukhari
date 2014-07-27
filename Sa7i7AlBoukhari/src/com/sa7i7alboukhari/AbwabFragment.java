@@ -53,7 +53,7 @@ public class AbwabFragment extends ListFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_ahadith, container, false);
+		View rootView = inflater.inflate(R.layout.fragment_abwab, container, false);
 
 		if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);

@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.sa7i7alboukhari.adapters.IFragmentNotifier;
 import com.sa7i7alboukhari.entity.Book;
 import com.sa7i7alboukhari.entity.Chapter;
 import com.sa7i7alboukhari.entity.Hadith;
@@ -27,7 +28,8 @@ public class SABManager {
 	private static final String URL_AHADITH 	= URL_BASE + "ahadith/?page=";
 
 	public static String SoundPath;
-	private IDownloadComplete fragmentNotifier;
+	private IDownloadComplete downloadNotifier;
+	private IFragmentNotifier fragmentNotifier;
 	
 	private static SABManager mInstance = null;
 	private static SharedPreferences settings;
@@ -200,11 +202,19 @@ public class SABManager {
 		this.ahadith = ahadith;
 	}
 
-	public IDownloadComplete getFragmentNotifier() {
+	public IDownloadComplete getDownloadNotifier() {
+		return downloadNotifier;
+	}
+
+	public void setDownloadNotifier(IDownloadComplete fragmentNotifier) {
+		this.downloadNotifier = fragmentNotifier;
+	}
+	
+	public IFragmentNotifier getFragmentNotifier() {
 		return fragmentNotifier;
 	}
 
-	public void setFragmentNotifier(IDownloadComplete fragmentNotifier) {
+	public void setFragmentNotifier(IFragmentNotifier fragmentNotifier) {
 		this.fragmentNotifier = fragmentNotifier;
 	}
 }

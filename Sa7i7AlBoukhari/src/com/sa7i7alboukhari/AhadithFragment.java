@@ -56,7 +56,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-		SABManager.getInstance(activity).setFragmentNotifier(this);
+		SABManager.getInstance(activity).setDownloadNotifier(this);
 		
 		sabDB = ((MainActivity)getActivity()).sabDB;
 	}
@@ -65,7 +65,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	public void onDetach() {
 		super.onDetach();
 
-		SABManager.getInstance(getActivity()).setFragmentNotifier(null);
+		SABManager.getInstance(getActivity()).setDownloadNotifier(null);
 	}
 
 	@Override
@@ -271,8 +271,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 
 	@Override
 	public void onHadithComment(int position) {
-		// TODO Auto-generated method stub
-
+		((MainActivity) getActivity()).gotoCommentsFragment(ahadith.get(position));
 	}
 
 	@Override

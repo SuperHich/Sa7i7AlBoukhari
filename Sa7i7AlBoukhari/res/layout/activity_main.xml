@@ -56,5 +56,17 @@
 
 
     </android.support.v4.widget.DrawerLayout>
+    
+    <FrameLayout
+        android:id="@+id/fragment_view"
+        android:layout_width="640px"
+    	android:layout_height="1136px">
+    </FrameLayout>
+    
+    <FrameLayout
+        android:id="@+id/new_fragment_view"
+        android:layout_width="640px"
+    	android:layout_height="1136px">
+    </FrameLayout>
 
 </RelativeLayout>
