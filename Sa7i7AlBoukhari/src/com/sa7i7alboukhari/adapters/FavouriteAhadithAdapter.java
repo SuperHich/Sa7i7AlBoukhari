@@ -1,0 +1,106 @@
+package com.sa7i7alboukhari.adapters;
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.content.Context;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.sa7i7alboukhari.R;
+import com.sa7i7alboukhari.entity.Hadith;
+import com.sa7i7alboukhari.externals.SABDataBase;
+
+public class FavouriteAhadithAdapter extends ArrayAdapter<Hadith> {
+
+	Context mContext;
+	IHadtihListener listener;
+	int layoutResourceId;
+	ArrayList<Hadith> data = null;
+	LayoutInflater inflater;
+	
+	public FavouriteAhadithAdapter(Context mContext, int layoutResourceId, ArrayList<Hadith> data, IHadtihListener listener) {
+
+		super(mContext, layoutResourceId, data);
+		this.layoutResourceId = layoutResourceId;
+		this.mContext = mContext;
+		this.data = data;
+		this.listener = listener;
+		inflater = ((Activity) mContext).getLayoutInflater();
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+
+		ViewHolder holder;
+		if(convertView==null)
+		{
+			holder = new ViewHolder();
+			convertView = inflater.inflate(layoutResourceId, parent, false);
+			
+			// get the elements in the layout
+			holder.textview = (TextView) convertView.findViewById(R.id.text); 
+			holder.btn_showMore = (Button) convertView.findViewById(R.id.btn_showMore);
+			holder.btn_removeFav = (Button) convertView.findViewById(R.id.btn_removeFav);
+			
+			holder.btn_showMore.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					int position = (Integer)(v.getTag());					
+					listener.onHadithShowMore(position);
+				}
+			});
+			
+			holder.btn_removeFav.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					int position = (Integer)(v.getTag());					
+					listener.onHadithFavorite(position);
+				}
+			});
+			
+			convertView.setTag(holder);
+		}
+		else {
+			holder = (ViewHolder)convertView.getTag();
+		}
+
+		holder.btn_showMore.setTag(position);
+		holder.btn_removeFav.setTag(position);
+		
+		/*
+		 * Set the data for the list item. You can also set tags here if you
+		 * want.
+		 */
+		Hadith hadith = data.get(position);
+
+		if(hadith.isShown()){
+			holder.textview.setMaxLines(Integer.MAX_VALUE);
+			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(".")));
+			holder.btn_showMore.setBackgroundResource(R.drawable.pointstop_selector);
+		}
+		else{
+			holder.textview.setMaxLines(2);
+			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(" ... ")));
+			holder.btn_showMore.setBackgroundResource(R.drawable.more_selector);
+		}
+
+		return convertView;
+	}
+
+	class ViewHolder
+	{
+		TextView textview; 
+		Button btn_showMore;
+		Button btn_removeFav;
+	}
+
+}

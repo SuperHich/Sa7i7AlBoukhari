@@ -37,6 +37,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	public static final String COMMENTS_FRAGMENT = "comments_fragment";
 	public static final String ADD_COMMENT_FRAGMENT = "add_comment_fragment";
 	public static final String EDIT_COMMENT_FRAGMENT = "edit_comment_fragment";
+	public static final String FAVOURITE_FRAGMENT = "favourite_fragment";
 	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -52,7 +53,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	private String lastText = "";
 	private boolean isFirstStart = true;
 	
-	private Fragment fragment;
+	private Fragment fragment, fragment1, fragment2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -159,11 +160,8 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-
 		{
-
 			selectItem(position);
-
 		}
 	}
 
@@ -173,22 +171,30 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		lastPosition = position;
 		
 		// update the main content by replacing fragments
-		Fragment fragment;
 		
 		switch (position) {
-		case 2:
-			fragment = new AbwabFragment();
+		case 0:
+			gotoFavouriteFragment();
+			fragment = new FavouriteAhadithFragment();
 			break;
-
-		default:
+		case 1:
 			fragment = new AhadithFragment();
 			Bundle args = new Bundle();
 			args.putInt(AhadithFragment.ARG_AHADITH, position);
 			fragment.setArguments(args);
 			break;
+		case 2:
+			fragment = new AbwabFragment();
+			break;
+			
+		default:
+			fragment = new AhadithFragment();
+			break;
+
 		}
 
-		switchTab(fragment);
+		if(position != 0)
+			switchTab(fragment);
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
@@ -210,8 +216,9 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			ft.replace(R.id.content_frame, tab);
 			scaled = false ;
 		}
-
+		
 		ft.commit();
+		
 	}
 
 	@Override
@@ -287,7 +294,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			lastText = inputText;
 
 			// update the main content by replacing fragments
-			Fragment fragment = new AhadithFragment();
+			fragment = new AhadithFragment();
 			Bundle args = new Bundle();
 			args.putInt(AhadithFragment.ARG_AHADITH, AhadithFragment.TYPE_AHADITH_KEYWORD_ID);
 			args.putInt(AhadithFragment.ARG_AHADITH_SEARCH, lastPosition);
@@ -305,7 +312,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		
 		public void onBabItemClicked(Chapter chapter){
 			// update the main content by replacing fragments
-			Fragment fragment = new AhadithFragment();
+			fragment = new AhadithFragment();
 			Bundle args = new Bundle();
 			args.putInt(AhadithFragment.ARG_AHADITH, AhadithFragment.TYPE_AHADITH_BY_BAB);
 			args.putInt(AhadithFragment.ARG_BAB_ID, chapter.getBabId());
@@ -317,6 +324,30 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			ft.replace(R.id.content_frame, fragment);
 			scaled = false ;
 			ft.commit();
+			
+		}
+		
+		public void gotoFavouriteFragment(){
+
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out, R.anim.left_in, R.anim.left_out);
+
+			fragment1 = getSupportFragmentManager().findFragmentByTag(FAVOURITE_FRAGMENT);
+
+			if(fragment1 == null){
+				fragment1 = new FavouriteAhadithFragment();
+
+				transaction.replace(R.id.fragment_view, fragment1, FAVOURITE_FRAGMENT);
+				transaction.addToBackStack(FAVOURITE_FRAGMENT);
+			}else{
+				transaction.attach(fragment1);
+			}
+
+			scaled = false;
+			transaction.commit();
+
+			setEnabled(false);
 		}
 
 		public void gotoCommentsFragment(Hadith hadith){
@@ -325,20 +356,21 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			transaction.setCustomAnimations(R.anim.left_in, R.anim.left_out, R.anim.right_in, R.anim.right_out);
 
-			fragment = getSupportFragmentManager().findFragmentByTag(COMMENTS_FRAGMENT);
+			fragment1 = getSupportFragmentManager().findFragmentByTag(COMMENTS_FRAGMENT);
 
-			if(fragment == null){
-					fragment = new CommentsFragment(hadith);
+			if(fragment1 == null){
+				fragment1 = new CommentsFragment(hadith);
 
-				transaction.replace(R.id.fragment_view, fragment, COMMENTS_FRAGMENT);
+				transaction.replace(R.id.fragment_view, fragment1, COMMENTS_FRAGMENT);
 				transaction.addToBackStack(COMMENTS_FRAGMENT);
 			}else{
-				transaction.attach(fragment);
+				transaction.attach(fragment1);
 			}
 
 			scaled = false;
 			transaction.commit();
 
+			setEnabled(false);
 		}
 		
 		public void gotoAddEditCommentFragment(String fragmentTAG, Comment comment, int hadithId){
@@ -347,23 +379,53 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			transaction.setCustomAnimations(R.anim.left_in, R.anim.left_out, R.anim.right_in, R.anim.right_out);
 
-			fragment = getSupportFragmentManager().findFragmentByTag(fragmentTAG);
+			fragment2 = getSupportFragmentManager().findFragmentByTag(fragmentTAG);
 
-			if(fragment == null){
+			if(fragment2 == null){
 				if(fragmentTAG.equals(ADD_COMMENT_FRAGMENT))
-					fragment = new AddCommentFragment(hadithId);
+					fragment2 = new AddCommentFragment(hadithId);
 				else 
-					fragment = new AddCommentFragment(comment);
+					fragment2 = new AddCommentFragment(comment);
 				
-				transaction.replace(R.id.new_fragment_view, fragment, fragmentTAG);
+				transaction.replace(R.id.new_fragment_view, fragment2, fragmentTAG);
 				transaction.addToBackStack(fragmentTAG);
 			}else{
-				transaction.attach(fragment);
+				transaction.attach(fragment2);
 			}
 
 			scaled = false;
 			transaction.commit();
+			
+			setEnabled(false);
 
+		}
+		
+		public void setEnabled(boolean enabled){
+			mDrawerLayout.setEnabled(enabled);
+			btn_search.setEnabled(enabled);
+			btn_menu.setEnabled(enabled);
+			
+			if(fragment instanceof SABListFragment)
+				((SABListFragment)fragment).setEnabled(enabled);
+		}
+		
+		@Override
+		public void onBackPressed() {
+			if(fragment2 != null){
+				fragment2 = null;
+				if(fragment1 instanceof SABListFragment)
+					((SABListFragment)fragment1).setEnabled(true);
+			} 
+			else if(fragment1 != null)
+			{
+				fragment1 = null;
+				setEnabled(true);
+			}
+			else if(fragment != null){
+				fragment = null;
+			}
+			
+			super.onBackPressed();
 		}
 		
 }

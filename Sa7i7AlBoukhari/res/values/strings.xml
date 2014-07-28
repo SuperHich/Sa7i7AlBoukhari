@@ -39,4 +39,5 @@
     <string name="comment_email">الإيميل :</string>
     <string name="comment_text">التعليق :</string>
     <string name="please_fill">الرجاء ملء كل الفراغات</string>
+    <string name="empty_list">قائمة فارغة</string>
 </resources>

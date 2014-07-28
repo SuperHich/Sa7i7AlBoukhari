@@ -68,5 +68,5 @@
             android:layout_weight="1"
             android:background="@drawable/listen_hadith_selector" />
     </LinearLayout>
-
+    
 </RelativeLayout>

@@ -1,11 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="640px"
+    android:layout_height="1136px" >
 
-<com.costum.android.widget.LoadMoreListView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-   android:id="@+id/android:list"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:scrollingCache="false"
-    android:layout_margin="15px" 
-    android:divider="@color/blue_turquoise"
-    android:dividerHeight="20px"/>
+    <TextView
+        android:id="@+id/txv_emptyList"
+        android:layout_width="200px"
+        android:layout_height="50px"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/empty_list"
+        android:textColor="#000"
+        android:visibility="gone" />
+
+    <com.costum.android.widget.LoadMoreListView
+        android:id="@+id/android:list"
+        android:layout_width="640px"
+        android:layout_height="1136px"
+        android:layout_margin="15px"
+        android:divider="@color/blue_turquoise"
+        android:dividerHeight="10px"
+        android:gravity="center"
+        android:scrollingCache="false" />
+
+</RelativeLayout>

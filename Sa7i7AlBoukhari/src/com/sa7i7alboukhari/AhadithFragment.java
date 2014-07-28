@@ -8,10 +8,10 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.costum.android.widget.LoadMoreListView;
@@ -28,7 +28,7 @@ import com.sa7i7alboukhari.utils.MySuperScaler;
 import com.sa7i7alboukhari.utils.Utils;
 
 
-public class AhadithFragment extends ListFragment implements IHadtihListener, IMediaPlayerNotifier, IDownloadComplete{
+public class AhadithFragment extends SABListFragment implements IHadtihListener, IMediaPlayerNotifier, IDownloadComplete{
 
 	public static final String ARG_AHADITH = "ahadith_type";
 	public static final String ARG_AHADITH_SEARCH = "ahadith_search_type";
@@ -47,6 +47,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	
 	private int positionToUpdate;
 	private SABDataBase sabDB;
+	private TextView txv_emptyList;
 
 	public AhadithFragment() {
 		// Empty constructor required for fragment subclasses
@@ -83,6 +84,8 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		ahadith_search_typeId = getArguments().getInt(ARG_AHADITH_SEARCH);
 		ahadith_keyword = getArguments().getString(ARG_AHADITH_KEYWORD_TEXT);
 		bab_id = getArguments().getInt(ARG_BAB_ID);
+		
+		txv_emptyList = (TextView) rootView.findViewById(R.id.txv_emptyList);
 		
 		if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);
@@ -170,12 +173,22 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 
 			adapter.notifyDataSetChanged();
 			
+			toggleEmptyMessage();
+			
 		} catch (Exception e) {
 
 			e.printStackTrace();
 
 		}
 	}
+	
+	private void toggleEmptyMessage() {
+		if(ahadith.size() == 0)
+			txv_emptyList.setVisibility(View.VISIBLE);
+		else
+			txv_emptyList.setVisibility(View.GONE);
+	}
+
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -284,7 +297,6 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		}
 	}
 
-
 	private void shareHadith(String text){
 
 		text = text.replace(System.getProperty("line.separator"), " ");
@@ -320,5 +332,13 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			adapter.notifyDataSetChanged();
 		}
 	}
-
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		
+		getListView().setEnabled(enabled);
+		getListView().setClickable(enabled);
+	}
+	
 }

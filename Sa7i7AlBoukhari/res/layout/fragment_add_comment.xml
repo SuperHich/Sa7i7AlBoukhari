@@ -44,51 +44,54 @@
 
         <EditText
             android:id="@+id/edt_name"
-            android:layout_width="430px"
-            android:layout_height="70px"
+            android:layout_width="396px"
+            android:layout_height="41px"
            	android:layout_marginTop="60px"
             android:layout_marginRight="10px"
             android:layout_marginBottom="10px"
             android:layout_marginLeft="10px"
             android:layout_toLeftOf="@+id/txv_name" 
-            android:textColor="#000"/>
+            android:textColor="#000"
+            android:background="@drawable/bg_edit_comment"/>
 
         <EditText
             android:id="@+id/edt_email"
-            android:layout_width="430px"
-            android:layout_height="70px"
+            android:layout_width="396px"
+            android:layout_height="41px"
             android:layout_below="@+id/edt_name"
             android:layout_margin="10px"
             android:layout_toLeftOf="@+id/txv_email" 
-            android:textColor="#000"/>
+            android:textColor="#000"
+            android:background="@drawable/bg_edit_comment"/>
 
         <EditText
             android:id="@+id/edt_comment"
-            android:layout_width="430px"
-            android:layout_height="300px"
+            android:layout_width="396px"
+            android:layout_height="246px"
             android:layout_below="@+id/edt_email"
             android:layout_margin="10px"
             android:layout_toLeftOf="@+id/txv_comment"
-            android:textColor="#000"/>
+            android:textColor="#000"
+            android:background="@drawable/bg_edit_comment"/>
 
         <Button
             android:id="@+id/btn_remove"
-            android:layout_width="90px"
-            android:layout_height="30px"
+            android:layout_width="89px"
+            android:layout_height="29px"
             android:layout_below="@+id/edt_comment"
             android:layout_marginLeft="30px"
             android:layout_marginTop="30px"
-            android:background="@drawable/more_selector" />
+            android:background="@drawable/cancel_selector" />
 
         <Button
             android:id="@+id/btn_add"
-            android:layout_width="90px"
+            android:layout_width="88px"
             android:layout_height="30px"
             android:layout_below="@+id/edt_comment"
             android:layout_marginLeft="30px"
             android:layout_marginTop="30px"
             android:layout_toRightOf="@+id/btn_remove"
-            android:background="@drawable/more_selector" />
+            android:background="@drawable/add_selector" />
     </RelativeLayout>
 
 </RelativeLayout>
