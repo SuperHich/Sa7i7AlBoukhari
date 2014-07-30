@@ -31,7 +31,7 @@ import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
 
-@SuppressLint({ "Recycle", "HandlerLeak" })
+@SuppressLint({ "Recycle"})
 public class MainActivity extends MySuperScaler implements IMenuListener, OnTouchListener, EditNameDialogListener{
 
 	public static final String COMMENTS_FRAGMENT = "comments_fragment";
@@ -138,9 +138,12 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		super.onStart();
 
 		if(isFirstStart){
-			Message msg = Message.obtain();
-			msg.what = MESSAGE_START;
-			mHandler.sendMessageDelayed(msg, 10);
+//			Message msg = Message.obtain();
+//			msg.what = MESSAGE_START;
+//			mHandler.sendMessageDelayed(msg, 10);
+			
+			selectItem(lastPosition);
+			scaled = true ;
 			
 			isFirstStart = false;
 		}
@@ -227,18 +230,18 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	}
 
 
-	private Handler mHandler = new Handler() {
-		public void handleMessage(Message msg) {
-
-			switch (msg.what) {
-			case MESSAGE_START :
-				selectItem(lastPosition);
-				break;
-
-			}
-			super.handleMessage(msg);
-
-		}};
+//	private Handler mHandler = new Handler() {
+//		public void handleMessage(Message msg) {
+//
+//			switch (msg.what) {
+//			case MESSAGE_START :
+//				selectItem(lastPosition);
+//				break;
+//
+//			}
+//			super.handleMessage(msg);
+//
+//		}};
 
 
 		@Override

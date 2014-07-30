@@ -69,14 +69,6 @@ public class MySuperScaler extends FragmentActivity {
 		Log.e("SCREEN Height *****", String.valueOf(screen_height));
 		Log.e("SCALE *****", String.valueOf(scale));
 		
-		
-//		if (tabletInchSize()> 8.5 ) my_font_size = 14 ;
-//		
-//		else if (tabletInchSize()>= 6 && tabletInchSize()<= 7.5) my_font_size =  10;
-//		
-//		else my_font_size = 9 ;
-		
-		
 	}
 	
 	@Override
@@ -108,7 +100,6 @@ public class MySuperScaler extends FragmentActivity {
 			
 			
 			container.setTag("IsScaled");
-			scaled = true ;
 			
 			Log.e("SCALEEEEED", Boolean.toString(scaled));
 		}
@@ -118,6 +109,8 @@ public class MySuperScaler extends FragmentActivity {
 	public static void scaleViewAndChildren(View root, float scale) {
 		ViewGroup.LayoutParams layoutParams = root.getLayoutParams();
 
+		scaled = false ;
+		
 		if (layoutParams.width != ViewGroup.LayoutParams.MATCH_PARENT
 				&& layoutParams.width != ViewGroup.LayoutParams.WRAP_CONTENT) {
 			layoutParams.width *= scale;
@@ -142,15 +135,12 @@ public class MySuperScaler extends FragmentActivity {
 				(int) (root.getPaddingRight() * scale),
 				(int) (root.getPaddingBottom() * scale));
 
-//		if (root instanceof TextView) {
-//			TextView textView = (TextView) root;
-//			textView.setTextSize(textView.getTextSize() * scale);
-//		}
-//		if (root instanceof EditText) {
-//			EditText textView = (EditText) root;
-//			textView.setTextSize(textView.getTextSize() * scale);
-//		}
-//
+		if (root instanceof TextView) {
+			TextView textView = (TextView) root;
+			textView.setTextSize(textView.getTextSize() * scale);
+		}
+		
+
 		if (root instanceof ViewGroup) {
 			ViewGroup groupView = (ViewGroup) root;
 			for (int cnt = 0; cnt < groupView.getChildCount(); ++cnt)
@@ -185,10 +175,6 @@ public class MySuperScaler extends FragmentActivity {
 				(int) (root.getPaddingRight() / scale),
 				(int) (root.getPaddingBottom() / scale));
 
-		if (root instanceof TextView) {
-			TextView textView = (TextView) root;
-			textView.setTextSize(textView.getTextSize() / scale);
-		}
 		
 
 		if (root instanceof ViewGroup) {

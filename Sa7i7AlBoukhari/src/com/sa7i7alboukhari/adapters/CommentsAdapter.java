@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.sa7i7alboukhari.R;
 import com.sa7i7alboukhari.entity.Comment;
+import com.sa7i7alboukhari.utils.MySuperScaler;
 
 public class CommentsAdapter extends ArrayAdapter<Comment> {
 
@@ -37,6 +38,8 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 		{
 			holder = new ViewHolder();
 			convertView = inflater.inflate(layoutResourceId, parent, false);
+			
+			MySuperScaler.scaleViewAndChildren(convertView, MySuperScaler.scale);
 			
 			// get the elements in the layout
 			holder.txv_title = (TextView) convertView.findViewById(R.id.txv_title_comment); 

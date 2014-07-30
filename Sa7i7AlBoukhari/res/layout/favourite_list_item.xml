@@ -5,11 +5,12 @@
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="560px"
+        android:layout_width="520px"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="50px"
+        android:layout_marginTop="20px"
         android:maxLines="2"
-        android:layout_margin="10px"
         android:textColor="#000" />
 
     <Button
@@ -18,7 +19,7 @@
         android:layout_height="31px"
         android:layout_below="@+id/text"
         android:layout_marginLeft="30px"
-        android:layout_marginTop="10px"
+        android:layout_marginTop="22px"
         android:background="@drawable/more_selector" />
 
     <Button
@@ -27,7 +28,7 @@
         android:layout_height="36px"
         android:layout_below="@+id/text"
         android:layout_marginLeft="15px"
-        android:layout_marginTop="10px"
+        android:layout_marginTop="20px"
         android:layout_toRightOf="@+id/btn_showMore"
         android:background="@drawable/cancel_fav_selector" />
 

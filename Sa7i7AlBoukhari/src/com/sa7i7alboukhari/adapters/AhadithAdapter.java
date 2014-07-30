@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.sa7i7alboukhari.R;
 import com.sa7i7alboukhari.entity.Hadith;
 import com.sa7i7alboukhari.externals.SABDataBase;
+import com.sa7i7alboukhari.utils.MySuperScaler;
 
 public class AhadithAdapter extends ArrayAdapter<Hadith> {
 
@@ -41,8 +43,13 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		ViewHolder holder;
 		if(convertView==null)
 		{
+			
+			
 			holder = new ViewHolder();
 			convertView = inflater.inflate(layoutResourceId, parent, false);
+			
+			if(!MySuperScaler.scaled)
+			MySuperScaler.scaleViewAndChildren(convertView, MySuperScaler.scale);
 			
 			// get the elements in the layout
 			holder.textview = (TextView) convertView.findViewById(R.id.text); 
@@ -113,6 +120,9 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 			holder = (ViewHolder)convertView.getTag();
 		}
 
+		int size = (int) MySuperScaler.screen_width / 23 ;
+		holder.textview.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+		
 		holder.btn_showMore.setTag(position);
 		holder.btn_listen.setTag(position);
 		holder.btn_download.setTag(position);

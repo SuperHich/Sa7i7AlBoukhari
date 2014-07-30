@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.sa7i7alboukhari.R;
 import com.sa7i7alboukhari.entity.Hadith;
 import com.sa7i7alboukhari.externals.SABDataBase;
+import com.sa7i7alboukhari.utils.MySuperScaler;
 
 public class FavouriteAhadithAdapter extends ArrayAdapter<Hadith> {
 
@@ -43,6 +45,8 @@ public class FavouriteAhadithAdapter extends ArrayAdapter<Hadith> {
 		{
 			holder = new ViewHolder();
 			convertView = inflater.inflate(layoutResourceId, parent, false);
+			
+			MySuperScaler.scaleViewAndChildren(convertView, MySuperScaler.scale);
 			
 			// get the elements in the layout
 			holder.textview = (TextView) convertView.findViewById(R.id.text); 
@@ -75,6 +79,10 @@ public class FavouriteAhadithAdapter extends ArrayAdapter<Hadith> {
 
 		holder.btn_showMore.setTag(position);
 		holder.btn_removeFav.setTag(position);
+		
+		int size = (int) MySuperScaler.screen_width / 23 ;
+		holder.textview.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+		
 		
 		/*
 		 * Set the data for the list item. You can also set tags here if you

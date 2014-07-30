@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.sa7i7alboukhari.R;
 import com.sa7i7alboukhari.entity.Chapter;
+import com.sa7i7alboukhari.utils.MySuperScaler;
 
 public class AbwabAdapter extends ArrayAdapter<Chapter> {
 
@@ -38,6 +40,8 @@ public class AbwabAdapter extends ArrayAdapter<Chapter> {
 			holder = new ViewHolder();
 			convertView = inflater.inflate(layoutResourceId, parent, false);
 			
+			MySuperScaler.scaleViewAndChildren(convertView, MySuperScaler.scale);
+			
 			// get the elements in the layout
 			holder.textview = (TextView) convertView.findViewById(R.id.txv_babTitle); 
 			
@@ -46,6 +50,9 @@ public class AbwabAdapter extends ArrayAdapter<Chapter> {
 		else {
 			holder = (ViewHolder)convertView.getTag();
 		}
+		
+		int size = (int) MySuperScaler.screen_width / 22 ;
+		holder.textview.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 
 		/*
 		 * Set the data for the list item. You can also set tags here if you

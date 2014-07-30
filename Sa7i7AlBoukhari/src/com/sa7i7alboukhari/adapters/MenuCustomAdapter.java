@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.sa7i7alboukhari.R;
+import com.sa7i7alboukhari.utils.MySuperScaler;
 
 public class MenuCustomAdapter extends BaseAdapter implements OnTouchListener {
 
@@ -44,6 +45,9 @@ public class MenuCustomAdapter extends BaseAdapter implements OnTouchListener {
 		{
 			holder = new ViewHolder();
 			convertView = inflater.inflate(R.layout.rowlv_module, null);
+			
+	//		MySuperScaler.scaleViewAndChildren(convertView, MySuperScaler.scale);
+			
 			holder.iv= (ImageView) convertView.findViewById(R.id.trim1);
 			holder.iv.setOnTouchListener(this);
 			convertView.setTag(holder);
