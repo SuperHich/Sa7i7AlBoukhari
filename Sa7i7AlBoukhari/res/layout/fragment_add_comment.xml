@@ -76,8 +76,8 @@
 
         <Button
             android:id="@+id/btn_remove"
-            android:layout_width="89px"
-            android:layout_height="29px"
+            android:layout_width="95px"
+            android:layout_height="35px"
             android:layout_below="@+id/edt_comment"
             android:layout_marginLeft="30px"
             android:layout_marginTop="30px"
@@ -85,10 +85,10 @@
 
         <Button
             android:id="@+id/btn_add"
-            android:layout_width="88px"
-            android:layout_height="30px"
+            android:layout_width="95px"
+            android:layout_height="35px"
             android:layout_below="@+id/edt_comment"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="10px"
             android:layout_marginTop="30px"
             android:layout_toRightOf="@+id/btn_remove"
             android:background="@drawable/add_selector" />

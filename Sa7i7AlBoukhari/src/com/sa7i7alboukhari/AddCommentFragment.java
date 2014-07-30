@@ -1,14 +1,17 @@
 package com.sa7i7alboukhari;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sa7i7alboukhari.adapters.IFragmentNotifier;
@@ -17,9 +20,11 @@ import com.sa7i7alboukhari.externals.SABDataBase;
 import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
+@SuppressLint("ValidFragment")
 public class AddCommentFragment extends Fragment {
 
     private EditText edt_name, edt_email, edt_comment;
+    private TextView txv_name, txv_email, txv_comment ;
     private Button btn_remove, btn_add;
     private int hadithId;
     private Comment selectedComment;
@@ -49,11 +54,23 @@ public class AddCommentFragment extends Fragment {
         if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);
         
+        
+        txv_name = (TextView) rootView.findViewById(R.id.txv_name);
+        txv_email = (TextView) rootView.findViewById(R.id.txv_email);
+        txv_comment = (TextView) rootView.findViewById(R.id.txv_comment);
         edt_name = (EditText) rootView.findViewById(R.id.edt_name);
         edt_email = (EditText) rootView.findViewById(R.id.edt_email);
         edt_comment = (EditText) rootView.findViewById(R.id.edt_comment);
         btn_remove = (Button) rootView.findViewById(R.id.btn_remove);
         btn_add = (Button) rootView.findViewById(R.id.btn_add);
+        
+        int size = (int) MySuperScaler.screen_width / 25 ;
+        edt_name.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        edt_email.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        edt_comment.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        txv_name.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        txv_email.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        txv_comment.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 
         btn_remove.setOnClickListener(new OnClickListener() {
 			

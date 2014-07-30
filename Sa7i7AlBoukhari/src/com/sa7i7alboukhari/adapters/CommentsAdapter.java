@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,11 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 		 * Set the data for the list item. You can also set tags here if you
 		 * want.
 		 */
+		
+		int size = (int) MySuperScaler.screen_width / 23 ;
+		holder.txv_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+		holder.txv_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+		
 		Comment comment = data.get(position);
 
 		holder.txv_title.setText(comment.getTitle());

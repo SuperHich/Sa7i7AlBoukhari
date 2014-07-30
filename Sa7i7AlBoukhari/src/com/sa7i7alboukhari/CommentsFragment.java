@@ -2,11 +2,13 @@ package com.sa7i7alboukhari;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +27,7 @@ import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
+@SuppressLint("ValidFragment")
 public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 
 	private CommentsAdapter adapter;
@@ -76,6 +79,9 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 		txv_text = (TextView) rootView.findViewById(R.id.txv_text);
 		btn_showMore = (Button) rootView.findViewById(R.id.btn_showMore);
 		btn_add_comment = (Button) rootView.findViewById(R.id.btn_add_comment);
+		
+		int size = (int) MySuperScaler.screen_width / 23 ;
+		txv_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 		
 		btn_showMore.setOnClickListener(new OnClickListener() {
 			
