@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.sa7i7alboukhari.adapters.AbwabAdapter;
+import com.sa7i7alboukhari.adapters.IFragmentNotifier;
 import com.sa7i7alboukhari.entity.Chapter;
 import com.sa7i7alboukhari.externals.SABDataBase;
+import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
-public class AbwabFragment extends ListFragment{
+public class AbwabFragment extends ListFragment implements IFragmentNotifier{
 
 	public static final String ARG_AHADITH = "ahadith_type";
 	
@@ -36,11 +39,14 @@ public class AbwabFragment extends ListFragment{
 		super.onAttach(activity);
 		
 		sabDB = ((MainActivity)getActivity()).sabDB;
+		SABManager.getInstance(getActivity()).setFragmentNotifier(this);
 	}
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
+		
+		SABManager.getInstance(getActivity()).setFragmentNotifier(null);
 
 	}
 
@@ -84,6 +90,18 @@ public class AbwabFragment extends ListFragment{
 				((MainActivity) getActivity()).onBabItemClicked(abwab.get(position));
 			}
 		});
+	}
+
+	@Override
+	public void requestRefrech() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setEnabled(boolean isEnabled) {
+		getListView().setEnabled(isEnabled);
+		getListView().setClickable(isEnabled);
 	}
 
 }

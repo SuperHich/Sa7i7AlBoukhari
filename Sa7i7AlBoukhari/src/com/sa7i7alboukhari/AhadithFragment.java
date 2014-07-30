@@ -493,8 +493,6 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		getListView().setClickable(enabled);
 		
 		adapter.setEnabled(enabled);
-		
-		Log.i("AhadithFragment", " enabled " + enabled);
 	}
 	
 }
