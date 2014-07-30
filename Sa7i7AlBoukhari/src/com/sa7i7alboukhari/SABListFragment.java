@@ -7,6 +7,7 @@ public class SABListFragment extends ListFragment{
 	public boolean isEnabled = true;
 	
 	public void setEnabled(boolean enabled){
+		isEnabled = enabled;
 	}
 	
 }

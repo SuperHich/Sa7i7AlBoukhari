@@ -1,34 +1,42 @@
 package com.sa7i7alboukhari;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.costum.android.widget.LoadMoreListView;
-import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.sa7i7alboukhari.adapters.AhadithAdapter;
+import com.sa7i7alboukhari.adapters.IFragmentNotifier;
 import com.sa7i7alboukhari.adapters.IHadtihListener;
 import com.sa7i7alboukhari.entity.Hadith;
-import com.sa7i7alboukhari.externals.IDownloadComplete;
+import com.sa7i7alboukhari.externals.IDownloadNotifier;
 import com.sa7i7alboukhari.externals.SABDataBase;
+import com.sa7i7alboukhari.externals.SABDownloadManager;
 import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.mediaplayer.IMediaPlayerNotifier;
 import com.sa7i7alboukhari.mediaplayer.SABMediaPlayer;
+import com.sa7i7alboukhari.utils.LoadMoreListView;
+import com.sa7i7alboukhari.utils.LoadMoreListView.OnLoadMoreListener;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 import com.sa7i7alboukhari.utils.Utils;
 
 
-public class AhadithFragment extends SABListFragment implements IHadtihListener, IMediaPlayerNotifier, IDownloadComplete{
+public class AhadithFragment extends ListFragment implements IHadtihListener, IMediaPlayerNotifier, IDownloadNotifier, IFragmentNotifier{
 
 	public static final String ARG_AHADITH = "ahadith_type";
 	public static final String ARG_AHADITH_SEARCH = "ahadith_search_type";
@@ -45,9 +53,13 @@ public class AhadithFragment extends SABListFragment implements IHadtihListener,
 	private SABMediaPlayer sabPlayer;
 	private int pageId = 0;
 	
-	private int positionToUpdate;
+	private int positionToUpdate, positionToListen;
 	private SABDataBase sabDB;
+	private SABDownloadManager sabDownloadManager;
 	private TextView txv_emptyList;
+	private TextView mTxvProgress;
+	private SeekBar mSeekBar;
+	
 
 	public AhadithFragment() {
 		// Empty constructor required for fragment subclasses
@@ -57,16 +69,16 @@ public class AhadithFragment extends SABListFragment implements IHadtihListener,
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-		SABManager.getInstance(activity).setDownloadNotifier(this);
-		
 		sabDB = ((MainActivity)getActivity()).sabDB;
+		sabDownloadManager = new SABDownloadManager(activity, this);
+		SABManager.getInstance(getActivity()).setFragmentNotifier(this);
 	}
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
-
-		SABManager.getInstance(getActivity()).setDownloadNotifier(null);
+		
+		SABManager.getInstance(getActivity()).setFragmentNotifier(null);
 	}
 
 	@Override
@@ -223,37 +235,128 @@ public class AhadithFragment extends SABListFragment implements IHadtihListener,
 
 	@Override
 	public void onHadithListen(int position) {
-		Hadith hadith = ahadith.get(position);
-		if(hadith.isDownload())
-		{
-			sabPlayer.playFromSdcardWithCompletion(hadith.getFile());
-		}else if(Utils.isOnline(getActivity()))
-		{
-			String mp3 = "http://tondeapel.net/wp-content/uploads/2012/09/Iphone_Ringtone.mp3";
-//			String mp3 = hadith.getLink();
-			sabPlayer.playFromUrlWithCompletion(mp3);
-		}else{
-			Toast.makeText(getActivity(), R.string.error_internet_connexion, Toast.LENGTH_LONG).show();
-		}
 		
+		Hadith hadith = ahadith.get(position);
+		if(!hadith.isBottomLayoutShown())
+		{
+			View view = getSelecedView(position);
+			if(view == null)
+			{
+				Log.w("", "Unable to get view for desired position, because it's not being displayed on screen.");
+				return;
+			}
+			
+			positionToListen = position;
+
+			RelativeLayout bottom_layout = (RelativeLayout) view.findViewById(R.id.bottom_layout);
+			bottom_layout.setBackgroundResource(R.drawable.player_bg);
+
+			mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_progress);
+			mTxvProgress = (TextView) view.findViewById(R.id.txv_progress);
+
+			ShapeDrawable thumb = new ShapeDrawable(new RectShape());
+			thumb.getPaint().setColor(Color.rgb(0, 0, 0));
+			thumb.setIntrinsicHeight(-80);
+			thumb.setIntrinsicWidth(30);
+			mSeekBar.setThumb(thumb);
+			mSeekBar.setEnabled(false);
+			
+			if(hadith.isDownload())
+			{
+				sabPlayer.playFromSdcardWithCompletion(hadith.getFile());
+			}else if(Utils.isOnline(getActivity()))
+			{
+				String mp3 = "http://tondeapel.net/wp-content/uploads/2012/09/Iphone_Ringtone.mp3";
+				//				String mp3 = hadith.getLink();
+				sabPlayer.playFromUrlWithCompletion(mp3);
+			}else{
+				Toast.makeText(getActivity(), R.string.error_internet_connexion, Toast.LENGTH_LONG).show();
+			}
+
+			ahadith.get(position).setBottomLayoutShown(true);
+
+		}
+		else{
+			ahadith.get(position).setBottomLayoutShown(false);
+			mSeekBar.setProgress(0);
+		}
+			    
+	    
+	    adapter.notifyDataSetChanged();
+	}
+
+	private View getSelecedView(int position) {
+		// getSelectedView
+		int firstPosition = getListView().getFirstVisiblePosition() - getListView().getHeaderViewsCount(); // This is the same as child #0
+		int wantedChild = position - firstPosition;
+		// Say, first visible position is 8, you want position 10, wantedChild will now be 2
+		// So that means your view is child #2 in the ViewGroup:
+		if (wantedChild < 0 || wantedChild >= getListView().getChildCount()) {
+//			Log.w("", "Unable to get view for desired position, because it's not being displayed on screen.");
+			return null;
+		}
+		// Could also check if wantedPosition is between listView.getFirstVisiblePosition() and listView.getLastVisiblePosition() instead.
+		View view = getListView().getChildAt(wantedChild);
+		return view;
 	}
 
 	@Override
 	public void onHadithDownload(int position) {
 		
+		if(sabDownloadManager.isDownloading())
+		{
+			Toast.makeText(getActivity(), R.string.wait_other_download, Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		View view = getSelecedView(position);
+		if(view == null)
+		{
+			Log.w("", "Unable to get view for desired position, because it's not being displayed on screen.");
+			return;
+		}
+		
 		positionToUpdate = position;
 		
+		RelativeLayout bottom_layout = (RelativeLayout) view.findViewById(R.id.bottom_layout);
+		bottom_layout.setBackgroundResource(R.drawable.downloader_bg);
+		
+		mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_progress);
+		mTxvProgress = (TextView) view.findViewById(R.id.txv_progress);
+		
+		ShapeDrawable thumb = new ShapeDrawable(new RectShape());
+	    thumb.getPaint().setColor(Color.rgb(0, 0, 0));
+	    thumb.setIntrinsicHeight(-80);
+	    thumb.setIntrinsicWidth(30);
+	    mSeekBar.setThumb(thumb);
+	    mSeekBar.setMax(100);
+		
 		Hadith hadith = ahadith.get(position);
+//		String soundFile = hadith.getLink();
+		String soundFile = "http://tondeapel.net/wp-content/uploads/2012/09/Iphone_Ringtone.mp3";
+		
+		boolean isCanceled = true;
 		
 		if(!hadith.isDownload())
 			if(Utils.isOnline(getActivity()))
-				showDownloadDialog(hadith);
+				if(!sabDownloadManager.initializeDownload(soundFile))
+		    	{
+		    		Toast.makeText(getActivity(), R.string.already_exist, Toast.LENGTH_LONG).show();
+		    	}else
+		    		isCanceled = false;
 			else
 				Toast.makeText(getActivity(), R.string.error_internet_connexion, Toast.LENGTH_LONG).show();
 				
 		else
 			//Hadith sound already downloaded
 			Toast.makeText(getActivity(), R.string.already_exist, Toast.LENGTH_LONG).show();
+		
+		if(!hadith.isBottomLayoutShown() && !isCanceled)
+		{
+			ahadith.get(position).setBottomLayoutShown(true);
+			adapter.notifyDataSetChanged();
+		}
+		
 	}
 
 	@Override
@@ -275,10 +378,7 @@ public class AhadithFragment extends SABListFragment implements IHadtihListener,
 			else
 				Toast.makeText(getActivity(), R.string.removed_from_fav, Toast.LENGTH_LONG).show();
 
-			//				return;
 		}
-
-		//			Toast.makeText(getActivity(), "Error occured", Toast.LENGTH_LONG).show();
 
 	}
 
@@ -312,33 +412,89 @@ public class AhadithFragment extends SABListFragment implements IHadtihListener,
 
 	@Override
 	public void onCompletion() {
-		// TODO Auto-generated method stub
+		mSeekBar.setProgress(mSeekBar.getMax());
+		
+		ahadith.get(positionToListen).setBottomLayoutShown(false);
+		adapter.notifyDataSetChanged();
 		
 	}
+	
+	@Override
+	public void onConfigProgress(int totalTime) {
+		mSeekBar.setMax(totalTime);
+		mTxvProgress.setText("00:00");
+	}
 
-	private void showDownloadDialog(Hadith hadith) {
-		FragmentManager fm = getFragmentManager();
-		HadithDownloadDialog downloadDialog = new HadithDownloadDialog(hadith);
-		downloadDialog.show(fm, "fragment_download");
+	@Override
+	public void onProgressPlayer(int progress) {
+		mSeekBar.setProgress(progress);
+		mTxvProgress.setText(MillisToTime(progress));
+	}
+	
+	private String MillisToTime(int timeInMillis){
+		String min = String.valueOf(TimeUnit.MILLISECONDS.toMinutes(timeInMillis));
+		if(min.length() == 1)
+			min = "0" + min;
+		
+		String sec = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(timeInMillis));
+		if(sec.length() == 1)
+			sec = "0" + min;
+		
+		return min + ":" + sec;
 	}
 
 	@Override
 	public void onDownloadComplete(String path) {
 		
+		Toast.makeText(getActivity(), R.string.download_success, Toast.LENGTH_LONG).show();
+		
 		if (sabDB.setPathDownloadHadith(ahadith.get(positionToUpdate).getId(), path))
 		{
 			ahadith.get(positionToUpdate).setDownload(true);
 			ahadith.get(positionToUpdate).setFile(path);
+			ahadith.get(positionToUpdate).setBottomLayoutShown(false);
 			adapter.notifyDataSetChanged();
 		}
 	}
 	
 	@Override
+	public void onProgressDownload(final int progress) {
+		getActivity().runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				mSeekBar.setProgress(progress);
+				mTxvProgress.setText(progress + "%");
+				Log.i("", "Download progress " + progress + "%");
+			}
+		});
+	}
+
+	@Override
+	public void onErrorDownload() {
+		sabDownloadManager.cancelDownload();
+		
+		Toast.makeText(getActivity(), R.string.download_error, Toast.LENGTH_LONG).show();
+		
+		ahadith.get(positionToUpdate).setBottomLayoutShown(false);
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void requestRefrech() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
 		
 		getListView().setEnabled(enabled);
 		getListView().setClickable(enabled);
+		
+		adapter.setEnabled(enabled);
+		
+		Log.i("AhadithFragment", " enabled " + enabled);
 	}
 	
 }

@@ -9,4 +9,6 @@ package com.sa7i7alboukhari.mediaplayer;
 public interface IMediaPlayerNotifier {
 
 	void onCompletion();
+	void onConfigProgress(int totalTime);
+	void onProgressPlayer(int progress);
 }

@@ -3,12 +3,11 @@ package com.sa7i7alboukhari;
 import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -53,7 +52,8 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	private String lastText = "";
 	private boolean isFirstStart = true;
 	
-	private Fragment fragment, fragment1, fragment2;
+	private ListFragment fragment, fragment1;
+	private Fragment fragment2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -336,7 +336,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			transaction.setCustomAnimations(R.anim.right_in, R.anim.right_out, R.anim.left_in, R.anim.left_out);
 
-			fragment1 = getSupportFragmentManager().findFragmentByTag(FAVOURITE_FRAGMENT);
+			fragment1 = (ListFragment) getSupportFragmentManager().findFragmentByTag(FAVOURITE_FRAGMENT);
 
 			if(fragment1 == null){
 				fragment1 = new FavouriteAhadithFragment();
@@ -359,7 +359,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			FragmentTransaction transaction = fragmentManager.beginTransaction();
 			transaction.setCustomAnimations(R.anim.left_in, R.anim.left_out, R.anim.right_in, R.anim.right_out);
 
-			fragment1 = getSupportFragmentManager().findFragmentByTag(COMMENTS_FRAGMENT);
+			fragment1 = (ListFragment) getSupportFragmentManager().findFragmentByTag(COMMENTS_FRAGMENT);
 
 			if(fragment1 == null){
 				fragment1 = new CommentsFragment(hadith);
@@ -399,8 +399,6 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			scaled = false;
 			transaction.commit();
 			
-			setEnabled(false);
-
 		}
 		
 		public void setEnabled(boolean enabled){
@@ -408,16 +406,14 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			btn_search.setEnabled(enabled);
 			btn_menu.setEnabled(enabled);
 			
-			if(fragment instanceof SABListFragment)
-				((SABListFragment)fragment).setEnabled(enabled);
+			sabManager.getFragmentNotifier().setEnabled(enabled);
 		}
 		
 		@Override
 		public void onBackPressed() {
 			if(fragment2 != null){
 				fragment2 = null;
-				if(fragment1 instanceof SABListFragment)
-					((SABListFragment)fragment1).setEnabled(true);
+				sabManager.getFragmentNotifier2().setEnabled(true);
 			} 
 			else if(fragment1 != null)
 			{

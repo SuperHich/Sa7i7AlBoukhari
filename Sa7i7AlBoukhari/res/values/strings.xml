@@ -40,4 +40,5 @@
     <string name="comment_text">التعليق :</string>
     <string name="please_fill">الرجاء ملء كل الفراغات</string>
     <string name="empty_list">قائمة فارغة</string>
+    <string name="wait_other_download">الرجاء الانتظار... جاري تحميل حديث أخر</string>
 </resources>

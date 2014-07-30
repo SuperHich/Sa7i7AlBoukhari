@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,7 @@ import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
-public class CommentsFragment extends SABListFragment implements IFragmentNotifier{
+public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 
 	private CommentsAdapter adapter;
 	private ArrayList<Comment> comments = new ArrayList<Comment>();
@@ -47,7 +48,7 @@ public class CommentsFragment extends SABListFragment implements IFragmentNotifi
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-		SABManager.getInstance(getActivity()).setFragmentNotifier(this);
+		SABManager.getInstance(getActivity()).setFragmentNotifier2(this);
 		sabDB = ((MainActivity)getActivity()).sabDB;
 	}
 	
@@ -55,7 +56,7 @@ public class CommentsFragment extends SABListFragment implements IFragmentNotifi
 	public void onDetach() {
 		super.onDetach();
 
-		SABManager.getInstance(getActivity()).setFragmentNotifier(null);
+		SABManager.getInstance(getActivity()).setFragmentNotifier2(null);
 	}
 
 	@Override
@@ -146,7 +147,6 @@ public class CommentsFragment extends SABListFragment implements IFragmentNotifi
 	
 	@Override
 	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
 		
 		getListView().setEnabled(enabled);
 		getListView().setClickable(enabled);

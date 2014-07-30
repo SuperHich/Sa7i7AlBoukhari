@@ -101,7 +101,7 @@ public class AddCommentFragment extends Fragment {
     	
     	sabDB = ((MainActivity)getActivity()).sabDB;
     	
-    	fragNotifier = SABManager.getInstance(getActivity()).getFragmentNotifier();
+    	fragNotifier = SABManager.getInstance(getActivity()).getFragmentNotifier2();
     }
     
     @Override

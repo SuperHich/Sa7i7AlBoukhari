@@ -1,6 +1,7 @@
 package com.sa7i7alboukhari.utils;
 
 import com.sa7i7alboukhari.externals.SABDataBase;
+import com.sa7i7alboukhari.externals.SABManager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -45,6 +46,7 @@ public class MySuperScaler extends FragmentActivity {
 	
 	public static boolean isTablet ;
 	public SABDataBase sabDB;
+	public SABManager sabManager;
 	
 	
 	@Override
@@ -54,6 +56,7 @@ public class MySuperScaler extends FragmentActivity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		sabDB = new SABDataBase(this);
+		sabManager = SABManager.getInstance(this);
 		
 		memoryAnalyser();
 		

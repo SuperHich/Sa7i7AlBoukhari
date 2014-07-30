@@ -52,6 +52,9 @@ public class SABMediaPlayer {
 			player = null ;
 		}
 		
+		if(mProgressThread != null)
+			mProgressThread.interrupt();
+		
 	}
 	
 	public void playWithCompletion(String audio){
@@ -95,12 +98,18 @@ public class SABMediaPlayer {
 				public void onCompletion(MediaPlayer mp) {
 
 					notifier.onCompletion();
+					stop();
 
 				}
 			});
 
 			player.prepare();
+			
+			notifier.onConfigProgress(player.getDuration());
 			player.start();
+			
+			mProgressThread = new ProgressThread();
+			mProgressThread.start();
 
 		}catch(IOException ex) {
 			ex.printStackTrace();
@@ -190,7 +199,11 @@ public class SABMediaPlayer {
 					/**
 					 * Starting MediaPlayer...
 					 */
+					notifier.onConfigProgress(player.getDuration());
 					player.start();
+					
+					mProgressThread = new ProgressThread();
+					mProgressThread.start();
 					
 				}
 				else{
@@ -263,5 +276,18 @@ public class SABMediaPlayer {
 		}
 		
 		return true;
+	}
+	
+	ProgressThread mProgressThread;
+	class ProgressThread extends Thread{
+		@Override
+		public void run() {
+			while(true && !isInterrupted()){
+				try {
+					notifier.onProgressPlayer(player.getCurrentPosition());
+					Thread.sleep(1000);
+				}catch(Exception e){}
+			}
+		}
 	}
 }

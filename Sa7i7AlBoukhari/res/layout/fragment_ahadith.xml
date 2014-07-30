@@ -12,10 +12,10 @@
         android:textColor="#000"
         android:visibility="gone" />
 
-    <com.costum.android.widget.LoadMoreListView
+    <com.sa7i7alboukhari.utils.LoadMoreListView
         android:id="@+id/android:list"
         android:layout_width="640px"
-        android:layout_height="wrap_content"
+        android:layout_height="1136px"
         android:layout_margin="15px"
         android:divider="@color/blue_turquoise"
         android:dividerHeight="10px"

@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sa7i7alboukhari.R;
@@ -26,6 +27,7 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 	int layoutResourceId;
 	ArrayList<Hadith> data = null;
 	LayoutInflater inflater;
+	private boolean isEnabled = true;
 	
 	public AhadithAdapter(Context mContext, int layoutResourceId, ArrayList<Hadith> data, IHadtihListener listener) {
 
@@ -44,7 +46,6 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		if(convertView==null)
 		{
 			
-			
 			holder = new ViewHolder();
 			convertView = inflater.inflate(layoutResourceId, parent, false);
 			
@@ -60,10 +61,14 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 			holder.btn_comment = (Button) convertView.findViewById(R.id.btn_comment);
 			holder.btn_share = (Button) convertView.findViewById(R.id.btn_share);
 			
-			holder.btn_showMore.setOnClickListener(new OnClickListener() {
+			holder.bottom_layout = (RelativeLayout) convertView.findViewById(R.id.bottom_layout);
+			
+holder.btn_showMore.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
+					if(!isEnabled())
+						return;
 					int position = (Integer)(v.getTag());					
 					listener.onHadithShowMore(position);
 				}
@@ -73,6 +78,8 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 				
 				@Override
 				public void onClick(View v) {
+					if(!isEnabled())
+						return;
 					int position = (Integer)(v.getTag());					
 					listener.onHadithListen(position);
 				}
@@ -82,6 +89,8 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 				
 				@Override
 				public void onClick(View v) {
+					if(!isEnabled())
+						return;
 					int position = (Integer)(v.getTag());					
 					listener.onHadithDownload(position);
 				}
@@ -91,6 +100,8 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 				
 				@Override
 				public void onClick(View v) {
+					if(!isEnabled())
+						return;
 					int position = (Integer)(v.getTag());					
 					listener.onHadithFavorite(position);
 				}
@@ -100,6 +111,8 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 				
 				@Override
 				public void onClick(View v) {
+					if(!isEnabled())
+						return;
 					int position = (Integer)(v.getTag());					
 					listener.onHadithComment(position);
 				}
@@ -109,6 +122,8 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 				
 				@Override
 				public void onClick(View v) {
+					if(!isEnabled())
+						return;
 					int position = (Integer)(v.getTag());					
 					listener.onHadithShare(position);
 				}
@@ -147,7 +162,30 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 			holder.btn_showMore.setBackgroundResource(R.drawable.more_selector);
 		}
 
+		if(!hadith.isDownload())
+			holder.btn_download.setBackgroundResource(R.drawable.download_hadith_selector);
+		else
+			holder.btn_download.setBackgroundResource(R.drawable.download_hadith_selected);
+		
+		if(!hadith.isFavorite())
+			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_hadith_selector);
+		else
+			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_hadith_selected);
+		
+		if(hadith.isBottomLayoutShown())
+			holder.bottom_layout.setVisibility(View.VISIBLE);
+		else
+			holder.bottom_layout.setVisibility(View.GONE);
+		
 		return convertView;
+	}
+
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public void setEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
 	}
 
 	class ViewHolder
@@ -159,6 +197,7 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		Button btn_favorite;
 		Button btn_comment;
 		Button btn_share;
+		RelativeLayout bottom_layout;
 	}
 
 }

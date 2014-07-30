@@ -29,7 +29,7 @@ public class SABManager {
 
 	public static String SoundPath;
 	private IDownloadComplete downloadNotifier;
-	private IFragmentNotifier fragmentNotifier;
+	private IFragmentNotifier fragmentNotifier, fragmentNotifier2;
 	
 	private static SABManager mInstance = null;
 	private static SharedPreferences settings;
@@ -217,4 +217,13 @@ public class SABManager {
 	public void setFragmentNotifier(IFragmentNotifier fragmentNotifier) {
 		this.fragmentNotifier = fragmentNotifier;
 	}
+
+	public IFragmentNotifier getFragmentNotifier2() {
+		return fragmentNotifier2;
+	}
+
+	public void setFragmentNotifier2(IFragmentNotifier fragmentNotifier2) {
+		this.fragmentNotifier2 = fragmentNotifier2;
+	}
+	
 }

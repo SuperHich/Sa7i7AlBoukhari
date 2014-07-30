@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
-public class FavouriteAhadithFragment extends SABListFragment implements IHadtihListener{
+public class FavouriteAhadithFragment extends ListFragment implements IHadtihListener{
 
 	public static final String ARG_AHADITH = "ahadith_type";
 
