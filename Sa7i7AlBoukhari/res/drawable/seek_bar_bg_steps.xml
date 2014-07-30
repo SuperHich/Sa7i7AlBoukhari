@@ -12,6 +12,12 @@
                 <gradient
                     android:startColor="@color/blue_dark"
                     android:endColor="@color/blue_dark"/>
+                
+                <corners
+                    android:bottomRightRadius="4dp" 
+                    android:bottomLeftRadius="4dp" 
+     				android:topLeftRadius="4dp" 
+     				android:topRightRadius="4dp"/>
             </shape>
         </clip>
     </item>

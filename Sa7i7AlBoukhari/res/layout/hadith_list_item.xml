@@ -15,7 +15,7 @@
             android:layout_centerHorizontal="true"
             android:maxLines="2"
             android:paddingLeft="20px"
-            android:paddingRight="20px"
+            android:paddingRight="30px"
             android:paddingTop="20px"
             android:textColor="#1d435c" />
 
@@ -30,7 +30,7 @@
 
         <LinearLayout
             android:id="@+id/bottom_menu"
-            android:layout_width="620px"
+            android:layout_width="640px"
             android:layout_height="43px"
             android:layout_below="@+id/btn_showMore"
             android:layout_centerHorizontal="true"
