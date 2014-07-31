@@ -399,6 +399,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			scaled = false;
 			transaction.commit();
 			
+			sabManager.getFragmentNotifier2().setEnabled(false);
 		}
 		
 		public void setEnabled(boolean enabled){
