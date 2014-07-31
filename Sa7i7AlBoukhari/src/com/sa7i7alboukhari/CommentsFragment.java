@@ -143,7 +143,7 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 		}
 		else{
 			txv_text.setMaxLines(2);
-			txv_text.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(" ... ")));
+			txv_text.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat("...")));
 			btn_showMore.setBackgroundResource(R.drawable.more_selector);
 		}
 	}
