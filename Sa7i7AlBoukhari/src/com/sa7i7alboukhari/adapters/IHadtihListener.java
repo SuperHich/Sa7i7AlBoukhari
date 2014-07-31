@@ -8,5 +8,6 @@ public interface IHadtihListener {
 	void onHadithFavorite(int position);
 	void onHadithComment(int position);
 	void onHadithShare(int position);
+	void onHadithPause(int position);
 
 }

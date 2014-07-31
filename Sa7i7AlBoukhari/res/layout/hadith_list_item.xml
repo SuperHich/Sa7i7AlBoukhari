@@ -76,24 +76,33 @@
         android:layout_below="@+id/top_layout"
         android:background="@drawable/downloader_bg"
         android:visibility="gone" >
-
-        <SeekBar
+        
+        <Button
+            android:id="@+id/btn_pause"
+            android:layout_width="35px"
+            android:layout_height="33px"
+            android:layout_marginLeft="20px"
+            android:background="@drawable/stop"
+            android:layout_marginTop="10px"
+            android:visibility="gone" />
+        
+		<SeekBar
             android:id="@+id/seekbar_progress"
-            android:layout_width="520px"
+            android:layout_width="435px"
             android:layout_height="17px"
             android:layout_marginLeft="20px"
             android:layout_marginRight="20px"
             android:layout_marginTop="20px"
+            android:layout_toRightOf="@+id/btn_pause"
             android:progressDrawable="@drawable/seek_bar_bg_steps" />
 
         <TextView
             android:id="@+id/txv_progress"
-            android:layout_width="60px"
-            android:layout_height="20px"
-            android:layout_centerHorizontal="true"
+            android:layout_width="100px"
+            android:layout_height="40px"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px"
+            android:layout_marginRight="10px"
             android:layout_toRightOf="@+id/seekBar"
             android:textColor="#000" />
     </RelativeLayout>

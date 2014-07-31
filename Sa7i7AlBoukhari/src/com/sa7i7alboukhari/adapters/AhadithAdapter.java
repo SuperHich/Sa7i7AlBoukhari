@@ -28,7 +28,7 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 	ArrayList<Hadith> data = null;
 	LayoutInflater inflater;
 	private boolean isEnabled = true;
-	
+
 	public AhadithAdapter(Context mContext, int layoutResourceId, ArrayList<Hadith> data, IHadtihListener listener) {
 
 		super(mContext, layoutResourceId, data);
@@ -45,13 +45,13 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		ViewHolder holder;
 		if(convertView==null)
 		{
-			
+
 			holder = new ViewHolder();
 			convertView = inflater.inflate(layoutResourceId, parent, false);
-			
+
 			if(!MySuperScaler.scaled)
-			MySuperScaler.scaleViewAndChildren(convertView, MySuperScaler.scale);
-			
+				MySuperScaler.scaleViewAndChildren(convertView, MySuperScaler.scale);
+
 			// get the elements in the layout
 			holder.textview = (TextView) convertView.findViewById(R.id.text); 
 			holder.btn_showMore = (Button) convertView.findViewById(R.id.btn_showMore);
@@ -60,11 +60,12 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 			holder.btn_favorite = (Button) convertView.findViewById(R.id.btn_favorite);
 			holder.btn_comment = (Button) convertView.findViewById(R.id.btn_comment);
 			holder.btn_share = (Button) convertView.findViewById(R.id.btn_share);
-			
+
 			holder.bottom_layout = (RelativeLayout) convertView.findViewById(R.id.bottom_layout);
+			holder.btn_pause = (Button) convertView.findViewById(R.id.btn_pause);
 			
-holder.btn_showMore.setOnClickListener(new OnClickListener() {
-				
+			holder.btn_showMore.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
 					if(!isEnabled())
@@ -73,9 +74,9 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 					listener.onHadithShowMore(position);
 				}
 			});
-			
+
 			holder.btn_listen.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					if(!isEnabled())
@@ -85,8 +86,19 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 				}
 			});
 			
+			holder.btn_pause.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if(!isEnabled())
+						return;
+					int position = (Integer)(v.getTag());					
+					listener.onHadithPause(position);
+				}
+			});
+
 			holder.btn_download.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					if(!isEnabled())
@@ -95,9 +107,9 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 					listener.onHadithDownload(position);
 				}
 			});
-			
+
 			holder.btn_favorite.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					if(!isEnabled())
@@ -106,9 +118,9 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 					listener.onHadithFavorite(position);
 				}
 			});
-			
+
 			holder.btn_comment.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					if(!isEnabled())
@@ -117,9 +129,9 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 					listener.onHadithComment(position);
 				}
 			});
-			
+
 			holder.btn_share.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					if(!isEnabled())
@@ -128,7 +140,7 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 					listener.onHadithShare(position);
 				}
 			});
-			
+
 			convertView.setTag(holder);
 		}
 		else {
@@ -137,14 +149,15 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 
 		int size = (int) MySuperScaler.screen_width / 23 ;
 		holder.textview.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-		
+
 		holder.btn_showMore.setTag(position);
 		holder.btn_listen.setTag(position);
+		holder.btn_pause.setTag(position);
 		holder.btn_download.setTag(position);
 		holder.btn_favorite.setTag(position);
 		holder.btn_comment.setTag(position);
 		holder.btn_share.setTag(position);
-		
+
 		/*
 		 * Set the data for the list item. You can also set tags here if you
 		 * want.
@@ -166,17 +179,17 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 			holder.btn_download.setBackgroundResource(R.drawable.download_hadith_selector);
 		else
 			holder.btn_download.setBackgroundResource(R.drawable.download_hadith_selected);
-		
+
 		if(!hadith.isFavorite())
 			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_hadith_selector);
 		else
 			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_hadith_selected);
-		
+
 		if(hadith.isBottomLayoutShown())
 			holder.bottom_layout.setVisibility(View.VISIBLE);
 		else
 			holder.bottom_layout.setVisibility(View.GONE);
-		
+
 		return convertView;
 	}
 
@@ -193,6 +206,7 @@ holder.btn_showMore.setOnClickListener(new OnClickListener() {
 		TextView textview; 
 		Button btn_showMore;
 		Button btn_listen;
+		Button btn_pause;
 		Button btn_download;
 		Button btn_favorite;
 		Button btn_comment;

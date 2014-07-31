@@ -104,6 +104,10 @@ public class FavouriteAhadithFragment extends ListFragment implements IHadtihLis
 
 		adapter.notifyDataSetChanged();
 	}
+	
+	@Override
+	public void onHadithPause(int position) {
+	}
 
 	@Override
 	public void onHadithListen(int position) {

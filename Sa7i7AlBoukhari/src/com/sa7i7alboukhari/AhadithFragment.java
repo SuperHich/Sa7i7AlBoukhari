@@ -12,9 +12,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -232,6 +234,28 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 
 		adapter.notifyDataSetChanged();
 	}
+	
+	@Override
+	public void onHadithPause(int position) {
+		
+		View view = getSelecedView(position);
+		if(view == null)
+		{
+			Log.w("", "Unable to get view for desired position, because it's not being displayed on screen.");
+			return;
+		}
+		
+		Button btn_pause = (Button) view.findViewById(R.id.btn_pause);
+		
+		if(sabPlayer.isPlaying()){
+			sabPlayer.pause();
+			btn_pause.setBackgroundResource(R.drawable.play);
+		}
+		else{
+			sabPlayer.resume();
+			btn_pause.setBackgroundResource(R.drawable.stop);
+		}
+	}
 
 	@Override
 	public void onHadithListen(int position) {
@@ -250,10 +274,16 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 
 			RelativeLayout bottom_layout = (RelativeLayout) view.findViewById(R.id.bottom_layout);
 			bottom_layout.setBackgroundResource(R.drawable.player_bg);
+			
+			Button btn_pause = (Button) view.findViewById(R.id.btn_pause);
+			btn_pause.setVisibility(View.VISIBLE);
 
 			mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_progress);
 			mTxvProgress = (TextView) view.findViewById(R.id.txv_progress);
 
+			int size = (int) MySuperScaler.screen_width / 22 ;
+			mTxvProgress.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+			
 			ShapeDrawable thumb = new ShapeDrawable(new RectShape());
 			thumb.getPaint().setColor(Color.rgb(0, 0, 0));
 			thumb.setIntrinsicHeight(-80);
@@ -323,6 +353,9 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		
 		mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_progress);
 		mTxvProgress = (TextView) view.findViewById(R.id.txv_progress);
+		
+		int size = (int) MySuperScaler.screen_width / 22 ;
+		mTxvProgress.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 		
 		ShapeDrawable thumb = new ShapeDrawable(new RectShape());
 	    thumb.getPaint().setColor(Color.rgb(0, 0, 0));
@@ -426,9 +459,15 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	}
 
 	@Override
-	public void onProgressPlayer(int progress) {
-		mSeekBar.setProgress(progress);
-		mTxvProgress.setText(MillisToTime(progress));
+	public void onProgressPlayer(final int progress) {
+		getActivity().runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				mSeekBar.setProgress(progress);
+				mTxvProgress.setText(MillisToTime(progress));
+			}
+		});
 	}
 	
 	private String MillisToTime(int timeInMillis){
@@ -438,7 +477,9 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		
 		String sec = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(timeInMillis));
 		if(sec.length() == 1)
-			sec = "0" + min;
+			sec = "0" + sec;
+		else if(sec.length() > 2)
+			sec = sec.substring(0, 1);
 		
 		return min + ":" + sec;
 	}
@@ -465,7 +506,6 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			public void run() {
 				mSeekBar.setProgress(progress);
 				mTxvProgress.setText(progress + "%");
-				Log.i("", "Download progress " + progress + "%");
 			}
 		});
 	}

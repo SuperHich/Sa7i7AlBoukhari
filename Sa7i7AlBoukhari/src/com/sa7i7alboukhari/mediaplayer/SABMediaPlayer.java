@@ -28,6 +28,8 @@ public class SABMediaPlayer {
 	private Context context;
 	private MediaPlayer player;
 	private IMediaPlayerNotifier notifier;
+	public enum MediaType{STREAM, LOCAL};
+	private MediaType currentMediaType = MediaType.LOCAL;
 	
 	public SABMediaPlayer(Context context) {
 		this.context = context;
@@ -41,8 +43,22 @@ public class SABMediaPlayer {
 	
 	public boolean isPlaying(){
 		
-		if (player != null) return player.isPlaying();
+		if (player != null) 
+			return player.isPlaying();
+		
 		return false ;
+	}
+	
+	public void pause(){
+		if (player != null){
+			player.pause();
+		}
+	}
+	
+	public void resume(){
+		if (player != null){
+			player.start();
+		}
 	}
 	
 	public void stop(){
