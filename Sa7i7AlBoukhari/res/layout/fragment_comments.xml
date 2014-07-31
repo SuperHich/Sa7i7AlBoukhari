@@ -44,8 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/btn_add_comment"
             android:layout_below="@+id/divider"
-            android:layout_margin="5px"
-            android:divider="@color/blue_turquoise"
+            android:layout_margin="10px"
+            android:divider="#a6b6c0"
             android:dividerHeight="1px"
             android:gravity="center"
             android:scrollingCache="false" />

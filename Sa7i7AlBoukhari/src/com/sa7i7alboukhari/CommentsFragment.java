@@ -83,6 +83,8 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 		int size = (int) MySuperScaler.screen_width / 23 ;
 		txv_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 		
+		
+		
 		btn_showMore.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -156,5 +158,9 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 		
 		getListView().setEnabled(enabled);
 		getListView().setClickable(enabled);
+		
+		btn_showMore.setEnabled(enabled);
+		btn_add_comment.setEnabled(enabled);
+		
 	}
 }
