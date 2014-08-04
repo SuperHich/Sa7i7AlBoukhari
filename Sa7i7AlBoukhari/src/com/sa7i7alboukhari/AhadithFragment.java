@@ -291,6 +291,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			mSeekBar.setThumb(thumb);
 			mSeekBar.setEnabled(false);
 			
+			boolean shouldShow = true;
 			if(hadith.isDownload())
 			{
 				sabPlayer.playFromSdcardWithCompletion(hadith.getFile());
@@ -301,9 +302,10 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 				sabPlayer.playFromUrlWithCompletion(mp3);
 			}else{
 				Toast.makeText(getActivity(), R.string.error_internet_connexion, Toast.LENGTH_LONG).show();
+				shouldShow = false;
 			}
 
-			ahadith.get(position).setBottomLayoutShown(true);
+			ahadith.get(position).setBottomLayoutShown(shouldShow);
 
 		}
 		else{

@@ -179,14 +179,14 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 			holder.btn_listen.setBackgroundResource(R.drawable.listen_hadith_selector);
 			holder.btn_download.setBackgroundResource(R.drawable.download_hadith_selector);
 		}else{
-			holder.btn_listen.setBackgroundResource(R.drawable.listen_on);
-			holder.btn_download.setBackgroundResource(R.drawable.download_on);
+			holder.btn_listen.setBackgroundResource(R.drawable.listen_on_selector);
+			holder.btn_download.setBackgroundResource(R.drawable.download_on_selector);
 		}
 
 		if(!hadith.isFavorite())
 			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_hadith_selector);
 		else
-			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_on);
+			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_on_selector);
 
 		if(hadith.isBottomLayoutShown())
 			holder.bottom_layout.setVisibility(View.VISIBLE);

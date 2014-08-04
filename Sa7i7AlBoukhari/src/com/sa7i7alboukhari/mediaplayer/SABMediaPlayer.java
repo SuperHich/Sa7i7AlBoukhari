@@ -289,6 +289,9 @@ public class SABMediaPlayer {
 		} catch(IllegalStateException ex) {
 			ex.printStackTrace();
 			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 		
 		return true;
