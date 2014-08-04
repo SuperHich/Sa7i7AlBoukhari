@@ -139,12 +139,12 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 		if(isShown){
 			txv_text.setMaxLines(Integer.MAX_VALUE);
 			txv_text.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(".")));
-			btn_showMore.setBackgroundResource(R.drawable.pointstop_selector);
+			btn_showMore.setBackgroundResource(R.drawable.showless_selector);
 		}
 		else{
 			txv_text.setMaxLines(2);
 			txv_text.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat("...")));
-			btn_showMore.setBackgroundResource(R.drawable.more_selector);
+			btn_showMore.setBackgroundResource(R.drawable.showmore_selector);
 		}
 	}
 

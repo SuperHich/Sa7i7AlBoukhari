@@ -428,6 +428,27 @@ public class SABDataBase extends SQLiteAssetHelper {
 		return insertedId > 0;
     }
     
+    public boolean isHadithCommented(int hadithId) {
+
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+		String sqlTable = "COMMENTS";
+		
+		String whereClause = "hadithId = ?";
+		String[] whereArgs = {String.valueOf(hadithId)};
+		
+		qb.setTables(sqlTable);
+		Cursor c = qb.query(db, null, whereClause, whereArgs, null, null, null);
+
+		boolean isCommented = false;
+		if(c.moveToFirst())
+			isCommented = true;
+		
+		c.close();
+		return isCommented;
+	}
+    
     public static String formatHadith(String text){
     	String header = "<span lang=\"AR\" dir=\"RTL\" style=\"font-size:13.5pt; font-family:\"Simplified Arabic\";mso-ascii-font-family:\"Times New Roman\"; mso-fareast-font-family:\"Times New Roman\";mso-hansi-font-family:\"Times New Roman\"; mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR\">";
     	String tail = "</span>";

@@ -167,23 +167,26 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		if(hadith.isShown()){
 			holder.textview.setMaxLines(Integer.MAX_VALUE);
 			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(".")));
-			holder.btn_showMore.setBackgroundResource(R.drawable.pointstop_selector);
+			holder.btn_showMore.setBackgroundResource(R.drawable.showless_selector);
 		}
 		else{
 			holder.textview.setMaxLines(2);
 			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(" ... ")));
-			holder.btn_showMore.setBackgroundResource(R.drawable.more_selector);
+			holder.btn_showMore.setBackgroundResource(R.drawable.showmore_selector);
 		}
 
-		if(!hadith.isDownload())
+		if(!hadith.isDownload()){
+			holder.btn_listen.setBackgroundResource(R.drawable.listen_hadith_selector);
 			holder.btn_download.setBackgroundResource(R.drawable.download_hadith_selector);
-		else
-			holder.btn_download.setBackgroundResource(R.drawable.download_hadith_selected);
+		}else{
+			holder.btn_listen.setBackgroundResource(R.drawable.listen_on);
+			holder.btn_download.setBackgroundResource(R.drawable.download_on);
+		}
 
 		if(!hadith.isFavorite())
 			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_hadith_selector);
 		else
-			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_hadith_selected);
+			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_on);
 
 		if(hadith.isBottomLayoutShown())
 			holder.bottom_layout.setVisibility(View.VISIBLE);

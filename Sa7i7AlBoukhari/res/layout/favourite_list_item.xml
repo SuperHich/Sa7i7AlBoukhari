@@ -20,7 +20,7 @@
         android:layout_below="@+id/text"
         android:layout_marginLeft="30px"
         android:layout_marginTop="22px"
-        android:background="@drawable/more_selector" />
+        android:background="@drawable/showmore_selector" />
 
     <Button
         android:id="@+id/btn_removeFav"

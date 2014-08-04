@@ -28,7 +28,7 @@
             android:layout_below="@+id/txv_text"
             android:layout_marginLeft="30px"
             android:layout_marginTop="10px"
-            android:background="@drawable/more_selector" />
+            android:background="@drawable/showmore_selector" />
 
         <View
             android:id="@+id/divider"

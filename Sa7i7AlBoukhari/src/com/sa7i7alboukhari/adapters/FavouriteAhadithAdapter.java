@@ -93,12 +93,12 @@ public class FavouriteAhadithAdapter extends ArrayAdapter<Hadith> {
 		if(hadith.isShown()){
 			holder.textview.setMaxLines(Integer.MAX_VALUE);
 			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(".")));
-			holder.btn_showMore.setBackgroundResource(R.drawable.pointstop_selector);
+			holder.btn_showMore.setBackgroundResource(R.drawable.showless_selector);
 		}
 		else{
 			holder.textview.setMaxLines(2);
 			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(" ... ")));
-			holder.btn_showMore.setBackgroundResource(R.drawable.more_selector);
+			holder.btn_showMore.setBackgroundResource(R.drawable.showmore_selector);
 		}
 
 		return convertView;
