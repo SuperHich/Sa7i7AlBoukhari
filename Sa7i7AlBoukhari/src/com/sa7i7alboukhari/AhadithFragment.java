@@ -406,6 +406,11 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		
 		if(!hadith.isBottomLayoutShown() && !isCanceled)
 		{
+//			if(ahadith.get(position).isPlaying()){
+//				sabPlayer.stop();
+//				ahadith.get(position).setPlaying(false);
+//			}
+			
 			ahadith.get(position).setBottomLayoutShown(true);
 			ahadith.get(position).setDownloading(true);
 			adapter.notifyDataSetChanged();
@@ -498,14 +503,23 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	
 	private String MillisToTime(int timeInMillis){
 		String min = String.valueOf(TimeUnit.MILLISECONDS.toMinutes(timeInMillis));
-		if(min.length() == 1)
-			min = "0" + min;
+		int m = Integer.valueOf(min);
 		
 		String sec = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(timeInMillis));
+		
+		int s = Integer.valueOf(sec);
+		int secToSet = s % 60;
+		
+		s = secToSet;
+		
+		min = String.valueOf(m);
+		sec = String.valueOf(s);
+		
 		if(sec.length() == 1)
 			sec = "0" + sec;
-		else if(sec.length() > 2)
-			sec = sec.substring(0, 1);
+		
+		if(min.length() == 1)
+			min = "0" + m;
 		
 		return min + ":" + sec;
 	}
