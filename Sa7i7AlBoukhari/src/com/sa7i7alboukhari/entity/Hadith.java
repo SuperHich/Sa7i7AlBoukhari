@@ -12,6 +12,8 @@ public class Hadith extends SABEntity {
 	private boolean isFavorite = false;
 	private boolean isShown = false;
 	private boolean isBottomLayoutShown = false;
+	private boolean isPlaying = false;
+	private boolean isDownloading = false;
 	
 	public int getTitleId() {
 		return titleId;
@@ -87,6 +89,18 @@ public class Hadith extends SABEntity {
 	}
 	public void setBottomLayoutShown(boolean isBottomLayoutShown) {
 		this.isBottomLayoutShown = isBottomLayoutShown;
+	}
+	public boolean isPlaying() {
+		return isPlaying;
+	}
+	public void setPlaying(boolean isPlaying) {
+		this.isPlaying = isPlaying;
+	}
+	public boolean isDownloading() {
+		return isDownloading;
+	}
+	public void setDownloading(boolean isDownloading) {
+		this.isDownloading = isDownloading;
 	}
 	
 }

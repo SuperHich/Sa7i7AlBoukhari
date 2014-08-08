@@ -81,19 +81,20 @@
             android:id="@+id/btn_pause"
             android:layout_width="35px"
             android:layout_height="33px"
-            android:layout_marginLeft="20px"
+            android:layout_marginLeft="10px"
             android:background="@drawable/stop"
             android:layout_marginTop="10px"
             android:visibility="gone" />
         
 		<SeekBar
             android:id="@+id/seekbar_progress"
-            android:layout_width="435px"
+            android:layout_width="match_parent"
             android:layout_height="17px"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
             android:layout_marginTop="20px"
             android:layout_toRightOf="@+id/btn_pause"
+            android:layout_toLeftOf="@+id/txv_progress"
             android:progressDrawable="@drawable/seek_bar_bg_steps" />
 
         <TextView

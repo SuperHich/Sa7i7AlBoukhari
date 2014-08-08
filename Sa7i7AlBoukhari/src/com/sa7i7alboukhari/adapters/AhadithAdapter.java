@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.sa7i7alboukhari.R;
@@ -63,6 +67,8 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 
 			holder.bottom_layout = (RelativeLayout) convertView.findViewById(R.id.bottom_layout);
 			holder.btn_pause = (Button) convertView.findViewById(R.id.btn_pause);
+			holder.mSeekBar = (SeekBar) convertView.findViewById(R.id.seekbar_progress);
+			holder.mTxvProgress = (TextView) convertView.findViewById(R.id.txv_progress);
 			
 			holder.btn_showMore.setOnClickListener(new OnClickListener() {
 
@@ -149,6 +155,7 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 
 		int size = (int) MySuperScaler.screen_width / 23 ;
 		holder.textview.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+		holder.mTxvProgress.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 
 		holder.btn_showMore.setTag(position);
 		holder.btn_listen.setTag(position);
@@ -193,6 +200,36 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		else
 			holder.bottom_layout.setVisibility(View.GONE);
 
+		if(hadith.isDownloading()){
+			holder.bottom_layout.setBackgroundResource(R.drawable.downloader_bg);
+			
+			holder.btn_pause.setVisibility(View.GONE);
+			
+			holder.mTxvProgress.setText("0%");
+			
+			ShapeDrawable thumb = new ShapeDrawable(new RectShape());
+		    thumb.getPaint().setColor(Color.rgb(0, 0, 0));
+		    thumb.setIntrinsicHeight(-80);
+		    thumb.setIntrinsicWidth(30);
+		    holder.mSeekBar.setThumb(thumb);
+		    holder.mSeekBar.setMax(100);
+		}
+		
+		if(hadith.isPlaying()){
+			holder.bottom_layout.setBackgroundResource(R.drawable.player_bg);
+			
+			holder.btn_pause.setVisibility(View.VISIBLE);
+			
+			holder.mTxvProgress.setText("00:00");
+			
+			ShapeDrawable thumb = new ShapeDrawable(new RectShape());
+			thumb.getPaint().setColor(Color.rgb(0, 0, 0));
+			thumb.setIntrinsicHeight(-80);
+			thumb.setIntrinsicWidth(30);
+			holder.mSeekBar.setThumb(thumb);
+			holder.mSeekBar.setEnabled(false);
+		}
+		
 		return convertView;
 	}
 
@@ -215,6 +252,9 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		Button btn_comment;
 		Button btn_share;
 		RelativeLayout bottom_layout;
+		SeekBar mSeekBar;
+		TextView mTxvProgress;
+		
 	}
 
 }

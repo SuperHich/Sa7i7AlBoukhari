@@ -55,12 +55,13 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	private SABMediaPlayer sabPlayer;
 	private int pageId = 0;
 	
-	private int positionToUpdate, positionToListen;
+	private int positionToUpdate, positionToListen = -1;
 	private SABDataBase sabDB;
 	private SABDownloadManager sabDownloadManager;
 	private TextView txv_emptyList;
 	private TextView mTxvProgress;
 	private SeekBar mSeekBar;
+	private int lastTotalTime;
 	
 
 	public AhadithFragment() {
@@ -256,6 +257,11 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			btn_pause.setBackgroundResource(R.drawable.stop);
 		}
 	}
+	
+	private void cleanPreviousPlayer(int position){
+		ahadith.get(position).setBottomLayoutShown(false);
+		adapter.notifyDataSetChanged();
+	}
 
 	@Override
 	public void onHadithListen(int position) {
@@ -263,6 +269,9 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		Hadith hadith = ahadith.get(position);
 		if(!hadith.isBottomLayoutShown())
 		{
+			if(positionToListen != -1)
+				cleanPreviousPlayer(positionToListen);
+			
 			View view = getSelecedView(position);
 			if(view == null)
 			{
@@ -283,6 +292,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 
 			int size = (int) MySuperScaler.screen_width / 22 ;
 			mTxvProgress.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+			mTxvProgress.setText("00:00");
 			
 			ShapeDrawable thumb = new ShapeDrawable(new RectShape());
 			thumb.getPaint().setColor(Color.rgb(0, 0, 0));
@@ -297,7 +307,8 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 				sabPlayer.playFromSdcardWithCompletion(hadith.getFile());
 			}else if(Utils.isOnline(getActivity()))
 			{
-				String mp3 = "http://tondeapel.net/wp-content/uploads/2012/09/Iphone_Ringtone.mp3";
+//				String mp3 = "http://tondeapel.net/wp-content/uploads/2012/09/Iphone_Ringtone.mp3";
+				String mp3 = "http://prophetmuhammadforall.com/media/audios/Bismillah.mp3";
 				//				String mp3 = hadith.getLink();
 				sabPlayer.playFromUrlWithCompletion(mp3);
 			}else{
@@ -306,10 +317,13 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			}
 
 			ahadith.get(position).setBottomLayoutShown(shouldShow);
+			ahadith.get(position).setPlaying(shouldShow);
 
 		}
 		else{
+			sabPlayer.stop();
 			ahadith.get(position).setBottomLayoutShown(false);
+			ahadith.get(position).setPlaying(false);
 			mSeekBar.setProgress(0);
 		}
 			    
@@ -356,8 +370,12 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_progress);
 		mTxvProgress = (TextView) view.findViewById(R.id.txv_progress);
 		
+		Button btn_pause = (Button) view.findViewById(R.id.btn_pause);
+		btn_pause.setVisibility(View.GONE);
+		
 		int size = (int) MySuperScaler.screen_width / 22 ;
 		mTxvProgress.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+		mTxvProgress.setText("0%");
 		
 		ShapeDrawable thumb = new ShapeDrawable(new RectShape());
 	    thumb.getPaint().setColor(Color.rgb(0, 0, 0));
@@ -368,7 +386,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		
 		Hadith hadith = ahadith.get(position);
 //		String soundFile = hadith.getLink();
-		String soundFile = "http://tondeapel.net/wp-content/uploads/2012/09/Iphone_Ringtone.mp3";
+		String soundFile = "http://prophetmuhammadforall.com/media/audios/Bismillah.mp3";
 		
 		boolean isCanceled = true;
 		
@@ -389,6 +407,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		if(!hadith.isBottomLayoutShown() && !isCanceled)
 		{
 			ahadith.get(position).setBottomLayoutShown(true);
+			ahadith.get(position).setDownloading(true);
 			adapter.notifyDataSetChanged();
 		}
 		
@@ -450,12 +469,14 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		mSeekBar.setProgress(mSeekBar.getMax());
 		
 		ahadith.get(positionToListen).setBottomLayoutShown(false);
+		ahadith.get(positionToListen).setPlaying(false);
 		adapter.notifyDataSetChanged();
 		
 	}
 	
 	@Override
 	public void onConfigProgress(int totalTime) {
+		lastTotalTime = totalTime;
 		mSeekBar.setMax(totalTime);
 		mTxvProgress.setText("00:00");
 	}
@@ -466,6 +487,9 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			
 			@Override
 			public void run() {
+				refreshListItemViews(positionToListen);
+				mSeekBar.setMax(lastTotalTime);
+				
 				mSeekBar.setProgress(progress);
 				mTxvProgress.setText(MillisToTime(progress));
 			}
@@ -496,6 +520,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			ahadith.get(positionToUpdate).setDownload(true);
 			ahadith.get(positionToUpdate).setFile(path);
 			ahadith.get(positionToUpdate).setBottomLayoutShown(false);
+			ahadith.get(positionToUpdate).setDownloading(false);
 			adapter.notifyDataSetChanged();
 		}
 	}
@@ -506,6 +531,9 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			
 			@Override
 			public void run() {
+				refreshListItemViews(positionToUpdate);
+				mSeekBar.setMax(100);
+				
 				mSeekBar.setProgress(progress);
 				mTxvProgress.setText(progress + "%");
 			}
@@ -519,6 +547,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		Toast.makeText(getActivity(), R.string.download_error, Toast.LENGTH_LONG).show();
 		
 		ahadith.get(positionToUpdate).setBottomLayoutShown(false);
+		ahadith.get(positionToUpdate).setDownloading(false);
 		adapter.notifyDataSetChanged();
 	}
 
@@ -535,6 +564,25 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		getListView().setClickable(enabled);
 		
 		adapter.setEnabled(enabled);
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		if(sabPlayer.isPlaying())
+			sabPlayer.stop();
+	}
+	
+	private void refreshListItemViews(int position){
+		View view = getSelecedView(position);
+		if(view == null)
+		{
+			Log.w("", "Unable to get view for desired position, because it's not being displayed on screen.");
+			return;
+		}
+		mSeekBar = (SeekBar) view.findViewById(R.id.seekbar_progress);
+		mTxvProgress = (TextView) view.findViewById(R.id.txv_progress);
 	}
 	
 }
