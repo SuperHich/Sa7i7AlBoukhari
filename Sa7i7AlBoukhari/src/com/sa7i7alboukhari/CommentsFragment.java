@@ -8,8 +8,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.method.MovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -137,11 +142,13 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 
 	private void toggleShown(boolean isShown){
 		if(isShown){
-			txv_text.setMaxLines(Integer.MAX_VALUE);
+			txv_text.setMovementMethod(new ScrollingMovementMethod());
+			txv_text.setMaxHeight(((MainActivity) getActivity()).screen_height / 2);
 			txv_text.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(".")));
 			btn_showMore.setBackgroundResource(R.drawable.showless_selector);
 		}
 		else{
+			txv_text.setMovementMethod(null);
 			txv_text.setMaxLines(2);
 			txv_text.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat("...")));
 			btn_showMore.setBackgroundResource(R.drawable.showmore_selector);

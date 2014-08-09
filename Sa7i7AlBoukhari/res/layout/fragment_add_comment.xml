@@ -23,20 +23,10 @@
             android:layout_alignParentRight="true"/>
 
         <TextView
-            android:id="@+id/txv_email"
-            android:layout_width="110px"
-            android:layout_height="50px"
-            android:layout_below="@+id/txv_name"
-            android:layout_margin="10px"
-            android:text="@string/comment_email"
-            android:textColor="@color/blue_dark" 
-            android:layout_alignParentRight="true"/>
-
-        <TextView
             android:id="@+id/txv_comment"
             android:layout_width="110px"
             android:layout_height="50px"
-            android:layout_below="@+id/txv_email"
+            android:layout_below="@+id/txv_name"
             android:layout_margin="10px"
             android:text="@string/comment_text"
             android:textColor="@color/blue_dark" 
@@ -57,22 +47,10 @@
             android:background="@drawable/rounded_background"/>
 
         <EditText
-            android:id="@+id/edt_email"
-            android:layout_width="396px"
-            android:layout_height="41px"
-            android:layout_below="@+id/edt_name"
-            android:layout_margin="10px"
-            android:layout_toLeftOf="@+id/txv_email" 
-            android:textColor="#000"
-            android:paddingLeft="10px"
-            android:paddingTop="5px"
-            android:background="@drawable/rounded_background"/>
-
-        <EditText
             android:id="@+id/edt_comment"
             android:layout_width="396px"
             android:layout_height="246px"
-            android:layout_below="@+id/edt_email"
+            android:layout_below="@+id/edt_name"
             android:layout_margin="10px"
             android:layout_toLeftOf="@+id/txv_comment"
             android:textColor="#000"

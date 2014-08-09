@@ -2,12 +2,14 @@ package com.sa7i7alboukhari;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,8 +25,8 @@ import com.sa7i7alboukhari.utils.MySuperScaler;
 @SuppressLint("ValidFragment")
 public class AddCommentFragment extends Fragment {
 
-    private EditText edt_name, edt_email, edt_comment;
-    private TextView txv_name, txv_email, txv_comment ;
+    private EditText edt_name, edt_comment;
+    private TextView txv_name, txv_comment ;
     private Button btn_remove, btn_add;
     private int hadithId;
     private Comment selectedComment;
@@ -56,20 +58,16 @@ public class AddCommentFragment extends Fragment {
         
         
         txv_name = (TextView) rootView.findViewById(R.id.txv_name);
-        txv_email = (TextView) rootView.findViewById(R.id.txv_email);
         txv_comment = (TextView) rootView.findViewById(R.id.txv_comment);
         edt_name = (EditText) rootView.findViewById(R.id.edt_name);
-        edt_email = (EditText) rootView.findViewById(R.id.edt_email);
         edt_comment = (EditText) rootView.findViewById(R.id.edt_comment);
         btn_remove = (Button) rootView.findViewById(R.id.btn_remove);
         btn_add = (Button) rootView.findViewById(R.id.btn_add);
         
         int size = (int) MySuperScaler.screen_width / 25 ;
         edt_name.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-        edt_email.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         edt_comment.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         txv_name.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-        txv_email.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         txv_comment.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 
         btn_remove.setOnClickListener(new OnClickListener() {
@@ -84,15 +82,17 @@ public class AddCommentFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
+				
+				hideKeyboard();
+				
 				if(selectedComment == null){
 					selectedComment = new Comment();
 				}
 				
 				String name = edt_name.getText().toString();
-				String email = edt_email.getText().toString();
 				String text = edt_comment.getText().toString();
 				
-				if(name.equals("") || email.equals("") || text.equals("")){
+				if(name.equals("") || text.equals("")){
 					Toast.makeText(getActivity(), R.string.please_fill, Toast.LENGTH_LONG).show();
 					return;
 				}
@@ -132,5 +132,11 @@ public class AddCommentFragment extends Fragment {
     	}
     	
     }
+    
+    protected void hideKeyboard() {
+		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(edt_comment.getWindowToken(), 0);
+	}
+
 
 }
