@@ -32,6 +32,7 @@ public class AddCommentFragment extends Fragment {
     private Comment selectedComment;
 	private SABDataBase sabDB;
 	private IFragmentNotifier fragNotifier;
+	private boolean isNewComment = true;
 
     public AddCommentFragment() {
         // Empty constructor required for DialogFragment
@@ -40,12 +41,14 @@ public class AddCommentFragment extends Fragment {
     public AddCommentFragment(int hadithId) {
     	
     	this.hadithId = hadithId;
+    	isNewComment = true;
     }
     
     public AddCommentFragment(Comment comment) {
     	
     	this.selectedComment = comment;
     	this.hadithId = comment.getHadithId();
+    	isNewComment = false;
     }
 
     @Override
@@ -101,7 +104,10 @@ public class AddCommentFragment extends Fragment {
 				selectedComment.setTitle(name);
 				selectedComment.setText(text);
 				
-				sabDB.addComment(hadithId, selectedComment);
+				if(isNewComment)
+					sabDB.addComment(hadithId, selectedComment);
+				else
+					sabDB.updateComment(selectedComment);
 				
 				fragNotifier.requestRefrech();
 				
