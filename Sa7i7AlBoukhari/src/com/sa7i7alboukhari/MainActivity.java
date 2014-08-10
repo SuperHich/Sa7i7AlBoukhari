@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import com.sa7i7alboukhari.AhadithSearchDialog.EditNameDialogListener;
 import com.sa7i7alboukhari.adapters.IMenuListener;
 import com.sa7i7alboukhari.adapters.MenuCustomAdapter;
+import com.sa7i7alboukhari.entity.Book;
 import com.sa7i7alboukhari.entity.Chapter;
 import com.sa7i7alboukhari.entity.Comment;
 import com.sa7i7alboukhari.entity.Hadith;
@@ -51,6 +52,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	private int lastPosition = 1;
 	private String lastText = "";
 	private boolean isFirstStart = true;
+	private int lastBabId = -1;
 	
 	private ListFragment fragment, fragment1;
 	private Fragment fragment2;
@@ -189,7 +191,9 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		case 2:
 			fragment = new AbwabFragment();
 			break;
-			
+		case 3:
+			fragment = new BooksFragment();
+			break;
 		default:
 			fragment = new AhadithFragment();
 			break;
@@ -201,7 +205,6 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
-		//         setTitle(mPlanetTitles[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 
 	}
@@ -292,8 +295,6 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		@Override
 		public void onFinishEditDialog(String inputText) {
 
-//			Toast.makeText(this, getString(R.string.to_search) + " " + inputText, Toast.LENGTH_SHORT).show();
-
 			lastText = inputText;
 
 			// update the main content by replacing fragments
@@ -302,6 +303,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			args.putInt(AhadithFragment.ARG_AHADITH, AhadithFragment.TYPE_AHADITH_KEYWORD_ID);
 			args.putInt(AhadithFragment.ARG_AHADITH_SEARCH, lastPosition);
 			args.putString(AhadithFragment.ARG_AHADITH_KEYWORD_TEXT, inputText);
+			args.putInt(AhadithFragment.ARG_BAB_ID, lastBabId);
 			fragment.setArguments(args);
 
 			FragmentManager fragmentManager = getSupportFragmentManager();
@@ -313,7 +315,26 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 
 		}
 		
+		public void onBookItemClicked(Book book){
+			// update the main content by replacing fragments
+			fragment = new AbwabFragment();
+			Bundle args = new Bundle();
+			args.putInt(AbwabFragment.ARG_BOOKID, book.getBookId());
+			fragment.setArguments(args);
+
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction ft = fragmentManager.beginTransaction();
+
+			ft.replace(R.id.content_frame, fragment);
+			scaled = false ;
+			ft.commit();
+			
+		}
+		
 		public void onBabItemClicked(Chapter chapter){
+			
+			lastBabId = chapter.getBabId();
+			
 			// update the main content by replacing fragments
 			fragment = new AhadithFragment();
 			Bundle args = new Bundle();

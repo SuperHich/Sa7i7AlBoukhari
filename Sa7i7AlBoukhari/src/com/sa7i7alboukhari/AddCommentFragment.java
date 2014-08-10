@@ -31,7 +31,7 @@ public class AddCommentFragment extends Fragment {
     private int hadithId;
     private Comment selectedComment;
 	private SABDataBase sabDB;
-	private IFragmentNotifier fragNotifier;
+	private IFragmentNotifier fragNotifier, fragNotifier2;
 	private boolean isNewComment = true;
 
     public AddCommentFragment() {
@@ -110,6 +110,7 @@ public class AddCommentFragment extends Fragment {
 					sabDB.updateComment(selectedComment);
 				
 				fragNotifier.requestRefrech();
+				fragNotifier2.requestRefrech();
 				
 				getActivity().onBackPressed();
 			}
@@ -124,7 +125,9 @@ public class AddCommentFragment extends Fragment {
     	
     	sabDB = ((MainActivity)getActivity()).sabDB;
     	
-    	fragNotifier = SABManager.getInstance(getActivity()).getFragmentNotifier2();
+    	fragNotifier = SABManager.getInstance(getActivity()).getFragmentNotifier();
+    	fragNotifier2 = SABManager.getInstance(getActivity()).getFragmentNotifier2();
+    	
     }
     
     @Override

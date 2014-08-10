@@ -167,9 +167,10 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 					ahadith.addAll(sabDB.searchHadithFromFavoriteWithText(ahadith_keyword));
 					break;
 				case 1:
-					ahadith.addAll(sabDB.searchHadithWithText(ahadith_keyword));	
+					ahadith.addAll(sabDB.searchHadithWithText(ahadith_keyword));
 					break;
 				default:
+					ahadith.addAll(sabDB.searchHadithByBabWithText(ahadith_keyword, bab_id));
 					break;
 				}
 				
@@ -211,7 +212,6 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		
 		getListView().setAdapter(adapter);
 		getListView().setCacheColorHint(Color.TRANSPARENT);
-		//            getActivity().setTitle(planet);
 		
 		((LoadMoreListView) getListView()).setFooterDividersEnabled(false);
 		
@@ -451,6 +451,11 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		if(Utils.isOnline(getActivity())){
 			Hadith hadith = ahadith.get(position);
 			shareHadith(hadith.getText());
+			if(sabDB.setIsSharedToHadith(hadith.getId())){
+				ahadith.get(position).setShared(true);
+				adapter.notifyDataSetChanged();
+			}
+			
 		}else{
 			Toast.makeText(getActivity(), R.string.error_internet_connexion, Toast.LENGTH_LONG).show();
 		}
@@ -567,8 +572,8 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 
 	@Override
 	public void requestRefrech() {
-		// TODO Auto-generated method stub
 		
+		initAhadith();
 	}
 	
 	@Override

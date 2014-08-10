@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import com.sa7i7alboukhari.entity.Book;
 import com.sa7i7alboukhari.entity.Chapter;
 import com.sa7i7alboukhari.entity.Comment;
 import com.sa7i7alboukhari.entity.Hadith;
@@ -30,6 +31,104 @@ public class SABDataBase extends SQLiteAssetHelper {
 //        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         
     }
+    
+    public ArrayList<Book> getAllBooks() {
+
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+		String sqlTables = "BOOKTable";
+
+		qb.setTables(sqlTables);
+		Cursor c = qb.query(db, null, null, null, null, null, null);
+
+		ArrayList<Book> books = new ArrayList<Book>();
+		if(c.moveToFirst()){
+			do{
+				Book book = new Book();
+				book.setId(c.getInt(0));
+				book.setName(c.getString(1));
+				book.setBookId(c.getInt(2));
+				
+				Log.i("", book.toString());
+				
+				books.add(book);
+				
+			}while(c.moveToNext());
+		}
+		
+		c.close();
+		return books;
+
+	}
+    
+    public ArrayList<Chapter> getAllBabsFromBook(int bookId) {
+
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+		String sqlTables = "BABTable";
+		
+		String whereClause = "BOOKID = ?";
+		String[] whereArgs = {String.valueOf(bookId)};
+
+		qb.setTables(sqlTables);
+		Cursor c = qb.query(db, null, whereClause, whereArgs, null, null, null);
+
+		ArrayList<Chapter> babs = new ArrayList<Chapter>();
+		if(c.moveToFirst()){
+			do{
+				Chapter chapter = new Chapter();
+				chapter.setId(c.getInt(0));
+				chapter.setBabId(c.getInt(1));
+				chapter.setName(c.getString(2));
+				chapter.setBookId(c.getInt(3));
+				
+				Log.i("", chapter.toString());
+				
+				babs.add(chapter);
+				
+			}while(c.moveToNext());
+		}
+		
+		c.close();
+		return babs;
+
+	}
+    
+    public ArrayList<Chapter> getAllBabsWithPage(int page) {
+
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+		String sqlTables = "BABTable";
+		
+		String whereClause = "Page = ?";
+		String[] whereArgs = {String.valueOf(page)};
+
+		qb.setTables(sqlTables);
+		Cursor c = qb.query(db, null, whereClause, whereArgs, null, null, null);
+
+		ArrayList<Chapter> babs = new ArrayList<Chapter>();
+		if(c.moveToFirst()){
+			do{
+				Chapter chapter = new Chapter();
+				chapter.setId(c.getInt(0));
+				chapter.setBabId(c.getInt(1));
+				chapter.setName(c.getString(2));
+				chapter.setBookId(c.getInt(3));
+				
+				Log.i("", chapter.toString());
+				
+				babs.add(chapter);
+				
+			}while(c.moveToNext());
+		}
+		
+		c.close();
+		return babs;
+
+	}
        
     public ArrayList<Chapter> getAllBabs() {
 
@@ -87,6 +186,8 @@ public class SABDataBase extends SQLiteAssetHelper {
 				hadith.setFavorite(c.getInt(5) == 1 ? true:false);
 				hadith.setDownload(c.getInt(6) == 1 ? true:false);
 				hadith.setPageId(c.getInt(7));
+				hadith.setHaveComment(c.getInt(8) == 1 ? true:false);
+				hadith.setShared(c.getInt(9) == 1 ? true:false);
 				
 				Log.i("", hadith.toString());
 
@@ -123,6 +224,8 @@ public class SABDataBase extends SQLiteAssetHelper {
 				hadith.setFavorite(c.getInt(5) == 1 ? true:false);
 				hadith.setDownload(c.getInt(6) == 1 ? true:false);
 				hadith.setPageId(c.getInt(7));
+				hadith.setHaveComment(c.getInt(8) == 1 ? true:false);
+				hadith.setShared(c.getInt(9) == 1 ? true:false);
 				
 				Log.i("", hadith.toString());
 
@@ -159,6 +262,8 @@ public class SABDataBase extends SQLiteAssetHelper {
 				hadith.setFavorite(c.getInt(5) == 1 ? true:false);
 				hadith.setDownload(c.getInt(6) == 1 ? true:false);
 				hadith.setPageId(c.getInt(7));
+				hadith.setHaveComment(c.getInt(8) == 1 ? true:false);
+				hadith.setShared(c.getInt(9) == 1 ? true:false);
 				
 				Log.i("", hadith.toString());
 
@@ -179,8 +284,6 @@ public class SABDataBase extends SQLiteAssetHelper {
 		
 		String whereClause = null;
 		String[] whereArgs = null;
-//		String whereClause = "HadithText LIKE ?";
-//		String[] whereArgs = {"%" + toSearchText + "%"};
 		
 		qb.setTables(sqlTable);
 		Cursor c = qb.query(db, null, whereClause, whereArgs, null, null, null);
@@ -201,6 +304,8 @@ public class SABDataBase extends SQLiteAssetHelper {
 					hadith.setFavorite(c.getInt(5) == 1 ? true:false);
 					hadith.setDownload(c.getInt(6) == 1 ? true:false);
 					hadith.setPageId(c.getInt(7));
+					hadith.setHaveComment(c.getInt(8) == 1 ? true:false);
+					hadith.setShared(c.getInt(9) == 1 ? true:false);
 
 					Log.i("", hadith.toString());
 
@@ -247,6 +352,56 @@ public class SABDataBase extends SQLiteAssetHelper {
 					hadith.setFavorite(c.getInt(5) == 1 ? true:false);
 					hadith.setDownload(c.getInt(6) == 1 ? true:false);
 					hadith.setPageId(c.getInt(7));
+					hadith.setHaveComment(c.getInt(8) == 1 ? true:false);
+					hadith.setShared(c.getInt(9) == 1 ? true:false);
+
+					Log.i("", hadith.toString());
+
+					ahadith.add(hadith);
+
+					if (ahadith.size() == 300)
+					{
+						break;
+					}
+				}
+			}while (c.moveToNext());
+		
+		c.close();
+		return ahadith;
+
+	}
+    
+    public ArrayList<Hadith> searchHadithByBabWithText(String toSearchText, int babId) {
+
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+		String sqlTable = "HadithTable";
+		
+		String whereClause = "BABID = ?";
+		String[] whereArgs = {String.valueOf(babId)};
+		
+		qb.setTables(sqlTable);
+		Cursor c = qb.query(db, null, whereClause, whereArgs, null, null, null);
+
+		ArrayList<Hadith> ahadith = new ArrayList<Hadith>();
+		if(c.moveToFirst())
+			do{
+				String cleanText = cleanPonctuation(c.getString(2));
+				String cleanSearch = cleanPonctuation(toSearchText);
+				Log.v("", "cleanText " + cleanText);
+				if(cleanText.contains(cleanSearch)){
+					Hadith hadith = new Hadith();
+					hadith.setId(c.getInt(0));
+					hadith.setTitleId(c.getInt(1));
+					hadith.setText(c.getString(2));
+					hadith.setLink(c.getString(3));
+					hadith.setFile(c.getString(4));
+					hadith.setFavorite(c.getInt(5) == 1 ? true:false);
+					hadith.setDownload(c.getInt(6) == 1 ? true:false);
+					hadith.setPageId(c.getInt(7));
+					hadith.setHaveComment(c.getInt(8) == 1 ? true:false);
+					hadith.setShared(c.getInt(9) == 1 ? true:false);
 
 					Log.i("", hadith.toString());
 
@@ -303,6 +458,38 @@ public class SABDataBase extends SQLiteAssetHelper {
 		return isFav;
 
 	}
+    
+    public boolean setHaveCommentToHadith(int hadithId, boolean haveComment){    	
+    	SQLiteDatabase db = getWritableDatabase();
+
+		String sqlTable = "HadithTable";
+		
+		ContentValues values = new ContentValues();
+		values.put("HaveComment", haveComment ? 1:0);
+		
+		String whereClause = "ID = ?";
+		String[] whereArgs = {String.valueOf(hadithId)};
+		
+		long updatedRow = db.update(sqlTable, values, whereClause, whereArgs);
+		
+		return updatedRow > 0;
+    }
+    
+    public boolean setIsSharedToHadith(int hadithId){    	
+    	SQLiteDatabase db = getWritableDatabase();
+
+		String sqlTable = "HadithTable";
+		
+		ContentValues values = new ContentValues();
+		values.put("ISShared", 1);
+		
+		String whereClause = "ID = ?";
+		String[] whereArgs = {String.valueOf(hadithId)};
+		
+		long updatedRow = db.update(sqlTable, values, whereClause, whereArgs);
+		
+		return updatedRow > 0;
+    }
     
     public boolean setPathDownloadHadith(int hadithId, String path){    	
     	SQLiteDatabase db = getWritableDatabase();
@@ -395,6 +582,9 @@ public class SABDataBase extends SQLiteAssetHelper {
 		
 		long insertedId = db.insertWithOnConflict(sqlTable, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		
+		if(insertedId != -1)
+			setHaveCommentToHadith(hadithId, true);
+		
 		return insertedId != -1;
     }
 
@@ -407,6 +597,9 @@ public class SABDataBase extends SQLiteAssetHelper {
 		String[] whereArgs = {String.valueOf(commentId)};
 		
 		long insertedId = db.delete(sqlTable, whereClause, whereArgs);
+		
+//		if(getCommentsWithHadithID(hadithId).size() == 0)
+//			setHaveCommentToHadith(hadithId, false);
 		
 		return insertedId > 0;
     }

@@ -10,6 +10,9 @@ public class Hadith extends SABEntity {
 	private int pageId;
 	private boolean isDownload = false;
 	private boolean isFavorite = false;
+	private boolean haveComment = false;
+	private boolean isShared = false;
+	
 	private boolean isShown = false;
 	private boolean isBottomLayoutShown = false;
 	private boolean isPlaying = false;
@@ -64,6 +67,19 @@ public class Hadith extends SABEntity {
 		this.isFavorite = isFavorite;
 	}
 	
+	public boolean isHaveComment() {
+		return haveComment;
+	}
+	public void setHaveComment(boolean haveComment) {
+		this.haveComment = haveComment;
+	}
+	public boolean isShared() {
+		return isShared;
+	}
+	public void setShared(boolean isShared) {
+		this.isShared = isShared;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -75,7 +91,9 @@ public class Hadith extends SABEntity {
 		sb.append("Link " + getLink() + "\n");
 		sb.append("Page " + getPageId() + "\n");
 		sb.append("isDownload " + isDownload() + "\n");
-		sb.append("isFavorite " + isFavorite());
+		sb.append("isFavorite " + isFavorite() + "\n");
+		sb.append("haveComment " + isHaveComment() + "\n");
+		sb.append("isShared " + isShared());
 		return sb.toString();
 	}
 	public boolean isShown() {

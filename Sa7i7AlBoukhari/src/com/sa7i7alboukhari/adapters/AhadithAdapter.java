@@ -195,6 +195,16 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		else
 			holder.btn_favorite.setBackgroundResource(R.drawable.favourite_on_selector);
 
+		if(!hadith.isHaveComment())
+			holder.btn_comment.setBackgroundResource(R.drawable.comment_hadith_selector);
+		else
+			holder.btn_comment.setBackgroundResource(R.drawable.comment_on_selector);
+		
+		if(!hadith.isShared())
+			holder.btn_share.setBackgroundResource(R.drawable.share_hadith_selector);
+		else
+			holder.btn_share.setBackgroundResource(R.drawable.share_on_selector);
+		
 		if(hadith.isBottomLayoutShown())
 			holder.bottom_layout.setVisibility(View.VISIBLE);
 		else
