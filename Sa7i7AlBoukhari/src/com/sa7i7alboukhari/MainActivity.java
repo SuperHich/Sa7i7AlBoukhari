@@ -172,6 +172,9 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 
 
 	private void selectItem(int position) {
+		
+		if(position > 3)
+			return;
 
 		lastPosition = position;
 		
