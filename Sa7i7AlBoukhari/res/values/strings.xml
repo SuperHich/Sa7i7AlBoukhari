@@ -41,4 +41,8 @@
     <string name="please_fill">الرجاء ملء كل الفراغات</string>
     <string name="empty_list">قائمة فارغة</string>
     <string name="wait_other_download">الرجاء الانتظار... جاري تحميل حديث أخر</string>
+    <string name="comments">التعليقات</string>
+    <string name="remove">حذف</string>
+    <string name="update">تحديث</string>
+    <string name="modifications">تعديل التعليق</string>
 </resources>

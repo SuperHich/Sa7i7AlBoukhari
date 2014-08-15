@@ -9,5 +9,6 @@
     <color name="shadow_transparent">#99000000</color>
     <color name="shadow_transparent_light">#33000000</color>
     <color name="blue_dark">#1A435D</color>
+    <color name="blue_light">#FF39A9D9</color>
 
 </resources>

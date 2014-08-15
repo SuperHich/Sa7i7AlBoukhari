@@ -275,6 +275,44 @@ public class SABDataBase extends SQLiteAssetHelper {
 
 	}
     
+    public ArrayList<Hadith> getCommentedHadiths() {
+
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+		String sqlTable = "HadithTable";
+		
+		String whereClause = "HaveComment = ?";
+		String[] whereArgs = {String.valueOf(1)};
+		
+		qb.setTables(sqlTable);
+		Cursor c = qb.query(db, null, whereClause, whereArgs, null, null, null);
+
+		ArrayList<Hadith> ahadith = new ArrayList<Hadith>();
+		if(c.moveToFirst())
+			do{
+				Hadith hadith = new Hadith();
+				hadith.setId(c.getInt(0));
+				hadith.setTitleId(c.getInt(1));
+				hadith.setText(c.getString(2));
+				hadith.setLink(c.getString(3));
+				hadith.setFile(c.getString(4));
+				hadith.setFavorite(c.getInt(5) == 1 ? true:false);
+				hadith.setDownload(c.getInt(6) == 1 ? true:false);
+				hadith.setPageId(c.getInt(7));
+				hadith.setHaveComment(c.getInt(8) == 1 ? true:false);
+				hadith.setShared(c.getInt(9) == 1 ? true:false);
+				
+				Log.i("", hadith.toString());
+
+				ahadith.add(hadith);
+			}while (c.moveToNext());
+		
+		c.close();
+		return ahadith;
+
+	}
+    
     public ArrayList<Hadith> searchHadithWithText(String toSearchText) {
 
 		SQLiteDatabase db = getReadableDatabase();
@@ -331,6 +369,54 @@ public class SABDataBase extends SQLiteAssetHelper {
 		String sqlTable = "HadithTable";
 		
 		String whereClause = "IsFavorite = ?";
+		String[] whereArgs = {String.valueOf("1")};
+		
+		qb.setTables(sqlTable);
+		Cursor c = qb.query(db, null, whereClause, whereArgs, null, null, null);
+
+		ArrayList<Hadith> ahadith = new ArrayList<Hadith>();
+		if(c.moveToFirst())
+			do{
+				String cleanText = cleanPonctuation(c.getString(2));
+				String cleanSearch = cleanPonctuation(toSearchText);
+				Log.v("", "cleanText " + cleanText);
+				if(cleanText.contains(cleanSearch)){
+					Hadith hadith = new Hadith();
+					hadith.setId(c.getInt(0));
+					hadith.setTitleId(c.getInt(1));
+					hadith.setText(c.getString(2));
+					hadith.setLink(c.getString(3));
+					hadith.setFile(c.getString(4));
+					hadith.setFavorite(c.getInt(5) == 1 ? true:false);
+					hadith.setDownload(c.getInt(6) == 1 ? true:false);
+					hadith.setPageId(c.getInt(7));
+					hadith.setHaveComment(c.getInt(8) == 1 ? true:false);
+					hadith.setShared(c.getInt(9) == 1 ? true:false);
+
+					Log.i("", hadith.toString());
+
+					ahadith.add(hadith);
+
+					if (ahadith.size() == 300)
+					{
+						break;
+					}
+				}
+			}while (c.moveToNext());
+		
+		c.close();
+		return ahadith;
+
+	}
+    
+    public ArrayList<Hadith> searchHadithFromCommentedWithText(String toSearchText) {
+
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+		String sqlTable = "HadithTable";
+		
+		String whereClause = "HaveComment = ?";
 		String[] whereArgs = {String.valueOf("1")};
 		
 		qb.setTables(sqlTable);
@@ -588,18 +674,18 @@ public class SABDataBase extends SQLiteAssetHelper {
 		return insertedId != -1;
     }
 
-    public boolean removeComment(int commentId){    	
+    public boolean removeComment(Comment comment){    	
     	SQLiteDatabase db = getWritableDatabase();
 
     	String sqlTable = "COMMENTS";
     	
 		String whereClause = "ID = ?";
-		String[] whereArgs = {String.valueOf(commentId)};
+		String[] whereArgs = {String.valueOf(comment.getId())};
 		
 		long insertedId = db.delete(sqlTable, whereClause, whereArgs);
 		
-//		if(getCommentsWithHadithID(hadithId).size() == 0)
-//			setHaveCommentToHadith(hadithId, false);
+		if(getCommentsWithHadithID(comment.getHadithId()).size() == 0)
+			setHaveCommentToHadith(comment.getHadithId(), false);
 		
 		return insertedId > 0;
     }

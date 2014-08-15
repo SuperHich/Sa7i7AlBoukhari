@@ -101,6 +101,8 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		bab_id = getArguments().getInt(ARG_BAB_ID);
 		
 		txv_emptyList = (TextView) rootView.findViewById(R.id.txv_emptyList);
+		int size = ((MainActivity) getActivity()).screen_width / 23;
+		txv_emptyList.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 		
 		if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);
@@ -161,6 +163,9 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 			case 1:
 				ahadith.addAll(sabDB.getAllHadithsWithPage(pageId));				
 				break;
+			case 2:
+				ahadith.addAll(sabDB.getCommentedHadiths());				
+				break;
 			case TYPE_AHADITH_KEYWORD_ID:
 				switch (ahadith_search_typeId) {
 				case 0:
@@ -168,6 +173,9 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 					break;
 				case 1:
 					ahadith.addAll(sabDB.searchHadithWithText(ahadith_keyword));
+					break;
+				case 2:
+					ahadith.addAll(sabDB.searchHadithFromCommentedWithText(ahadith_keyword));
 					break;
 				default:
 					ahadith.addAll(sabDB.searchHadithByBabWithText(ahadith_keyword, bab_id));

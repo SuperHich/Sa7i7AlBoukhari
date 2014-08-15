@@ -38,6 +38,12 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	public static final String ADD_COMMENT_FRAGMENT = "add_comment_fragment";
 	public static final String EDIT_COMMENT_FRAGMENT = "edit_comment_fragment";
 	public static final String FAVOURITE_FRAGMENT = "favourite_fragment";
+	public static final String BOOKS_FRAGMENT = "books_fragment";
+	public static final String ABWAB_FRAGMENT = "abwab_fragment";
+	public static final String AHADITH_FRAGMENT = "ahadith_fragment";
+	
+	private String currentFragment;
+	private boolean isFromBooksFragment = false;
 	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -52,10 +58,12 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	private int lastPosition = 1;
 	private String lastText = "";
 	private boolean isFirstStart = true;
-	private int lastBabId = -1;
+	private int lastBabId = -1, lastBookId = -1;
 	
 	private ListFragment fragment, fragment1;
 	private Fragment fragment2;
+	
+	private boolean isBackEnabled = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -173,37 +181,61 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 
 	private void selectItem(int position) {
 		
-		if(position > 3)
+		isFromBooksFragment = false;
+		isBackEnabled = false;
+		btn_menu.setBackgroundResource(R.drawable.menu);
+		
+		if(position > 4)
 			return;
 
 		lastPosition = position;
 		
+		
+		Bundle args = null;
 		// update the main content by replacing fragments
 		
 		switch (position) {
 		case 0:
-			gotoFavouriteFragment();
-			fragment = new FavouriteAhadithFragment();
+//			gotoFavouriteFragment();
+//			fragment = new FavouriteAhadithFragment();
+			fragment = new AhadithFragment();
+			args = new Bundle();
+			args.putInt(AhadithFragment.ARG_AHADITH, position);
+			btn_search.setVisibility(View.VISIBLE);
 			break;
 		case 1:
 			fragment = new AhadithFragment();
-			Bundle args = new Bundle();
+			args = new Bundle();
 			args.putInt(AhadithFragment.ARG_AHADITH, position);
-			fragment.setArguments(args);
+			btn_search.setVisibility(View.VISIBLE);
 			break;
 		case 2:
-			fragment = new AbwabFragment();
+			fragment = new AhadithFragment();
+			args = new Bundle();
+			args.putInt(AhadithFragment.ARG_AHADITH, position);
+			btn_search.setVisibility(View.VISIBLE);
 			break;
 		case 3:
+			fragment = new AbwabFragment();
+			currentFragment = ABWAB_FRAGMENT;
+			btn_search.setVisibility(View.GONE);
+			break;
+		case 4:
 			fragment = new BooksFragment();
+			currentFragment = BOOKS_FRAGMENT;
+			btn_search.setVisibility(View.GONE);
 			break;
 		default:
 			fragment = new AhadithFragment();
 			break;
 
 		}
+		
+		
+		if(args != null)
+			fragment.setArguments(args);
 
-		if(position != 0)
+//		if(position != 0)
 			switchTab(fragment);
 
 		// update selected item and title, then close the drawer
@@ -262,13 +294,23 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
+				
+				Button view = (Button) v;
+				view.getBackground().clearColorFilter();
+				view.invalidate();
 
 				switch (v.getId()) {
 				case R.id.menu:
-					if(!mDrawerLayout.isDrawerOpen(Gravity.RIGHT))
-						mDrawerLayout.openDrawer(Gravity.RIGHT);
-					else
-						mDrawerLayout.closeDrawer(Gravity.RIGHT);		
+					if(isBackEnabled)
+					{		
+						onBackPressed();
+					}
+					else{
+						if(!mDrawerLayout.isDrawerOpen(Gravity.RIGHT))
+							mDrawerLayout.openDrawer(Gravity.RIGHT);
+						else
+							mDrawerLayout.closeDrawer(Gravity.RIGHT);		
+					}
 					break;
 				case R.id.search:
 					//show search dialog;
@@ -319,10 +361,18 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		}
 		
 		public void onBookItemClicked(Book book){
+			
+			isFromBooksFragment = true;
+			isBackEnabled = true;
+			currentFragment = ABWAB_FRAGMENT;
+			btn_menu.setBackgroundResource(R.drawable.back_list);
+			
+			lastBookId = book.getBookId();
+			
 			// update the main content by replacing fragments
 			fragment = new AbwabFragment();
 			Bundle args = new Bundle();
-			args.putInt(AbwabFragment.ARG_BOOKID, book.getBookId());
+			args.putInt(AbwabFragment.ARG_BOOKID, lastBookId);
 			fragment.setArguments(args);
 
 			FragmentManager fragmentManager = getSupportFragmentManager();
@@ -335,6 +385,11 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		}
 		
 		public void onBabItemClicked(Chapter chapter){
+			
+			isBackEnabled = true;
+			currentFragment = AHADITH_FRAGMENT;
+			btn_menu.setBackgroundResource(R.drawable.back_list);
+			btn_search.setVisibility(View.VISIBLE);
 			
 			lastBabId = chapter.getBabId();
 			
@@ -436,6 +491,40 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		
 		@Override
 		public void onBackPressed() {
+			
+			if(isBackEnabled)
+			{		
+				if(currentFragment.equals(AHADITH_FRAGMENT))
+				{
+					//goto ABWAB FRAG
+					fragment = new AbwabFragment();
+					Bundle args = new Bundle();
+					args.putInt(AbwabFragment.ARG_BOOKID, lastBookId);
+					fragment.setArguments(args);
+					currentFragment = ABWAB_FRAGMENT;
+					btn_search.setVisibility(View.GONE);
+					
+					if(!isFromBooksFragment)
+					{
+						btn_menu.setBackgroundResource(R.drawable.menu);
+						isBackEnabled = false;
+					}
+
+				}else if(currentFragment.equals(ABWAB_FRAGMENT) && isFromBooksFragment)
+				{
+					// goto BOOKs Frag
+					fragment = new BooksFragment();
+					currentFragment = BOOKS_FRAGMENT;
+					
+					btn_menu.setBackgroundResource(R.drawable.menu);
+					isBackEnabled = false;
+				}
+
+				switchTab(fragment);
+				
+				return;
+			}
+			
 			if(fragment2 != null){
 				fragment2 = null;
 				sabManager.getFragmentNotifier2().setEnabled(true);

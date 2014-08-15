@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -34,8 +36,8 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 	private CommentsAdapter adapter;
 	private ArrayList<Comment> comments = new ArrayList<Comment>();
 	
-	private TextView txv_text;
-	private Button btn_showMore, btn_add_comment;
+	private TextView txv_text, txv_title;
+	private Button btn_showMore, btn_add_comment, btn_back;
 	
 	private SABDataBase sabDB;
 	private Hadith hadith;
@@ -77,13 +79,17 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 		if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);
 
+		txv_title = (TextView) rootView.findViewById(R.id.txv_title);
 		txv_text = (TextView) rootView.findViewById(R.id.txv_text);
 		btn_showMore = (Button) rootView.findViewById(R.id.btn_showMore);
 		btn_add_comment = (Button) rootView.findViewById(R.id.btn_add_comment);
+		btn_back = (Button) rootView.findViewById(R.id.btn_back);
+		
+		int sizeTitle = (int) MySuperScaler.screen_width / 16 ;
+		txv_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, sizeTitle);
 		
 		int size = (int) MySuperScaler.screen_width / 23 ;
 		txv_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-		
 		
 		
 		btn_showMore.setOnClickListener(new OnClickListener() {
@@ -100,6 +106,14 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 			@Override
 			public void onClick(View v) {
 				((MainActivity) getActivity()).gotoAddEditCommentFragment(MainActivity.ADD_COMMENT_FRAGMENT, null, hadith.getId());
+			}
+		});
+		
+		btn_back.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				((MainActivity) getActivity()).onBackPressed();
 			}
 		});
 
@@ -125,7 +139,7 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				((MainActivity) getActivity()).gotoAddEditCommentFragment(MainActivity.EDIT_COMMENT_FRAGMENT, comments.get(position), hadith.getId());
+				showPopupMenu(position);
 			}
 		});
 	}
@@ -165,5 +179,34 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 		btn_showMore.setEnabled(enabled);
 		btn_add_comment.setEnabled(enabled);
 		
+	}
+	
+	private void showPopupMenu(final int position){
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.modifications)
+               .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                	   ((MainActivity) getActivity()).gotoAddEditCommentFragment(MainActivity.EDIT_COMMENT_FRAGMENT, comments.get(position), hadith.getId());
+                   }
+               })
+               .setNegativeButton(R.string.remove, new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       if(sabDB.removeComment(comments.get(position)))
+                       {
+                    	   comments.remove(position);
+                    	   adapter.notifyDataSetChanged();
+                    	   
+                    	   SABManager.getInstance(getActivity()).getFragmentNotifier().requestRefrech();
+                       }
+                   }
+               })
+               .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        			public void onClick(DialogInterface dialog, int id) {
+        				return;
+        			}
+        });
+        // Create the AlertDialog object and return it
+        builder.create();
+        builder.show();
 	}
 }

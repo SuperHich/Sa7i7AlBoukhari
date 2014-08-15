@@ -63,7 +63,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 		
 		Comment comment = data.get(position);
 
-		holder.txv_title.setText(comment.getTitle());
+		holder.txv_title.setText((position+1) + "- " + comment.getTitle());
 		holder.txv_text.setText(comment.getText());
 
 		return convertView;

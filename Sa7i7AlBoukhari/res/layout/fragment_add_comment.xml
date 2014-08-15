@@ -8,7 +8,7 @@
         android:layout_height="1136px"
         android:layout_marginLeft="80px"
         android:layout_marginTop="100px"
-        android:background="@android:color/white" >
+        android:background="@color/blue_light" >
 
         <TextView
             android:id="@+id/txv_name"
@@ -19,7 +19,7 @@
             android:layout_marginBottom="10px"
             android:layout_marginLeft="10px"
             android:text="@string/comment_name"
-            android:textColor="@color/blue_dark" 
+            android:textColor="@android:color/black" 
             android:layout_alignParentRight="true"/>
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_below="@+id/txv_name"
             android:layout_margin="10px"
             android:text="@string/comment_text"
-            android:textColor="@color/blue_dark" 
+            android:textColor="@android:color/black" 
             android:layout_alignParentRight="true"/>
 
         <EditText
@@ -41,9 +41,11 @@
             android:layout_marginBottom="10px"
             android:layout_marginLeft="10px"
             android:layout_toLeftOf="@+id/txv_name" 
-            android:textColor="#000"
+            android:textColor="@android:color/black"
             android:paddingLeft="10px"
+            android:paddingRight="10px"
             android:paddingTop="5px"
+            android:gravity="top|right"
             android:background="@drawable/rounded_background"/>
 
         <EditText
@@ -53,10 +55,11 @@
             android:layout_below="@+id/edt_name"
             android:layout_margin="10px"
             android:layout_toLeftOf="@+id/txv_comment"
-            android:textColor="#000"
+            android:textColor="@android:color/black"
             android:paddingLeft="10px"
+            android:paddingRight="10px"
             android:paddingTop="5px"
-            android:gravity="top"
+            android:gravity="top|right"
             android:background="@drawable/rounded_background"/>
 
         <Button
