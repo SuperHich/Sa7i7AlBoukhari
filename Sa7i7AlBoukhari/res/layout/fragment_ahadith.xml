@@ -2,13 +2,15 @@
     android:layout_width="640px"
     android:layout_height="1136px" >
 
-    <TextView
+    <com.sa7i7alboukhari.utils.FontFitTextView
         android:id="@+id/txv_emptyList"
-        android:layout_width="300px"
-        android:layout_height="100px"
+        android:layout_width="400px"
+        android:layout_height="150px"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="@string/empty_list"
+        android:textSize="40sp"
+        android:maxLines="1"
         android:textColor="#000"
         android:visibility="gone" />
 

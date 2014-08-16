@@ -32,6 +32,7 @@ import com.sa7i7alboukhari.externals.SABDownloadManager;
 import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.mediaplayer.IMediaPlayerNotifier;
 import com.sa7i7alboukhari.mediaplayer.SABMediaPlayer;
+import com.sa7i7alboukhari.utils.FontFitTextView;
 import com.sa7i7alboukhari.utils.LoadMoreListView;
 import com.sa7i7alboukhari.utils.LoadMoreListView.OnLoadMoreListener;
 import com.sa7i7alboukhari.utils.MySuperScaler;
@@ -58,7 +59,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	private int positionToUpdate, positionToListen = -1;
 	private SABDataBase sabDB;
 	private SABDownloadManager sabDownloadManager;
-	private TextView txv_emptyList;
+	private FontFitTextView txv_emptyList;
 	private TextView mTxvProgress;
 	private SeekBar mSeekBar;
 	private int lastTotalTime;
@@ -100,9 +101,13 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		ahadith_keyword = getArguments().getString(ARG_AHADITH_KEYWORD_TEXT);
 		bab_id = getArguments().getInt(ARG_BAB_ID);
 		
-		txv_emptyList = (TextView) rootView.findViewById(R.id.txv_emptyList);
-		int size = ((MainActivity) getActivity()).screen_width / 23;
+		txv_emptyList = (FontFitTextView) rootView.findViewById(R.id.txv_emptyList);
+		
+		int size = (int) MySuperScaler.screen_width / 20 ;
 		txv_emptyList.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+		
+		Log.e("text_size", size+"");
+		Log.e("screen_width", MySuperScaler.screen_width+"");
 		
 		if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);
