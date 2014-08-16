@@ -7,14 +7,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -31,7 +34,7 @@ import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
 @SuppressLint("ValidFragment")
-public class CommentsFragment extends ListFragment implements IFragmentNotifier{
+public class CommentsFragment extends ListFragment implements IFragmentNotifier, OnTouchListener{
 
 	private CommentsAdapter adapter;
 	private ArrayList<Comment> comments = new ArrayList<Comment>();
@@ -101,21 +104,8 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
 			}
 		});
 		
-		btn_add_comment.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				((MainActivity) getActivity()).gotoAddEditCommentFragment(MainActivity.ADD_COMMENT_FRAGMENT, null, hadith.getId());
-			}
-		});
-		
-		btn_back.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				((MainActivity) getActivity()).onBackPressed();
-			}
-		});
+		btn_add_comment.setOnTouchListener(this);
+		btn_back.setOnTouchListener(this);
 
 		toggleShown(hadith.isShown());
 		
@@ -208,5 +198,44 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier{
         // Create the AlertDialog object and return it
         builder.create();
         builder.show();
+	}
+	
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN: {
+			Button view = (Button) v;
+			view.getBackground().setColorFilter(0x77000000, 
+
+					PorterDuff.Mode.SRC_ATOP);
+			v.invalidate();
+			break;
+		}
+		case MotionEvent.ACTION_UP: {
+			
+			Button view = (Button) v;
+			view.getBackground().clearColorFilter();
+			view.invalidate();
+
+			switch (v.getId()) {
+			case R.id.btn_add_comment:
+				((MainActivity) getActivity()).gotoAddEditCommentFragment(MainActivity.ADD_COMMENT_FRAGMENT, null, hadith.getId());
+				break;
+			case R.id.btn_back:
+				((MainActivity) getActivity()).onBackPressed();
+				break;
+			default:
+				break;
+			}
+
+		}
+		case MotionEvent.ACTION_CANCEL: {
+			Button view = (Button) v;
+			view.getBackground().clearColorFilter();
+			view.invalidate();
+			break;
+		}
+		}
+		return true;
 	}
 }

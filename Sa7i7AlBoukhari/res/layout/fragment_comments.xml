@@ -44,7 +44,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10px"
-                android:background="@drawable/back_list" />
+                android:background="@drawable/back_list_comments" />
         </RelativeLayout>
 
         <RelativeLayout
