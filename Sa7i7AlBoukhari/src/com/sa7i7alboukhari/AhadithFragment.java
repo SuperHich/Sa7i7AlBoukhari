@@ -265,8 +265,10 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	}
 	
 	private void cleanPreviousPlayer(int position){
+		sabPlayer.stop();
 		ahadith.get(position).setBottomLayoutShown(false);
-		adapter.notifyDataSetChanged();
+		ahadith.get(position).setPlaying(false);
+		mSeekBar.setProgress(0);
 	}
 
 	@Override
