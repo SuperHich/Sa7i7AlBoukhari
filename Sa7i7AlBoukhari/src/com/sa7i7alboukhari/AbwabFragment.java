@@ -51,9 +51,10 @@ public class AbwabFragment extends ListFragment implements IFragmentNotifier{
 	public void onDetach() {
 		super.onDetach();
 		
-		SABManager.getInstance(getActivity()).setFragmentNotifier(null);
+//		SABManager.getInstance(getActivity()).setFragmentNotifier(null);
 
 	}
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

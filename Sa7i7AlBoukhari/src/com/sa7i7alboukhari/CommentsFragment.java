@@ -31,6 +31,7 @@ import com.sa7i7alboukhari.entity.Hadith;
 import com.sa7i7alboukhari.externals.SABDataBase;
 import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.utils.MySuperScaler;
+import com.sa7i7alboukhari.utils.SABFonts;
 
 
 @SuppressLint("ValidFragment")
@@ -94,6 +95,8 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier,
 		int size = (int) MySuperScaler.screen_width / 23 ;
 		txv_text.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 		
+		txv_title.setTypeface(SABFonts.getMOHANDFont());
+		txv_text.setTypeface(SABFonts.getMOHANDFont());
 		
 		btn_showMore.setOnClickListener(new OnClickListener() {
 			
@@ -168,6 +171,7 @@ public class CommentsFragment extends ListFragment implements IFragmentNotifier,
 		
 		btn_showMore.setEnabled(enabled);
 		btn_add_comment.setEnabled(enabled);
+		btn_back.setEnabled(enabled);
 		
 	}
 	

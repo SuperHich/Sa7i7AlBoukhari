@@ -39,6 +39,7 @@ import com.sa7i7alboukhari.mediaplayer.SABMediaPlayer;
 import com.sa7i7alboukhari.utils.LoadMoreListView;
 import com.sa7i7alboukhari.utils.LoadMoreListView.OnLoadMoreListener;
 import com.sa7i7alboukhari.utils.MySuperScaler;
+import com.sa7i7alboukhari.utils.SABFonts;
 import com.sa7i7alboukhari.utils.Utils;
 
 
@@ -79,6 +80,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		sabDB = ((MainActivity)getActivity()).sabDB;
 		sabDownloadManager = new SABDownloadManager(activity, this);
 		SABManager.getInstance(getActivity()).setFragmentNotifier(this);
+		Log.i(AhadithFragment.class.getSimpleName(), " >>> onAttach ");
 	}
 	
 	@Override
@@ -86,6 +88,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		super.onDetach();
 		
 		SABManager.getInstance(getActivity()).setFragmentNotifier(null);
+		Log.i(AhadithFragment.class.getSimpleName(), " >>> onDetach ");
 	}
 
 	@Override
@@ -105,6 +108,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		bab_id = getArguments().getInt(ARG_BAB_ID);
 		
 		txv_emptyList = (TextView) rootView.findViewById(R.id.txv_emptyList);
+		txv_emptyList.setTypeface(SABFonts.getMOHANDFont());
 		
 		if(!(MySuperScaler.scaled))
 			MySuperScaler.scaleViewAndChildren(rootView, MySuperScaler.scale);

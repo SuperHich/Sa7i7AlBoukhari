@@ -21,6 +21,7 @@ import com.sa7i7alboukhari.entity.Comment;
 import com.sa7i7alboukhari.externals.SABDataBase;
 import com.sa7i7alboukhari.externals.SABManager;
 import com.sa7i7alboukhari.utils.MySuperScaler;
+import com.sa7i7alboukhari.utils.SABFonts;
 
 @SuppressLint("ValidFragment")
 public class AddCommentFragment extends Fragment {
@@ -72,6 +73,11 @@ public class AddCommentFragment extends Fragment {
         edt_comment.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         txv_name.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         txv_comment.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        
+        txv_name.setTypeface(SABFonts.getMOHANDFont());
+		txv_comment.setTypeface(SABFonts.getMOHANDFont());
+		edt_name.setTypeface(SABFonts.getMOHANDFont());
+		edt_comment.setTypeface(SABFonts.getMOHANDFont());
 
         btn_remove.setOnClickListener(new OnClickListener() {
 			
