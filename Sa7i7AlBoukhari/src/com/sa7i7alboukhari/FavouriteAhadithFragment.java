@@ -143,5 +143,11 @@ public class FavouriteAhadithFragment extends ListFragment implements IHadtihLis
 	@Override
 	public void onHadithShare(int position) {
 	}
+	
+	@Override
+	public void onHadithTextClicked(int position) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

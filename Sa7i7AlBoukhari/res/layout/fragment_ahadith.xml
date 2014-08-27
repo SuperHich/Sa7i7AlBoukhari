@@ -22,6 +22,6 @@
         android:divider="@color/blue_turquoise"
         android:dividerHeight="10px"
         android:gravity="center"
-        android:scrollingCache="false" />
+        android:scrollingCache="false"/>
 
 </RelativeLayout>

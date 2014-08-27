@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
@@ -14,9 +15,12 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -38,7 +42,7 @@ import com.sa7i7alboukhari.utils.MySuperScaler;
 import com.sa7i7alboukhari.utils.Utils;
 
 
-public class AhadithFragment extends ListFragment implements IHadtihListener, IMediaPlayerNotifier, IDownloadNotifier, IFragmentNotifier{
+public class AhadithFragment extends ListFragment implements IHadtihListener, IMediaPlayerNotifier, IDownloadNotifier, IFragmentNotifier, OnMenuItemClickListener{
 
 	public static final String ARG_AHADITH = "ahadith_type";
 	public static final String ARG_AHADITH_SEARCH = "ahadith_search_type";
@@ -62,7 +66,7 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 	private TextView mTxvProgress;
 	private SeekBar mSeekBar;
 	private int lastTotalTime;
-	
+	private String hadithText;
 
 	public AhadithFragment() {
 		// Empty constructor required for fragment subclasses
@@ -233,7 +237,28 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		initAhadith();
 		
 	}
+	
+	@Override
+	public void onHadithTextClicked(int position) {
+		hadithText = ahadith.get(position).getText();
+		View view = getSelecedView(position);
+		if(view == null)
+		{
+			Log.w("", "Unable to get view for desired position, because it's not being displayed on screen.");
+			return;
+		}
+		showMenu(view);
+	}
+	
+	public void showMenu(View v) {
+	    PopupMenu popup = new PopupMenu(getActivity(), v);
 
+	    // This activity implements OnMenuItemClickListener
+	    popup.setOnMenuItemClickListener(this);
+	    popup.inflate(R.menu.context_menu);
+	    popup.show();
+	}
+	
 	@Override
 	public void onHadithShowMore(int position) {
 		Hadith hadith = ahadith.get(position);
@@ -620,4 +645,30 @@ public class AhadithFragment extends ListFragment implements IHadtihListener, IM
 		mTxvProgress = (TextView) view.findViewById(R.id.txv_progress);
 	}
 	
+	private void copyHadithToClipboard(int position){
+		
+		int sdk = android.os.Build.VERSION.SDK_INT;
+		if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+		    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+		    clipboard.setText(hadithText);
+		} else {
+		    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE); 
+		    android.content.ClipData clip = android.content.ClipData.newPlainText("text label",hadithText);
+		    clipboard.setPrimaryClip(clip);
+		}
+		
+		Toast.makeText(getActivity(), getString(R.string.hadith_copied), Toast.LENGTH_SHORT).show();
+		
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		 switch (item.getItemId()) {
+	        case R.id.hadith_copy:
+	            copyHadithToClipboard(0);
+	            return true;
+	        default:
+	            return false;
+	    }
+	}
 }

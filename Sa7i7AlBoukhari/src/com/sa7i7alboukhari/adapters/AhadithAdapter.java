@@ -23,6 +23,7 @@ import com.sa7i7alboukhari.R;
 import com.sa7i7alboukhari.entity.Hadith;
 import com.sa7i7alboukhari.externals.SABDataBase;
 import com.sa7i7alboukhari.utils.MySuperScaler;
+import com.sa7i7alboukhari.utils.SABFonts;
 
 public class AhadithAdapter extends ArrayAdapter<Hadith> {
 
@@ -69,6 +70,18 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 			holder.btn_pause = (Button) convertView.findViewById(R.id.btn_pause);
 			holder.mSeekBar = (SeekBar) convertView.findViewById(R.id.seekbar_progress);
 			holder.mTxvProgress = (TextView) convertView.findViewById(R.id.txv_progress);
+			
+			holder.textview.setTypeface(SABFonts.getMOHANDFont());
+			holder.mTxvProgress.setTypeface(SABFonts.getMOHANDFont());
+			
+			holder.textview.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					int position = (Integer)(v.getTag());	
+					listener.onHadithTextClicked(position);
+				}
+			});
 			
 			holder.btn_showMore.setOnClickListener(new OnClickListener() {
 
@@ -157,6 +170,7 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		holder.textview.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 		holder.mTxvProgress.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
 
+		holder.textview.setTag(position);
 		holder.btn_showMore.setTag(position);
 		holder.btn_listen.setTag(position);
 		holder.btn_pause.setTag(position);

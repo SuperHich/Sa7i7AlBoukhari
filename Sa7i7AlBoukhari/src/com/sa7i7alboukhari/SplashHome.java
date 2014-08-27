@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.widget.RelativeLayout;
 
 import com.sa7i7alboukhari.utils.MySuperScaler;
+import com.sa7i7alboukhari.utils.SABFonts;
 import com.sa7i7alboukhari.utils.Utils;
 
 
@@ -98,7 +98,6 @@ public class SplashHome extends MySuperScaler {
 
 			}
 			
-
 			super.handleMessage(msg);
 		}
 	};
@@ -107,15 +106,13 @@ public class SplashHome extends MySuperScaler {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashhome);
 		
+		SABFonts.InitSABFonts(this);
 		
 		principal_layout = (RelativeLayout) findViewById(R.id.principal_layout);
 		
 		Message msg = Message.obtain();
 		msg.what = MESSAGE_FINISH;
 	    splashHandler.sendMessageDelayed(msg, SPLASHTIME);
-		
-		
-		
 	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -123,9 +120,7 @@ public class SplashHome extends MySuperScaler {
 			splashHandler.removeMessages(STOPSPLASH);
 		}
 		return super.onKeyDown(keyCode, event);
-
 	}	
-	
 	
 	@Override
 	protected void onDestroy() {

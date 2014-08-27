@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.sa7i7alboukhari.R;
 import com.sa7i7alboukhari.entity.Book;
 import com.sa7i7alboukhari.utils.MySuperScaler;
+import com.sa7i7alboukhari.utils.SABFonts;
 
 public class BooksAdapter extends ArrayAdapter<Book> {
 
@@ -44,6 +45,7 @@ public class BooksAdapter extends ArrayAdapter<Book> {
 			
 			// get the elements in the layout
 			holder.textview = (TextView) convertView.findViewById(R.id.txv_babTitle); 
+			holder.textview.setTypeface(SABFonts.getMOHANDFont());
 			
 			convertView.setTag(holder);
 		}
