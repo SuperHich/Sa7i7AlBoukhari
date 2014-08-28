@@ -40,6 +40,7 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	public static final String FAVOURITE_FRAGMENT = "favourite_fragment";
 	public static final String BOOKS_FRAGMENT = "books_fragment";
 	public static final String ABWAB_FRAGMENT = "abwab_fragment";
+	public static final String ABOUT_FRAGMENT = "about_fragment";
 	public static final String AHADITH_FRAGMENT = "ahadith_fragment";
 	
 	private String currentFragment;
@@ -185,8 +186,8 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		isBackEnabled = false;
 		btn_menu.setBackgroundResource(R.drawable.menu);
 		
-		if(position > 4)
-			return;
+//		if(position > 4)
+//			return;
 
 		lastPosition = position;
 		
@@ -223,6 +224,16 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		case 4:
 			fragment = new BooksFragment();
 			currentFragment = BOOKS_FRAGMENT;
+			btn_search.setVisibility(View.GONE);
+			break;
+		case 5:
+			fragment = new AboutFragment();
+			currentFragment = ABOUT_FRAGMENT;
+			btn_search.setVisibility(View.GONE);
+			break;
+		case 6:
+			fragment = new AboutAppFragment();
+			currentFragment = ABOUT_FRAGMENT;
 			btn_search.setVisibility(View.GONE);
 			break;
 		default:

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="640px"
+    android:layout_height="1136px"
+    android:background="@drawable/bg" >
+
+    <ListView
+        android:id="@+id/android:list"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:visibility="gone" />
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/title" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="50px" -->
+    <!-- android:layout_centerHorizontal="true" -->
+    <!-- android:layout_marginTop="50px" -->
+    <!-- android:maxLines="1" -->
+    <!-- android:text="تنفيذ مؤسسة شبكة نور الاسلام للتطبيقات والبرمجيات" -->
+    <!-- android:textColor="#fff" -->
+    <!-- android:textSize="30px" /> -->
+
+    <ImageView
+        android:layout_width="253px"
+        android:layout_height="400px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20px"
+        android:background="@drawable/sigle_entreprise" />
+
+    <LinearLayout
+        android:layout_width="640px"
+        android:layout_height="600px"
+        android:layout_marginTop="500px"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="640px"
+            android:layout_height="100px" >
+
+            <TextView
+                android:id="@+id/site"
+                android:layout_width="wrap_content"
+                android:layout_height="50px"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50px"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="http://www.tech.islaamlight.com"
+                android:textColor="#fff"
+                android:textStyle="bold|italic" />
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50px"
+                android:background="@drawable/sigle" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="640px"
+            android:layout_height="100px" >
+
+            <TextView
+                android:id="@+id/twitter"
+                android:layout_width="wrap_content"
+                android:layout_height="50px"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50px"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="\@noorapps"
+                android:textColor="#fff"
+                android:textStyle="bold|italic" />
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50px"
+                android:background="@drawable/twitter" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="640px"
+            android:layout_height="100px" >
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="50px"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50px"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="noorapps@hotmail.com"
+                android:textColor="#fff"
+                android:textStyle="bold|italic" />
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50px"
+                android:background="@drawable/email" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="640px"
+            android:layout_height="100px" >
+
+            <TextView
+                android:id="@+id/whatsapp"
+                android:layout_width="wrap_content"
+                android:layout_height="50px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="50px"
+                android:layout_marginTop="20px"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="00966556118113"
+                android:textColor="#fff"
+                android:textStyle="bold|italic" />
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50px"
+                android:background="@drawable/whatsapp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="640px"
+            android:layout_height="100px" >
+
+            <TextView
+                android:id="@+id/call"
+                android:layout_width="wrap_content"
+                android:layout_height="50px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="50px"
+                android:layout_marginTop="20px"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="00966556118113"
+                android:textColor="#fff"
+                android:textStyle="bold|italic" />
+
+            <ImageView
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="50px"
+                android:background="@drawable/call" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>
