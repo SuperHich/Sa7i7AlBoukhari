@@ -12,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.sa7i7alboukhari.R;
-import com.sa7i7alboukhari.utils.MySuperScaler;
 
 public class MenuCustomAdapter extends BaseAdapter implements OnTouchListener {
 

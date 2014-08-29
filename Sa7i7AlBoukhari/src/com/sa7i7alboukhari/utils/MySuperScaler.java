@@ -1,8 +1,5 @@
 package com.sa7i7alboukhari.utils;
 
-import com.sa7i7alboukhari.externals.SABDataBase;
-import com.sa7i7alboukhari.externals.SABManager;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +20,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+
+import com.sa7i7alboukhari.externals.SABDataBase;
+import com.sa7i7alboukhari.externals.SABManager;
 
 
 /**

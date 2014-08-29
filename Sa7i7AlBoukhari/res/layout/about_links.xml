@@ -10,23 +10,24 @@
         android:layout_height="0px"
         android:visibility="gone" />
 
-    <!-- <TextView -->
-    <!-- android:id="@+id/title" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="50px" -->
-    <!-- android:layout_centerHorizontal="true" -->
-    <!-- android:layout_marginTop="50px" -->
-    <!-- android:maxLines="1" -->
-    <!-- android:text="تنفيذ مؤسسة شبكة نور الاسلام للتطبيقات والبرمجيات" -->
-    <!-- android:textColor="#fff" -->
-    <!-- android:textSize="30px" /> -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="150px"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50px"
+        android:text="@string/noorapp_title"
+        android:textColor="#fff" 
+        android:gravity="center_horizontal"/>
 
     <ImageView
-        android:layout_width="253px"
-        android:layout_height="400px"
+        android:layout_width="126px"
+        android:layout_height="200px"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20px"
-        android:background="@drawable/sigle_entreprise" />
+        android:background="@drawable/sigle_entreprise" 
+        android:layout_below="@+id/title"/>
 
     <LinearLayout
         android:layout_width="640px"
@@ -36,7 +37,7 @@
 
         <RelativeLayout
             android:layout_width="640px"
-            android:layout_height="100px" >
+            android:layout_height="80px" >
 
             <TextView
                 android:id="@+id/site"
@@ -47,13 +48,14 @@
                 android:layout_marginLeft="50px"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="http://www.tech.islaamlight.com"
+                android:text="www.tech.islaamlight.com"
                 android:textColor="#fff"
                 android:textStyle="bold|italic" />
 
             <ImageView
-                android:layout_width="80px"
-                android:layout_height="80px"
+                android:id="@+id/img_site"
+                android:layout_width="60px"
+                android:layout_height="60px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="50px"
@@ -62,7 +64,7 @@
 
         <RelativeLayout
             android:layout_width="640px"
-            android:layout_height="100px" >
+            android:layout_height="80px" >
 
             <TextView
                 android:id="@+id/twitter"
@@ -78,8 +80,9 @@
                 android:textStyle="bold|italic" />
 
             <ImageView
-                android:layout_width="80px"
-                android:layout_height="80px"
+                android:id="@+id/img_twitter"
+                android:layout_width="60px"
+                android:layout_height="60px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="50px"
@@ -88,7 +91,7 @@
 
         <RelativeLayout
             android:layout_width="640px"
-            android:layout_height="100px" >
+            android:layout_height="80px" >
 
             <TextView
                 android:id="@+id/email"
@@ -104,8 +107,9 @@
                 android:textStyle="bold|italic" />
 
             <ImageView
-                android:layout_width="80px"
-                android:layout_height="80px"
+                android:id="@+id/img_email"
+                android:layout_width="60px"
+                android:layout_height="60px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="50px"
@@ -114,7 +118,7 @@
 
         <RelativeLayout
             android:layout_width="640px"
-            android:layout_height="100px" >
+            android:layout_height="80px" >
 
             <TextView
                 android:id="@+id/whatsapp"
@@ -130,8 +134,9 @@
                 android:textStyle="bold|italic" />
 
             <ImageView
-                android:layout_width="80px"
-                android:layout_height="80px"
+                android:id="@+id/img_whatsapp"
+                android:layout_width="60px"
+                android:layout_height="60px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="50px"
@@ -140,7 +145,7 @@
 
         <RelativeLayout
             android:layout_width="640px"
-            android:layout_height="100px" >
+            android:layout_height="80px" >
 
             <TextView
                 android:id="@+id/call"
@@ -151,13 +156,14 @@
                 android:layout_marginTop="20px"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:text="00966556118113"
+                android:text="00112303099"
                 android:textColor="#fff"
                 android:textStyle="bold|italic" />
 
             <ImageView
-                android:layout_width="80px"
-                android:layout_height="80px"
+                android:id="@+id/img_call"
+                android:layout_width="60px"
+                android:layout_height="60px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="50px"
