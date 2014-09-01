@@ -74,16 +74,17 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 			holder.textview.setTypeface(SABFonts.getMOHANDFont());
 			holder.mTxvProgress.setTypeface(SABFonts.getMOHANDFont());
 			
-			holder.textview.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					if(!isEnabled())
-						return;
-					int position = (Integer)(v.getTag());	
-					listener.onHadithTextClicked(position);
-				}
-			});
+			holder.textview.setTextIsSelectable(true);
+//			holder.textview.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					if(!isEnabled())
+//						return;
+//					int position = (Integer)(v.getTag());	
+//					listener.onHadithTextClicked(position);
+//				}
+//			});
 			
 			holder.btn_showMore.setOnClickListener(new OnClickListener() {
 
