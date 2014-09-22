@@ -33,6 +33,7 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 	ArrayList<Hadith> data = null;
 	LayoutInflater inflater;
 	private boolean isEnabled = true;
+	private String searchKeyWord;
 
 	public AhadithAdapter(Context mContext, int layoutResourceId, ArrayList<Hadith> data, IHadtihListener listener) {
 
@@ -187,15 +188,21 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		 * want.
 		 */
 		Hadith hadith = data.get(position);
+		String content = SABDataBase.formatHadith(hadith.getText());
 
+		if(searchKeyWord != null){
+			content = SABDataBase.formatHadith(SABDataBase.cleanPonctuation(hadith.getText()));
+			content = content.replaceAll(searchKeyWord, coloredWord(searchKeyWord));
+		}
+		
 		if(hadith.isShown()){
 			holder.textview.setMaxLines(Integer.MAX_VALUE);
-			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(".")));
+			holder.textview.setText(Html.fromHtml(content.concat(".")));
 			holder.btn_showMore.setBackgroundResource(R.drawable.showless_selector);
 		}
 		else{
 			holder.textview.setMaxLines(2);
-			holder.textview.setText(Html.fromHtml(SABDataBase.formatHadith(hadith.getText()).concat(" ... ")));
+			holder.textview.setText(Html.fromHtml(content.concat(" ... ")));
 			holder.btn_showMore.setBackgroundResource(R.drawable.showmore_selector);
 		}
 
@@ -261,12 +268,25 @@ public class AhadithAdapter extends ArrayAdapter<Hadith> {
 		return convertView;
 	}
 
+	private String coloredWord(String searchKeyWord) {
+		
+		return "<font color='#FF0000'>"+searchKeyWord+"</font>";
+	}
+
 	public boolean isEnabled() {
 		return isEnabled;
 	}
 
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
+	}
+
+	public String getSearchKeyWord() {
+		return searchKeyWord;
+	}
+
+	public void setSearchKeyWord(String searchKeyWord) {
+		this.searchKeyWord = searchKeyWord;
 	}
 
 	class ViewHolder
