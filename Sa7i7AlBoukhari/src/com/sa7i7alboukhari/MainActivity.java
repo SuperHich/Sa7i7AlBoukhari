@@ -27,6 +27,7 @@ import com.sa7i7alboukhari.entity.Chapter;
 import com.sa7i7alboukhari.entity.Comment;
 import com.sa7i7alboukhari.entity.Hadith;
 import com.sa7i7alboukhari.externals.SABDataBase;
+import com.sa7i7alboukhari.mediaplayer.SABMediaPlayer;
 import com.sa7i7alboukhari.utils.MySuperScaler;
 
 
@@ -64,6 +65,11 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 	private Fragment fragment2;
 	
 	private boolean isBackEnabled = false;
+	private SABMediaPlayer sabPlayer;
+	
+	public SABMediaPlayer getSabPlayer() {
+		return sabPlayer;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +77,8 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		setContentView(R.layout.activity_main);
 
 		sabDB = new SABDataBase(this);
-
+		sabPlayer = new SABMediaPlayer(this);
+		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.right_drawer);
 
@@ -187,6 +194,9 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 		
 //		if(position > 4)
 //			return;
+		
+		if(lastPosition != position && sabManager.getFragmentNotifier() != null)
+			sabManager.getFragmentNotifier().unregisterFromPlayer();
 
 		lastPosition = position;
 		
@@ -410,6 +420,32 @@ public class MainActivity extends MySuperScaler implements IMenuListener, OnTouc
 			Bundle args = new Bundle();
 			args.putInt(AhadithFragment.ARG_AHADITH, AhadithFragment.TYPE_AHADITH_BY_BAB);
 			args.putInt(AhadithFragment.ARG_BAB_ID, chapter.getBabId());
+			fragment.setArguments(args);
+
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentTransaction ft = fragmentManager.beginTransaction();
+			ft.setCustomAnimations(R.anim.right_in, R.anim.right_out, R.anim.left_in, R.anim.left_out);
+
+			ft.replace(R.id.content_frame, fragment);
+			scaled = false ;
+			ft.commit();
+			
+		}
+		
+		public void onBookToListenClicked(int book_id){
+			
+			isBackEnabled = true;
+			currentFragment = AHADITH_FRAGMENT;
+			btn_menu.setBackgroundResource(R.drawable.back_list);
+			btn_search.setVisibility(View.VISIBLE);
+			
+//			lastBabId = chapter.getBabId();
+			
+			// update the main content by replacing fragments
+			fragment = new AhadithFragment();
+			Bundle args = new Bundle();
+			args.putInt(AhadithFragment.ARG_AHADITH, AhadithFragment.TYPE_AHADITH_BY_BOOK);
+			args.putInt(AhadithFragment.ARG_BOOK_ID, book_id);
 			fragment.setArguments(args);
 
 			FragmentManager fragmentManager = getSupportFragmentManager();
